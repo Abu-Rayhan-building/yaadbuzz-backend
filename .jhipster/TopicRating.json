@@ -1,0 +1,38 @@
+{
+  "name": "TopicRating",
+  "fields": [
+    {
+      "fieldName": "repetitions",
+      "fieldType": "Integer"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "topic",
+      "otherEntityRelationshipName": "ratings",
+      "relationshipValidateRules": "required",
+      "relationshipName": "rating",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "userPerDepartment",
+      "otherEntityRelationshipName": "topicAssigneds",
+      "relationshipValidateRules": "required",
+      "relationshipName": "user",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201115101920",
+  "entityTableName": "topic_rating",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

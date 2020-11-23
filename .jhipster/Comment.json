@@ -1,0 +1,39 @@
+{
+  "name": "Comment",
+  "fields": [
+    {
+      "fieldName": "text",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "userPerDepartment",
+      "otherEntityRelationshipName": "comment",
+      "relationshipValidateRules": "required",
+      "relationshipName": "writer",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "memory",
+      "otherEntityRelationshipName": "comments",
+      "relationshipValidateRules": "required",
+      "relationshipName": "memory",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201114203902",
+  "entityTableName": "comment",
+  "dto": "mapstruct",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

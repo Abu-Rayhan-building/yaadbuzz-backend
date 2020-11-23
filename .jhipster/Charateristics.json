@@ -1,0 +1,37 @@
+{
+  "name": "Charateristics",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "charateristicsRepetation",
+      "otherEntityRelationshipName": "charactristic",
+      "relationshipName": "charateristicsRepetation"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "department",
+      "otherEntityRelationshipName": "charateristics",
+      "relationshipValidateRules": "required",
+      "relationshipName": "department",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201115102020",
+  "entityTableName": "charateristics",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

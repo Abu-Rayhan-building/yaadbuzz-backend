@@ -1,0 +1,38 @@
+{
+  "name": "CharateristicsRepetation",
+  "fields": [
+    {
+      "fieldName": "repetation",
+      "fieldType": "Integer"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "userPerDepartment",
+      "otherEntityRelationshipName": "charateristicsRepetations",
+      "relationshipValidateRules": "required",
+      "relationshipName": "user",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "charateristics",
+      "otherEntityRelationshipName": "charateristicsRepetation",
+      "relationshipValidateRules": "required",
+      "relationshipName": "charactristic",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201116223416",
+  "entityTableName": "charateristics_repetation",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

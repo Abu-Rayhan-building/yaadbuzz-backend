@@ -1,0 +1,24 @@
+{
+  "yaadmaanApp": {
+    "topicRating": {
+      "home": {
+        "title": "Topic Ratings",
+        "createLabel": "Create a new Topic Rating",
+        "createOrEditLabel": "Create or edit a Topic Rating",
+        "notFound": "No Topic Ratings found"
+      },
+      "created": "A new Topic Rating is created with identifier {{ param }}",
+      "updated": "A Topic Rating is updated with identifier {{ param }}",
+      "deleted": "A Topic Rating is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Topic Rating {{ id }}?"
+      },
+      "detail": {
+        "title": "Topic Rating"
+      },
+      "repetitions": "Repetitions",
+      "rating": "Rating",
+      "user": "User"
+    }
+  }
+}

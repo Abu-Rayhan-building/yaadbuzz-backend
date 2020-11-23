@@ -1,0 +1,32 @@
+{
+  "name": "MemoryPicture",
+  "fields": [
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "memory",
+      "otherEntityRelationshipName": "pictures",
+      "relationshipValidateRules": "required",
+      "relationshipName": "memory",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201114204102",
+  "entityTableName": "memory_picture",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

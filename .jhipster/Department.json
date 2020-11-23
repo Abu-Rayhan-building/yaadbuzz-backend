@@ -1,0 +1,55 @@
+{
+  "name": "Department",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "password",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "userPerDepartment",
+      "otherEntityRelationshipName": "department",
+      "relationshipName": "userPerDepartment"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "memory",
+      "otherEntityRelationshipName": "department",
+      "relationshipName": "memory"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "picture",
+      "otherEntityRelationshipName": "department",
+      "relationshipName": "avatar",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "department",
+      "relationshipValidateRules": "required",
+      "relationshipName": "owner",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201114203702",
+  "entityTableName": "department",
+  "dto": "mapstruct",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

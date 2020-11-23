@@ -1,0 +1,78 @@
+{
+  "name": "UserPerDepartment",
+  "fields": [
+    {
+      "fieldName": "nicName",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "bio",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "topicRating",
+      "otherEntityRelationshipName": "user",
+      "relationshipName": "topicAssigneds"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "charateristicsRepetation",
+      "otherEntityRelationshipName": "user",
+      "relationshipName": "charateristicsRepetations"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "picture",
+      "otherEntityRelationshipName": "userPerDepartment",
+      "relationshipName": "avatar",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "userPerDepartment",
+      "relationshipValidateRules": "required",
+      "relationshipName": "realUser",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "department",
+      "otherEntityRelationshipName": "userPerDepartment",
+      "relationshipValidateRules": "required",
+      "relationshipName": "department",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "topic",
+      "otherEntityRelationshipName": "voters",
+      "relationshipName": "topicsVoted",
+      "otherEntityField": "id",
+      "ownerSide": false
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "memory",
+      "otherEntityRelationshipName": "taged",
+      "relationshipName": "tagedInMemoeries",
+      "otherEntityField": "id",
+      "ownerSide": false
+    }
+  ],
+  "changelogDate": "20201114203602",
+  "entityTableName": "user_per_department",
+  "dto": "mapstruct",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

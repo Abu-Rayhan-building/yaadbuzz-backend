@@ -1,0 +1,25 @@
+package edu.sharif.math.yaadmaan.domain;
+
+import org.junit.jupiter.api.Test;
+
+import edu.sharif.math.yaadmaan.domain.Memory;
+import edu.sharif.math.yaadmaan.web.rest.TestUtil;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class MemoryTest {
+
+    @Test
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Memory.class);
+        Memory memory1 = new Memory();
+        memory1.setId(1L);
+        Memory memory2 = new Memory();
+        memory2.setId(memory1.getId());
+        assertThat(memory1).isEqualTo(memory2);
+        memory2.setId(2L);
+        assertThat(memory1).isNotEqualTo(memory2);
+        memory1.setId(null);
+        assertThat(memory1).isNotEqualTo(memory2);
+    }
+}

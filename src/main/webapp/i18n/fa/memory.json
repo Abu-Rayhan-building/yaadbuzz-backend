@@ -1,0 +1,30 @@
+{
+  "yaadmaanApp": {
+    "memory": {
+      "home": {
+        "title": "Memories",
+        "createLabel": "Create a new Memory",
+        "createOrEditLabel": "Create or edit a Memory",
+        "notFound": "No Memories found"
+      },
+      "created": "A new Memory is created with identifier {{ param }}",
+      "updated": "A Memory is updated with identifier {{ param }}",
+      "deleted": "A Memory is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Memory {{ id }}?"
+      },
+      "detail": {
+        "title": "Memory"
+      },
+      "title": "Title",
+      "isPrivate": "Is Private",
+      "isAnnonymos": "Is Annonymos",
+      "comments": "Comments",
+      "pictures": "Pictures",
+      "text": "Text",
+      "writer": "Writer",
+      "taged": "Taged",
+      "department": "Department"
+    }
+  }
+}

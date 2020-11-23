@@ -1,0 +1,87 @@
+
+entity UserPerDepartment {
+    nicName String unique,
+    bio String,
+}
+
+entity Topic {
+	title String required,
+}
+
+entity TopicRating {
+	repetitions Integer,
+}
+
+entity Charateristics {
+	title String required,    
+}
+
+entity CharateristicsRepetation {
+	repetation Integer, 
+}
+
+entity Department {
+    name String required,
+    password String required,
+}
+
+entity Memory {
+	title String,
+	isPrivate Boolean,
+    isAnnonymos Boolean,
+}
+
+entity Comment{
+	text String required,
+}
+
+entity Picture{
+	image ImageBlob required,
+}
+
+entity MemoryPicture{
+	image ImageBlob required,
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Memory{comments} to Comment{memory required},
+	Department to UserPerDepartment{department required},
+    Department to Memory{department required},
+	Memory{pictures} to MemoryPicture{memory required},
+    Topic{ratings} to TopicRating{rating required},
+    UserPerDepartment{topicAssigneds} to TopicRating{user required},
+    UserPerDepartment{charateristicsRepetations} to CharateristicsRepetation{user required},
+    Charateristics to CharateristicsRepetation{charactristic required},
+}
+
+relationship ManyToOne{
+	Charateristics{department required} to Department,
+    Topic{department required} to Department,
+	Memory{text required} to Comment,
+	UserPerDepartment{avatar} to Picture,
+	Department{avatar} to Picture
+	Department{owner required} to User,
+    UserPerDepartment{realUser required} to User,
+    Memory{writer required} to UserPerDepartment,
+    Comment{writer required} to UserPerDepartment,
+}
+
+relationship ManyToMany{
+	Topic{voters} to UserPerDepartment{topicsVoted},
+    Memory{taged} to UserPerDepartment{tagedInMemoeries}
+}
+
+// Set pagination options
+paginate Department, Memory, Comment, UserPerDepartment with infinite-scroll
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl 
+
+// search Memory, Comment, User, UserPerDepartment  with elasticsearch
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

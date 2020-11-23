@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity CharateristicsRepetation.
+    -->
+    <changeSet id="20201116223416-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="charateristics_repetation"
+                                 constraintName="fk_charateristics_repetation_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_per_department"/>
+
+        <addForeignKeyConstraint baseColumnNames="charactristic_id"
+                                 baseTableName="charateristics_repetation"
+                                 constraintName="fk_charateristics_repetation_charactristic_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="charateristics"/>
+
+    </changeSet>
+</databaseChangeLog>

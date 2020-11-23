@@ -1,0 +1,30 @@
+{
+  "yaadmaanApp": {
+    "userPerDepartment": {
+      "home": {
+        "title": "User Per Departments",
+        "createLabel": "Create a new User Per Department",
+        "createOrEditLabel": "Create or edit a User Per Department",
+        "notFound": "No User Per Departments found"
+      },
+      "created": "A new User Per Department is created with identifier {{ param }}",
+      "updated": "A User Per Department is updated with identifier {{ param }}",
+      "deleted": "A User Per Department is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete User Per Department {{ id }}?"
+      },
+      "detail": {
+        "title": "User Per Department"
+      },
+      "nicName": "Nic Name",
+      "bio": "Bio",
+      "topicAssigneds": "Topic Assigneds",
+      "charateristicsRepetations": "Charateristics Repetations",
+      "avatar": "Avatar",
+      "realUser": "Real User",
+      "department": "Department",
+      "topicsVoted": "Topics Voted",
+      "tagedInMemoeries": "Taged In Memoeries"
+    }
+  }
+}

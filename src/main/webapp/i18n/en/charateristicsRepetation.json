@@ -1,0 +1,24 @@
+{
+  "yaadmaanApp": {
+    "charateristicsRepetation": {
+      "home": {
+        "title": "Charateristics Repetations",
+        "createLabel": "Create a new Charateristics Repetation",
+        "createOrEditLabel": "Create or edit a Charateristics Repetation",
+        "notFound": "No Charateristics Repetations found"
+      },
+      "created": "A new Charateristics Repetation is created with identifier {{ param }}",
+      "updated": "A Charateristics Repetation is updated with identifier {{ param }}",
+      "deleted": "A Charateristics Repetation is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Charateristics Repetation {{ id }}?"
+      },
+      "detail": {
+        "title": "Charateristics Repetation"
+      },
+      "repetation": "Repetation",
+      "user": "User",
+      "charactristic": "Charactristic"
+    }
+  }
+}

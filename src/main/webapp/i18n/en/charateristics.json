@@ -1,0 +1,24 @@
+{
+  "yaadmaanApp": {
+    "charateristics": {
+      "home": {
+        "title": "Charateristics",
+        "createLabel": "Create a new Charateristics",
+        "createOrEditLabel": "Create or edit a Charateristics",
+        "notFound": "No Charateristics found"
+      },
+      "created": "A new Charateristics is created with identifier {{ param }}",
+      "updated": "A Charateristics is updated with identifier {{ param }}",
+      "deleted": "A Charateristics is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Charateristics {{ id }}?"
+      },
+      "detail": {
+        "title": "Charateristics"
+      },
+      "title": "Title",
+      "charateristicsRepetation": "Charateristics Repetation",
+      "department": "Department"
+    }
+  }
+}

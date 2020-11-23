@@ -1,0 +1,74 @@
+{
+  "name": "Memory",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isPrivate",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isAnnonymos",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "memory",
+      "relationshipName": "comments"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "memoryPicture",
+      "otherEntityRelationshipName": "memory",
+      "relationshipName": "pictures"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "memory",
+      "relationshipValidateRules": "required",
+      "relationshipName": "text",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "userPerDepartment",
+      "otherEntityRelationshipName": "memory",
+      "relationshipValidateRules": "required",
+      "relationshipName": "writer",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "userPerDepartment",
+      "otherEntityRelationshipName": "tagedInMemoeries",
+      "relationshipName": "taged",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "department",
+      "otherEntityRelationshipName": "memory",
+      "relationshipValidateRules": "required",
+      "relationshipName": "department",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201114203802",
+  "entityTableName": "memory",
+  "dto": "mapstruct",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}
