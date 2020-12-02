@@ -268,7 +268,18 @@ public class UserService {
     public Optional<User> getUserWithAuthorities() {
         return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
     }
+    
+    @Transactional(readOnly = true)
+    public Optional<User> getUserWithoutAuthorities() {
+        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin);
+    }
+    
+    public Long getCurrentUserId() {
+        return this.getUserWithoutAuthorities().get().getId();
 
+    }
+    
+    
     /**
      * Not activated users should be automatically deleted after 3 days.
      * <p>
@@ -301,4 +312,5 @@ public class UserService {
             Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
         }
     }
+
 }

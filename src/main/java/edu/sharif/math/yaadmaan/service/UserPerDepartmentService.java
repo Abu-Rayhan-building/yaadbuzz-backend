@@ -3,7 +3,6 @@ package edu.sharif.math.yaadmaan.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
 import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
 
 import java.util.Optional;
@@ -11,7 +10,7 @@ import java.util.Optional;
 /**
  * Service Interface for managing {@link edu.sharif.math.yaadmaan.domain.UserPerDepartment}.
  */
-public interface UserPerDepartmentService {
+public interface UserPerDepartmentService extends ServiceWithCurrentUserCrudAccess {
 
     /**
      * Save a userPerDepartment.

@@ -1,5 +1,13 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.YaadmaanApp;
+import edu.sharif.math.yaadmaan.domain.Topic;
+import edu.sharif.math.yaadmaan.domain.Department;
+import edu.sharif.math.yaadmaan.repository.TopicRepository;
+import edu.sharif.math.yaadmaan.service.TopicService;
+import edu.sharif.math.yaadmaan.service.dto.TopicDTO;
+import edu.sharif.math.yaadmaan.service.mapper.TopicMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -9,21 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import edu.sharif.math.yaadmaan.YaadmaanApp;
-import edu.sharif.math.yaadmaan.domain.Department;
-import edu.sharif.math.yaadmaan.domain.Topic;
-import edu.sharif.math.yaadmaan.repository.TopicRepository;
-import edu.sharif.math.yaadmaan.service.TopicService;
-import edu.sharif.math.yaadmaan.service.dto.TopicDTO;
-import edu.sharif.math.yaadmaan.service.mapper.TopicMapper;
-import edu.sharif.math.yaadmaan.web.rest.TopicResource;
-
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +54,6 @@ public class TopicResourceIT {
 
     @Mock
     private TopicService topicServiceMock;
-
-    @Autowired
-    private TopicService topicService;
 
     @Autowired
     private EntityManager em;

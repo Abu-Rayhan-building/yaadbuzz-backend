@@ -17,8 +17,8 @@
         "title": "Charateristics"
       },
       "title": "Title",
-      "charateristicsRepetation": "Charateristics Repetation",
-      "department": "Department"
+      "repetation": "Repetation",
+      "userPerDepartment": "User Per Department"
     }
   }
 }

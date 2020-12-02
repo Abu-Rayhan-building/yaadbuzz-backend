@@ -22,12 +22,6 @@
       "relationshipName": "comments"
     },
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "memoryPicture",
-      "otherEntityRelationshipName": "memory",
-      "relationshipName": "pictures"
-    },
-    {
       "relationshipType": "many-to-one",
       "otherEntityName": "comment",
       "otherEntityRelationshipName": "memory",

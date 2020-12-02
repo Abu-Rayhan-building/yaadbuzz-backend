@@ -1,5 +1,15 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.YaadmaanApp;
+import edu.sharif.math.yaadmaan.domain.Comment;
+import edu.sharif.math.yaadmaan.domain.Picture;
+import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
+import edu.sharif.math.yaadmaan.domain.Memory;
+import edu.sharif.math.yaadmaan.repository.CommentRepository;
+import edu.sharif.math.yaadmaan.service.CommentService;
+import edu.sharif.math.yaadmaan.service.dto.CommentDTO;
+import edu.sharif.math.yaadmaan.service.mapper.CommentMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import edu.sharif.math.yaadmaan.YaadmaanApp;
-import edu.sharif.math.yaadmaan.domain.Comment;
-import edu.sharif.math.yaadmaan.domain.Memory;
-import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
-import edu.sharif.math.yaadmaan.repository.CommentRepository;
-import edu.sharif.math.yaadmaan.service.CommentService;
-import edu.sharif.math.yaadmaan.service.dto.CommentDTO;
-import edu.sharif.math.yaadmaan.service.mapper.CommentMapper;
-import edu.sharif.math.yaadmaan.web.rest.CommentResource;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -46,9 +45,6 @@ public class CommentResourceIT {
     private CommentMapper commentMapper;
 
     @Autowired
-    private CommentService commentService;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
@@ -65,6 +61,16 @@ public class CommentResourceIT {
     public static Comment createEntity(EntityManager em) {
         Comment comment = new Comment()
             .text(DEFAULT_TEXT);
+        // Add required entity
+        Picture picture;
+        if (TestUtil.findAll(em, Picture.class).isEmpty()) {
+            picture = PictureResourceIT.createEntity(em);
+            em.persist(picture);
+            em.flush();
+        } else {
+            picture = TestUtil.findAll(em, Picture.class).get(0);
+        }
+        comment.getPictures().add(picture);
         // Add required entity
         UserPerDepartment userPerDepartment;
         if (TestUtil.findAll(em, UserPerDepartment.class).isEmpty()) {
@@ -96,6 +102,16 @@ public class CommentResourceIT {
     public static Comment createUpdatedEntity(EntityManager em) {
         Comment comment = new Comment()
             .text(UPDATED_TEXT);
+        // Add required entity
+        Picture picture;
+        if (TestUtil.findAll(em, Picture.class).isEmpty()) {
+            picture = PictureResourceIT.createUpdatedEntity(em);
+            em.persist(picture);
+            em.flush();
+        } else {
+            picture = TestUtil.findAll(em, Picture.class).get(0);
+        }
+        comment.getPictures().add(picture);
         // Add required entity
         UserPerDepartment userPerDepartment;
         if (TestUtil.findAll(em, UserPerDepartment.class).isEmpty()) {

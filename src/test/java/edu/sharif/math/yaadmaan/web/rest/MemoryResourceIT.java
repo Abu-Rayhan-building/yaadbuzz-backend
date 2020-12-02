@@ -1,5 +1,15 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.YaadmaanApp;
+import edu.sharif.math.yaadmaan.domain.Memory;
+import edu.sharif.math.yaadmaan.domain.Comment;
+import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
+import edu.sharif.math.yaadmaan.domain.Department;
+import edu.sharif.math.yaadmaan.repository.MemoryRepository;
+import edu.sharif.math.yaadmaan.service.MemoryService;
+import edu.sharif.math.yaadmaan.service.dto.MemoryDTO;
+import edu.sharif.math.yaadmaan.service.mapper.MemoryMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -9,23 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import edu.sharif.math.yaadmaan.YaadmaanApp;
-import edu.sharif.math.yaadmaan.domain.Comment;
-import edu.sharif.math.yaadmaan.domain.Department;
-import edu.sharif.math.yaadmaan.domain.Memory;
-import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
-import edu.sharif.math.yaadmaan.repository.MemoryRepository;
-import edu.sharif.math.yaadmaan.service.MemoryService;
-import edu.sharif.math.yaadmaan.service.dto.MemoryDTO;
-import edu.sharif.math.yaadmaan.service.mapper.MemoryMapper;
-import edu.sharif.math.yaadmaan.web.rest.MemoryResource;
-
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,9 +62,6 @@ public class MemoryResourceIT {
 
     @Mock
     private MemoryService memoryServiceMock;
-
-    @Autowired
-    private MemoryService memoryService;
 
     @Autowired
     private EntityManager em;

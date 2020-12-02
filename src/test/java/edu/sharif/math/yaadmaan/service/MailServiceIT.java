@@ -17,8 +17,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import edu.sharif.math.yaadmaan.YaadmaanApp;
 import edu.sharif.math.yaadmaan.config.Constants;
 import edu.sharif.math.yaadmaan.domain.User;
-import edu.sharif.math.yaadmaan.service.MailService;
-
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;

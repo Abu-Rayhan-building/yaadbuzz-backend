@@ -1,5 +1,12 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.YaadmaanApp;
+import edu.sharif.math.yaadmaan.domain.Picture;
+import edu.sharif.math.yaadmaan.repository.PictureRepository;
+import edu.sharif.math.yaadmaan.service.PictureService;
+import edu.sharif.math.yaadmaan.service.dto.PictureDTO;
+import edu.sharif.math.yaadmaan.service.mapper.PictureMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +17,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
-
-import edu.sharif.math.yaadmaan.YaadmaanApp;
-import edu.sharif.math.yaadmaan.domain.Picture;
-import edu.sharif.math.yaadmaan.repository.PictureRepository;
-import edu.sharif.math.yaadmaan.service.PictureService;
-import edu.sharif.math.yaadmaan.service.dto.PictureDTO;
-import edu.sharif.math.yaadmaan.service.mapper.PictureMapper;
-import edu.sharif.math.yaadmaan.web.rest.PictureResource;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -45,9 +43,6 @@ public class PictureResourceIT {
 
     @Autowired
     private PictureMapper pictureMapper;
-
-    @Autowired
-    private PictureService pictureService;
 
     @Autowired
     private EntityManager em;

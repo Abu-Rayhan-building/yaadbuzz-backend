@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import edu.sharif.math.yaadmaan.domain.User;
 import edu.sharif.math.yaadmaan.service.dto.UserDTO;
-import edu.sharif.math.yaadmaan.service.mapper.UserMapper;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

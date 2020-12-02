@@ -1,13 +1,11 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,7 +20,6 @@ import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
 import edu.sharif.math.yaadmaan.service.UserService;
 import edu.sharif.math.yaadmaan.service.dto.PasswordChangeDTO;
 import edu.sharif.math.yaadmaan.service.dto.UserDTO;
-import edu.sharif.math.yaadmaan.web.rest.AccountResource;
 import edu.sharif.math.yaadmaan.web.rest.vm.KeyAndPasswordVM;
 import edu.sharif.math.yaadmaan.web.rest.vm.ManagedUserVM;
 

@@ -1,23 +1,21 @@
 package edu.sharif.math.yaadmaan.service.mapper;
 
 
-import org.mapstruct.*;
-
 import edu.sharif.math.yaadmaan.domain.*;
 import edu.sharif.math.yaadmaan.service.dto.CharateristicsDTO;
+
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link Charateristics} and its DTO {@link CharateristicsDTO}.
  */
-@Mapper(componentModel = "spring", uses = {DepartmentMapper.class})
+@Mapper(componentModel = "spring", uses = {UserPerDepartmentMapper.class})
 public interface CharateristicsMapper extends EntityMapper<CharateristicsDTO, Charateristics> {
 
-    @Mapping(source = "department.id", target = "departmentId")
+    @Mapping(source = "userPerDepartment.id", target = "userPerDepartmentId")
     CharateristicsDTO toDto(Charateristics charateristics);
 
-    @Mapping(target = "charateristicsRepetations", ignore = true)
-    @Mapping(target = "removeCharateristicsRepetation", ignore = true)
-    @Mapping(source = "departmentId", target = "department")
+    @Mapping(source = "userPerDepartmentId", target = "userPerDepartment")
     Charateristics toEntity(CharateristicsDTO charateristicsDTO);
 
     default Charateristics fromId(Long id) {

@@ -19,12 +19,6 @@
       "relationshipName": "topicAssigneds"
     },
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "charateristicsRepetation",
-      "otherEntityRelationshipName": "user",
-      "relationshipName": "charateristicsRepetations"
-    },
-    {
       "relationshipType": "many-to-one",
       "otherEntityName": "picture",
       "otherEntityRelationshipName": "userPerDepartment",

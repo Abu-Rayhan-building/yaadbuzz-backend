@@ -44,6 +44,10 @@ export const PictureDetail = (props: IPictureDetailProps) => {
               </div>
             ) : null}
           </dd>
+          <dt>
+            <Translate contentKey="yaadmaanApp.picture.comment">Comment</Translate>
+          </dt>
+          <dd>{pictureEntity.commentId ? pictureEntity.commentId : ''}</dd>
         </dl>
         <Button tag={Link} to="/picture" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

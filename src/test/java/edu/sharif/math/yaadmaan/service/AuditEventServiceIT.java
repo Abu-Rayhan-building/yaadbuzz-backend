@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.sharif.math.yaadmaan.YaadmaanApp;
 import edu.sharif.math.yaadmaan.domain.PersistentAuditEvent;
 import edu.sharif.math.yaadmaan.repository.PersistenceAuditEventRepository;
-import edu.sharif.math.yaadmaan.service.AuditEventService;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 

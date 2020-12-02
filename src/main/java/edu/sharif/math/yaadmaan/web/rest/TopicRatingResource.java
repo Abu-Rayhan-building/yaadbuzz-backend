@@ -1,17 +1,22 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
+import edu.sharif.math.yaadmaan.service.TopicRatingService;
+import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
+import edu.sharif.math.yaadmaan.service.dto.TopicRatingDTO;
+
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
-import edu.sharif.math.yaadmaan.service.TopicRatingService;
-import edu.sharif.math.yaadmaan.service.dto.TopicRatingDTO;
-import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -84,12 +89,15 @@ public class TopicRatingResource {
     /**
      * {@code GET  /topic-ratings} : get all the topicRatings.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of topicRatings in body.
      */
     @GetMapping("/topic-ratings")
-    public List<TopicRatingDTO> getAllTopicRatings() {
-        log.debug("REST request to get all TopicRatings");
-        return topicRatingService.findAll();
+    public ResponseEntity<List<TopicRatingDTO>> getAllTopicRatings(Pageable pageable) {
+        log.debug("REST request to get a page of TopicRatings");
+        Page<TopicRatingDTO> page = topicRatingService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**

@@ -1,10 +1,10 @@
 package edu.sharif.math.yaadmaan.service.mapper;
 
 
-import org.mapstruct.*;
-
 import edu.sharif.math.yaadmaan.domain.*;
 import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
+
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link UserPerDepartment} and its DTO {@link UserPerDepartmentDTO}.
@@ -19,8 +19,6 @@ public interface UserPerDepartmentMapper extends EntityMapper<UserPerDepartmentD
 
     @Mapping(target = "topicAssigneds", ignore = true)
     @Mapping(target = "removeTopicAssigneds", ignore = true)
-    @Mapping(target = "charateristicsRepetations", ignore = true)
-    @Mapping(target = "removeCharateristicsRepetations", ignore = true)
     @Mapping(source = "avatarId", target = "avatar")
     @Mapping(source = "realUserId", target = "realUser")
     @Mapping(source = "departmentId", target = "department")

@@ -37,9 +37,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:mem:yaadmaan;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: yaadmaan
-    password:
+    url: jdbc:postgresql://localhost:5432/oybg4j
+    username: heartstonedb
+    password: heartstonedb
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -47,7 +47,7 @@ spring:
     console:
       enabled: false
   jpa:
-    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
     show-sql: true
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically

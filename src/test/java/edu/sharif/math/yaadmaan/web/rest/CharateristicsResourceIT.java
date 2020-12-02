@@ -1,5 +1,13 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.YaadmaanApp;
+import edu.sharif.math.yaadmaan.domain.Charateristics;
+import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
+import edu.sharif.math.yaadmaan.repository.CharateristicsRepository;
+import edu.sharif.math.yaadmaan.service.CharateristicsService;
+import edu.sharif.math.yaadmaan.service.dto.CharateristicsDTO;
+import edu.sharif.math.yaadmaan.service.mapper.CharateristicsMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import edu.sharif.math.yaadmaan.YaadmaanApp;
-import edu.sharif.math.yaadmaan.domain.Charateristics;
-import edu.sharif.math.yaadmaan.domain.Department;
-import edu.sharif.math.yaadmaan.repository.CharateristicsRepository;
-import edu.sharif.math.yaadmaan.service.CharateristicsService;
-import edu.sharif.math.yaadmaan.service.dto.CharateristicsDTO;
-import edu.sharif.math.yaadmaan.service.mapper.CharateristicsMapper;
-import edu.sharif.math.yaadmaan.web.rest.CharateristicsResource;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -38,14 +36,14 @@ public class CharateristicsResourceIT {
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_REPETATION = 1;
+    private static final Integer UPDATED_REPETATION = 2;
+
     @Autowired
     private CharateristicsRepository charateristicsRepository;
 
     @Autowired
     private CharateristicsMapper charateristicsMapper;
-
-    @Autowired
-    private CharateristicsService charateristicsService;
 
     @Autowired
     private EntityManager em;
@@ -63,17 +61,18 @@ public class CharateristicsResourceIT {
      */
     public static Charateristics createEntity(EntityManager em) {
         Charateristics charateristics = new Charateristics()
-            .title(DEFAULT_TITLE);
+            .title(DEFAULT_TITLE)
+            .repetation(DEFAULT_REPETATION);
         // Add required entity
-        Department department;
-        if (TestUtil.findAll(em, Department.class).isEmpty()) {
-            department = DepartmentResourceIT.createEntity(em);
-            em.persist(department);
+        UserPerDepartment userPerDepartment;
+        if (TestUtil.findAll(em, UserPerDepartment.class).isEmpty()) {
+            userPerDepartment = UserPerDepartmentResourceIT.createEntity(em);
+            em.persist(userPerDepartment);
             em.flush();
         } else {
-            department = TestUtil.findAll(em, Department.class).get(0);
+            userPerDepartment = TestUtil.findAll(em, UserPerDepartment.class).get(0);
         }
-        charateristics.setDepartment(department);
+        charateristics.setUserPerDepartment(userPerDepartment);
         return charateristics;
     }
     /**
@@ -84,17 +83,18 @@ public class CharateristicsResourceIT {
      */
     public static Charateristics createUpdatedEntity(EntityManager em) {
         Charateristics charateristics = new Charateristics()
-            .title(UPDATED_TITLE);
+            .title(UPDATED_TITLE)
+            .repetation(UPDATED_REPETATION);
         // Add required entity
-        Department department;
-        if (TestUtil.findAll(em, Department.class).isEmpty()) {
-            department = DepartmentResourceIT.createUpdatedEntity(em);
-            em.persist(department);
+        UserPerDepartment userPerDepartment;
+        if (TestUtil.findAll(em, UserPerDepartment.class).isEmpty()) {
+            userPerDepartment = UserPerDepartmentResourceIT.createUpdatedEntity(em);
+            em.persist(userPerDepartment);
             em.flush();
         } else {
-            department = TestUtil.findAll(em, Department.class).get(0);
+            userPerDepartment = TestUtil.findAll(em, UserPerDepartment.class).get(0);
         }
-        charateristics.setDepartment(department);
+        charateristics.setUserPerDepartment(userPerDepartment);
         return charateristics;
     }
 
@@ -119,6 +119,7 @@ public class CharateristicsResourceIT {
         assertThat(charateristicsList).hasSize(databaseSizeBeforeCreate + 1);
         Charateristics testCharateristics = charateristicsList.get(charateristicsList.size() - 1);
         assertThat(testCharateristics.getTitle()).isEqualTo(DEFAULT_TITLE);
+        assertThat(testCharateristics.getRepetation()).isEqualTo(DEFAULT_REPETATION);
     }
 
     @Test
@@ -173,7 +174,8 @@ public class CharateristicsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(charateristics.getId().intValue())))
-            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)));
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
+            .andExpect(jsonPath("$.[*].repetation").value(hasItem(DEFAULT_REPETATION)));
     }
     
     @Test
@@ -187,7 +189,8 @@ public class CharateristicsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(charateristics.getId().intValue()))
-            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE));
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
+            .andExpect(jsonPath("$.repetation").value(DEFAULT_REPETATION));
     }
     @Test
     @Transactional
@@ -210,7 +213,8 @@ public class CharateristicsResourceIT {
         // Disconnect from session so that the updates on updatedCharateristics are not directly saved in db
         em.detach(updatedCharateristics);
         updatedCharateristics
-            .title(UPDATED_TITLE);
+            .title(UPDATED_TITLE)
+            .repetation(UPDATED_REPETATION);
         CharateristicsDTO charateristicsDTO = charateristicsMapper.toDto(updatedCharateristics);
 
         restCharateristicsMockMvc.perform(put("/api/charateristics")
@@ -223,6 +227,7 @@ public class CharateristicsResourceIT {
         assertThat(charateristicsList).hasSize(databaseSizeBeforeUpdate);
         Charateristics testCharateristics = charateristicsList.get(charateristicsList.size() - 1);
         assertThat(testCharateristics.getTitle()).isEqualTo(UPDATED_TITLE);
+        assertThat(testCharateristics.getRepetation()).isEqualTo(UPDATED_REPETATION);
     }
 
     @Test

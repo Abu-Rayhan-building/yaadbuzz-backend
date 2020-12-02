@@ -1,30 +1,40 @@
 package edu.sharif.math.yaadmaan.service;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import edu.sharif.math.yaadmaan.service.dto.CharateristicsDTO;
+import edu.sharif.math.yaadmaan.service.dto.helpers.CharateristicsVoteDTO;
 
 /**
- * Service Interface for managing {@link edu.sharif.math.yaadmaan.domain.Charateristics}.
+ * Service Interface for managing
+ * {@link edu.sharif.math.yaadmaan.domain.Charateristics}.
  */
-public interface CharateristicsService {
+public interface CharateristicsService
+	extends ServiceWithCurrentUserCrudAccess {
+
+    CharateristicsDTO assign(CharateristicsVoteDTO charateristicsDTO);
+
+    boolean currentuserHasCreateAccess(Long depId);
 
     /**
-     * Save a charateristics.
+     * Delete the "id" charateristics.
      *
-     * @param charateristicsDTO the entity to save.
-     * @return the persisted entity.
+     * @param id the id of the entity.
      */
-    CharateristicsDTO save(CharateristicsDTO charateristicsDTO);
+    void delete(Long id);
 
     /**
      * Get all the charateristics.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<CharateristicsDTO> findAll();
+    Page<CharateristicsDTO> findAll(Pageable pageable);
 
+    Page<CharateristicsDTO> findMineInDep(Long depId, Pageable pageable);
 
     /**
      * Get the "id" charateristics.
@@ -35,9 +45,16 @@ public interface CharateristicsService {
     Optional<CharateristicsDTO> findOne(Long id);
 
     /**
-     * Delete the "id" charateristics.
+     * Save a charateristics.
      *
-     * @param id the id of the entity.
+     * @param charateristicsDTO the entity to save.
+     * @return the persisted entity.
      */
-    void delete(Long id);
+    CharateristicsDTO save(CharateristicsDTO charateristicsDTO);
+
+    boolean currentuserHasVoteAccess(Long depId);
+    
+
+    Page<CharateristicsDTO> findUsersCharactersInDep(Long updId,
+	    Pageable pageable);
 }

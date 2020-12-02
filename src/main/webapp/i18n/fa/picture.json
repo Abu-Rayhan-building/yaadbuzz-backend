@@ -16,7 +16,8 @@
       "detail": {
         "title": "Picture"
       },
-      "image": "Image"
+      "image": "Image",
+      "comment": "Comment"
     }
   }
 }

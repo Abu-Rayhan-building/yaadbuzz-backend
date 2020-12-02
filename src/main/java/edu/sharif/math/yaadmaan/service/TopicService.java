@@ -1,17 +1,16 @@
 package edu.sharif.math.yaadmaan.service;
 
+import edu.sharif.math.yaadmaan.service.dto.TopicDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import edu.sharif.math.yaadmaan.service.dto.TopicDTO;
-
-import java.util.List;
 import java.util.Optional;
 
 /**
  * Service Interface for managing {@link edu.sharif.math.yaadmaan.domain.Topic}.
  */
-public interface TopicService {
+public interface TopicService extends ServiceWithCurrentUserCrudAccess{
 
     /**
      * Save a topic.
@@ -24,9 +23,10 @@ public interface TopicService {
     /**
      * Get all the topics.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<TopicDTO> findAll();
+    Page<TopicDTO> findAll(Pageable pageable);
 
     /**
      * Get all the topics with eager load of many-to-many relationships.
@@ -50,4 +50,8 @@ public interface TopicService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    boolean currentuserHasVoteAccess(Long id);
+
+    boolean currentuserHasCreateAccess(Long departmentId);
 }

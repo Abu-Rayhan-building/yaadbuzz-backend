@@ -1,22 +1,20 @@
 package edu.sharif.math.yaadmaan.config;
 
-import io.github.jhipster.config.JHipsterDefaults;
-import io.github.jhipster.config.JHipsterProperties;
+import java.util.concurrent.TimeUnit;
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.springframework.http.CacheControl;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
-import edu.sharif.math.yaadmaan.config.StaticResourcesWebConfiguration;
-
-import java.util.concurrent.TimeUnit;
-
-import static edu.sharif.math.yaadmaan.config.StaticResourcesWebConfiguration.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import io.github.jhipster.config.JHipsterDefaults;
+import io.github.jhipster.config.JHipsterProperties;
 
 public class StaticResourcesWebConfigurerTest {
     public static final int MAX_AGE_TEST = 5;
@@ -28,55 +26,80 @@ public class StaticResourcesWebConfigurerTest {
 
     @BeforeEach
     void setUp() {
-        servletContext = spy(new MockServletContext());
-        applicationContext = mock(WebApplicationContext.class);
-        resourceHandlerRegistry = spy(new ResourceHandlerRegistry(applicationContext, servletContext));
-        props = new JHipsterProperties();
-        staticResourcesWebConfiguration = spy(new StaticResourcesWebConfiguration(props));
+	this.servletContext = Mockito.spy(new MockServletContext());
+	this.applicationContext = Mockito.mock(WebApplicationContext.class);
+	this.resourceHandlerRegistry = Mockito.spy(new ResourceHandlerRegistry(
+		this.applicationContext, this.servletContext));
+	this.props = new JHipsterProperties();
+	this.staticResourcesWebConfiguration = Mockito
+		.spy(new StaticResourcesWebConfiguration(this.props));
+    }
+
+    @Test
+    public void shoudCreateCacheControlBasedOnJhipsterDefaultProperties() {
+	final CacheControl cacheExpected = CacheControl
+		.maxAge(JHipsterDefaults.Http.Cache.timeToLiveInDays,
+			TimeUnit.DAYS)
+		.cachePublic();
+	Assertions
+		.assertThat(
+			this.staticResourcesWebConfiguration.getCacheControl())
+		.extracting(CacheControl::getHeaderValue)
+		.isEqualTo(cacheExpected.getHeaderValue());
+    }
+
+    @Test
+    public void shoudCreateCacheControlWithSpecificConfigurationInProperties() {
+	this.props.getHttp().getCache().setTimeToLiveInDays(
+		StaticResourcesWebConfigurerTest.MAX_AGE_TEST);
+	final CacheControl cacheExpected = CacheControl
+		.maxAge(StaticResourcesWebConfigurerTest.MAX_AGE_TEST,
+			TimeUnit.DAYS)
+		.cachePublic();
+	Assertions
+		.assertThat(
+			this.staticResourcesWebConfiguration.getCacheControl())
+		.extracting(CacheControl::getHeaderValue)
+		.isEqualTo(cacheExpected.getHeaderValue());
     }
 
     @Test
     public void shouldAppendResourceHandlerAndInitiliazeIt() {
 
-        staticResourcesWebConfiguration.addResourceHandlers(resourceHandlerRegistry);
+	this.staticResourcesWebConfiguration
+		.addResourceHandlers(this.resourceHandlerRegistry);
 
-        verify(resourceHandlerRegistry, times(1))
-            .addResourceHandler(RESOURCE_PATHS);
-        verify(staticResourcesWebConfiguration, times(1))
-            .initializeResourceHandler(any(ResourceHandlerRegistration.class));
-        for (String testingPath : RESOURCE_PATHS) {
-            assertThat(resourceHandlerRegistry.hasMappingForPattern(testingPath)).isTrue();
-        }
+	Mockito.verify(this.resourceHandlerRegistry, Mockito.times(1))
+		.addResourceHandler(
+			StaticResourcesWebConfiguration.RESOURCE_PATHS);
+	Mockito.verify(this.staticResourcesWebConfiguration, Mockito.times(1))
+		.initializeResourceHandler(ArgumentMatchers
+			.any(ResourceHandlerRegistration.class));
+	for (final String testingPath : StaticResourcesWebConfiguration.RESOURCE_PATHS) {
+	    Assertions.assertThat(this.resourceHandlerRegistry
+		    .hasMappingForPattern(testingPath)).isTrue();
+	}
     }
 
     @Test
     public void shouldInitializeResourceHandlerWithCacheControlAndLocations() {
-        CacheControl ccExpected = CacheControl.maxAge(5, TimeUnit.DAYS).cachePublic();
-        when(staticResourcesWebConfiguration.getCacheControl()).thenReturn(ccExpected);
-        ResourceHandlerRegistration resourceHandlerRegistration = spy(new ResourceHandlerRegistration(RESOURCE_PATHS));
+	final CacheControl ccExpected = CacheControl.maxAge(5, TimeUnit.DAYS)
+		.cachePublic();
+	Mockito.when(this.staticResourcesWebConfiguration.getCacheControl())
+		.thenReturn(ccExpected);
+	final ResourceHandlerRegistration resourceHandlerRegistration = Mockito
+		.spy(new ResourceHandlerRegistration(
+			StaticResourcesWebConfiguration.RESOURCE_PATHS));
 
-        staticResourcesWebConfiguration.initializeResourceHandler(resourceHandlerRegistration);
+	this.staticResourcesWebConfiguration
+		.initializeResourceHandler(resourceHandlerRegistration);
 
-        verify(staticResourcesWebConfiguration, times(1)).getCacheControl();
-        verify(resourceHandlerRegistration, times(1)).setCacheControl(ccExpected);
-        verify(resourceHandlerRegistration, times(1)).addResourceLocations(RESOURCE_LOCATIONS);
-    }
-
-
-    @Test
-    public void shoudCreateCacheControlBasedOnJhipsterDefaultProperties() {
-        CacheControl cacheExpected = CacheControl.maxAge(JHipsterDefaults.Http.Cache.timeToLiveInDays, TimeUnit.DAYS).cachePublic();
-        assertThat(staticResourcesWebConfiguration.getCacheControl())
-            .extracting(CacheControl::getHeaderValue)
-            .isEqualTo(cacheExpected.getHeaderValue());
-    }
-
-    @Test
-    public void shoudCreateCacheControlWithSpecificConfigurationInProperties() {
-        props.getHttp().getCache().setTimeToLiveInDays(MAX_AGE_TEST);
-        CacheControl cacheExpected = CacheControl.maxAge(MAX_AGE_TEST, TimeUnit.DAYS).cachePublic();
-        assertThat(staticResourcesWebConfiguration.getCacheControl())
-            .extracting(CacheControl::getHeaderValue)
-            .isEqualTo(cacheExpected.getHeaderValue());
+	Mockito.verify(this.staticResourcesWebConfiguration, Mockito.times(1))
+		.getCacheControl();
+	Mockito.verify(resourceHandlerRegistration, Mockito.times(1))
+		.setCacheControl(ccExpected);
+	Mockito.verify(resourceHandlerRegistration, Mockito.times(1))
+		.addResourceLocations(
+			StaticResourcesWebConfiguration.RESOURCE_LOCATIONS);
     }
 }

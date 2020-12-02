@@ -1,6 +1,5 @@
 package edu.sharif.math.yaadmaan.service.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import javax.persistence.Lob;
 
@@ -16,7 +15,7 @@ public class PictureDTO implements Serializable {
     private byte[] image;
 
     private String imageContentType;
-    
+
     public Long getId() {
         return id;
     }

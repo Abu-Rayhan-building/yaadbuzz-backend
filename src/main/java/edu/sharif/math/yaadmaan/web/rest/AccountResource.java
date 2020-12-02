@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.sharif.math.yaadmaan.domain.User;
 import edu.sharif.math.yaadmaan.repository.UserRepository;
-import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
 import edu.sharif.math.yaadmaan.security.SecurityUtils;
 import edu.sharif.math.yaadmaan.service.MailService;
 import edu.sharif.math.yaadmaan.service.UserService;

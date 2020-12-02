@@ -3,9 +3,6 @@ package edu.sharif.math.yaadmaan.service.mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.sharif.math.yaadmaan.service.mapper.DepartmentMapper;
-import edu.sharif.math.yaadmaan.service.mapper.DepartmentMapperImpl;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DepartmentMapperTest {

@@ -32,9 +32,15 @@ export const CharateristicsDetail = (props: ICharateristicsDetailProps) => {
           </dt>
           <dd>{charateristicsEntity.title}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.charateristics.department">Department</Translate>
+            <span id="repetation">
+              <Translate contentKey="yaadmaanApp.charateristics.repetation">Repetation</Translate>
+            </span>
           </dt>
-          <dd>{charateristicsEntity.departmentId ? charateristicsEntity.departmentId : ''}</dd>
+          <dd>{charateristicsEntity.repetation}</dd>
+          <dt>
+            <Translate contentKey="yaadmaanApp.charateristics.userPerDepartment">User Per Department</Translate>
+          </dt>
+          <dd>{charateristicsEntity.userPerDepartmentId ? charateristicsEntity.userPerDepartmentId : ''}</dd>
         </dl>
         <Button tag={Link} to="/charateristics" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

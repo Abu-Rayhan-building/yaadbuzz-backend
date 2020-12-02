@@ -1,9 +1,9 @@
 package edu.sharif.math.yaadmaan.repository;
 
+import edu.sharif.math.yaadmaan.domain.Picture;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
-
-import edu.sharif.math.yaadmaan.domain.Picture;
 
 /**
  * Spring Data  repository for the Picture entity.

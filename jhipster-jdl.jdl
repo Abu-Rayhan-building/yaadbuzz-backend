@@ -13,11 +13,8 @@ entity TopicRating {
 }
 
 entity Charateristics {
-	title String required,    
-}
-
-entity CharateristicsRepetation {
-	repetation Integer, 
+	title String required,
+    repetation Integer, 
 }
 
 entity Department {
@@ -39,24 +36,18 @@ entity Picture{
 	image ImageBlob required,
 }
 
-entity MemoryPicture{
-	image ImageBlob required,
-}
-
 // defining multiple OneToMany relationships with comments
 relationship OneToMany {
+    Comment{pictures required} to Picture,
 	Memory{comments} to Comment{memory required},
 	Department to UserPerDepartment{department required},
     Department to Memory{department required},
-	Memory{pictures} to MemoryPicture{memory required},
     Topic{ratings} to TopicRating{rating required},
     UserPerDepartment{topicAssigneds} to TopicRating{user required},
-    UserPerDepartment{charateristicsRepetations} to CharateristicsRepetation{user required},
-    Charateristics to CharateristicsRepetation{charactristic required},
 }
 
 relationship ManyToOne{
-	Charateristics{department required} to Department,
+	Charateristics{userPerDepartment required} to UserPerDepartment,
     Topic{department required} to Department,
 	Memory{text required} to Comment,
 	UserPerDepartment{avatar} to Picture,
@@ -73,7 +64,7 @@ relationship ManyToMany{
 }
 
 // Set pagination options
-paginate Department, Memory, Comment, UserPerDepartment with infinite-scroll
+paginate * with infinite-scroll
 
 // Use Data Transfer Objects (DTO)
 dto * with mapstruct

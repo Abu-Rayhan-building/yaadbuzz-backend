@@ -1,14 +1,16 @@
 package edu.sharif.math.yaadmaan.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import edu.sharif.math.yaadmaan.service.dto.PictureDTO;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing {@link edu.sharif.math.yaadmaan.domain.Picture}.
  */
-public interface PictureService {
+public interface PictureService extends ServiceWithCurrentUserCrudAccess {
 
     /**
      * Save a picture.
@@ -21,9 +23,10 @@ public interface PictureService {
     /**
      * Get all the pictures.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<PictureDTO> findAll();
+    Page<PictureDTO> findAll(Pageable pageable);
 
 
     /**

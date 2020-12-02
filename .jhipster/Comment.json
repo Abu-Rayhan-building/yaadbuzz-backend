@@ -9,6 +9,13 @@
   ],
   "relationships": [
     {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "picture",
+      "otherEntityRelationshipName": "comment",
+      "relationshipValidateRules": "required",
+      "relationshipName": "pictures"
+    },
+    {
       "relationshipType": "many-to-one",
       "otherEntityName": "userPerDepartment",
       "otherEntityRelationshipName": "comment",

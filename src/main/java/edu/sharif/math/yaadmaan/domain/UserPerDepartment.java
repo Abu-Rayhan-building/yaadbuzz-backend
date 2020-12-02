@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
  * A UserPerDepartment.
  */
@@ -38,14 +39,11 @@ public class UserPerDepartment implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<TopicRating> topicAssigneds = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<CharateristicsRepetation> charateristicsRepetations = new HashSet<>();
-
     @ManyToOne
     @JsonIgnoreProperties(value = "userPerDepartments", allowSetters = true)
     private Picture avatar;
 
+    @JoinColumn(name = "real_user_id")
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = "userPerDepartments", allowSetters = true)
@@ -124,31 +122,6 @@ public class UserPerDepartment implements Serializable {
 
     public void setTopicAssigneds(Set<TopicRating> topicRatings) {
         this.topicAssigneds = topicRatings;
-    }
-
-    public Set<CharateristicsRepetation> getCharateristicsRepetations() {
-        return charateristicsRepetations;
-    }
-
-    public UserPerDepartment charateristicsRepetations(Set<CharateristicsRepetation> charateristicsRepetations) {
-        this.charateristicsRepetations = charateristicsRepetations;
-        return this;
-    }
-
-    public UserPerDepartment addCharateristicsRepetations(CharateristicsRepetation charateristicsRepetation) {
-        this.charateristicsRepetations.add(charateristicsRepetation);
-        charateristicsRepetation.setUser(this);
-        return this;
-    }
-
-    public UserPerDepartment removeCharateristicsRepetations(CharateristicsRepetation charateristicsRepetation) {
-        this.charateristicsRepetations.remove(charateristicsRepetation);
-        charateristicsRepetation.setUser(null);
-        return this;
-    }
-
-    public void setCharateristicsRepetations(Set<CharateristicsRepetation> charateristicsRepetations) {
-        this.charateristicsRepetations = charateristicsRepetations;
     }
 
     public Picture getAvatar() {

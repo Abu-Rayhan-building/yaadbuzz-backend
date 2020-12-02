@@ -8,8 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A Charateristics.
@@ -30,14 +28,13 @@ public class Charateristics implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "charactristic")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<CharateristicsRepetation> charateristicsRepetations = new HashSet<>();
+    @Column(name = "repetation")
+    private Integer repetation;
 
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = "charateristics", allowSetters = true)
-    private Department department;
+    private UserPerDepartment userPerDepartment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -61,42 +58,30 @@ public class Charateristics implements Serializable {
         this.title = title;
     }
 
-    public Set<CharateristicsRepetation> getCharateristicsRepetations() {
-        return charateristicsRepetations;
+    public Integer getRepetation() {
+        return repetation;
     }
 
-    public Charateristics charateristicsRepetations(Set<CharateristicsRepetation> charateristicsRepetations) {
-        this.charateristicsRepetations = charateristicsRepetations;
+    public Charateristics repetation(Integer repetation) {
+        this.repetation = repetation;
         return this;
     }
 
-    public Charateristics addCharateristicsRepetation(CharateristicsRepetation charateristicsRepetation) {
-        this.charateristicsRepetations.add(charateristicsRepetation);
-        charateristicsRepetation.setCharactristic(this);
+    public void setRepetation(Integer repetation) {
+        this.repetation = repetation;
+    }
+
+    public UserPerDepartment getUserPerDepartment() {
+        return userPerDepartment;
+    }
+
+    public Charateristics userPerDepartment(UserPerDepartment userPerDepartment) {
+        this.userPerDepartment = userPerDepartment;
         return this;
     }
 
-    public Charateristics removeCharateristicsRepetation(CharateristicsRepetation charateristicsRepetation) {
-        this.charateristicsRepetations.remove(charateristicsRepetation);
-        charateristicsRepetation.setCharactristic(null);
-        return this;
-    }
-
-    public void setCharateristicsRepetations(Set<CharateristicsRepetation> charateristicsRepetations) {
-        this.charateristicsRepetations = charateristicsRepetations;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public Charateristics department(Department department) {
-        this.department = department;
-        return this;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setUserPerDepartment(UserPerDepartment userPerDepartment) {
+        this.userPerDepartment = userPerDepartment;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -122,6 +107,7 @@ public class Charateristics implements Serializable {
         return "Charateristics{" +
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
+            ", repetation=" + getRepetation() +
             "}";
     }
 }

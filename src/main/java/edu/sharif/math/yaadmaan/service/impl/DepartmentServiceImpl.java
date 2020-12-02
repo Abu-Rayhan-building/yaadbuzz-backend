@@ -1,29 +1,31 @@
 package edu.sharif.math.yaadmaan.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import edu.sharif.math.yaadmaan.domain.Department;
-import edu.sharif.math.yaadmaan.repository.DepartmentRepository;
-import edu.sharif.math.yaadmaan.repository.UserPerDepartmentRepository;
-import edu.sharif.math.yaadmaan.service.DepartmentService;
-import edu.sharif.math.yaadmaan.service.UserPerDepartmentService;
-import edu.sharif.math.yaadmaan.service.dto.DepartmentDTO;
-import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
-import edu.sharif.math.yaadmaan.service.mapper.DepartmentMapper;
-import edu.sharif.math.yaadmaan.service.mapper.UserPerDepartmentMapper;
-
 import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import edu.sharif.math.yaadmaan.domain.Department;
+import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
+import edu.sharif.math.yaadmaan.repository.DepartmentRepository;
+import edu.sharif.math.yaadmaan.repository.UserPerDepartmentRepository;
+import edu.sharif.math.yaadmaan.service.DepartmentService;
+import edu.sharif.math.yaadmaan.service.UserPerDepartmentService;
+import edu.sharif.math.yaadmaan.service.UserService;
+import edu.sharif.math.yaadmaan.service.dto.DepartmentDTO;
+import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadmaan.service.mapper.DepartmentMapper;
+import edu.sharif.math.yaadmaan.service.mapper.UserPerDepartmentMapper;
 
 /**
  * Service Implementation for managing {@link Department}.
@@ -37,7 +39,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final UserPerDepartmentRepository userPerDepartmentRepository;
 
-    private final UserPerDepartmentService userPerDepartmentService;
+    private UserPerDepartmentService userPerDepartmentService;
 
     private final DepartmentRepository departmentRepository;
 
@@ -45,72 +47,102 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final UserPerDepartmentMapper userPerDepartmentMapper;
 
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository,
-	    DepartmentMapper departmentMapper,
-	    UserPerDepartmentRepository userPerDepartmentRepository,
-	    UserPerDepartmentService userPerDepartmentService,
-	    UserPerDepartmentMapper userPerDepartmentMapper) {
+    private final UserService userService;
+
+    public DepartmentServiceImpl(
+	    final DepartmentRepository departmentRepository,
+	    final DepartmentMapper departmentMapper,
+	    final UserPerDepartmentRepository userPerDepartmentRepository,
+	    final UserPerDepartmentMapper userPerDepartmentMapper,
+	    final UserService userService) {
 	this.userPerDepartmentRepository = userPerDepartmentRepository;
-	this.userPerDepartmentService = userPerDepartmentService;
 	this.departmentRepository = departmentRepository;
 	this.departmentMapper = departmentMapper;
 	this.userPerDepartmentMapper = userPerDepartmentMapper;
+	this.userService = userService;
+    }
+
+    @Autowired
+    public void setUserPerDepartmentService(
+    	UserPerDepartmentService userPerDepartmentService) {
+        this.userPerDepartmentService = userPerDepartmentService;
     }
 
     @Override
-    public DepartmentDTO save(DepartmentDTO departmentDTO) {
-	log.debug("Request to save Department : {}", departmentDTO);
-	Department department = departmentMapper.toEntity(departmentDTO);
-	department = departmentRepository.save(department);
-	return departmentMapper.toDto(department);
+    public boolean currentuserHasGetAccess(final Long id) {
+	final var currentUserId = this.userService.getCurrentUserId();
+	final var dep = this.departmentRepository.findById(id).get();
+	return dep.getUserPerDepartments().parallelStream()
+		.anyMatch(upd -> {
+		    
+		return upd.getRealUser().getId().equals(currentUserId);
+		});
+    }
+
+    @Override
+    public boolean currentuserHasUpdateAccess(final Long id) {
+	final var currentUserId = this.userService.getCurrentUserId();
+	return this.departmentRepository.findById(id).get().getOwner().getId()
+		.equals(currentUserId);
+    }
+
+    @Override
+    public void delete(final Long id) {
+	this.log.debug("Request to delete Department : {}", id);
+	this.departmentRepository.deleteById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<DepartmentDTO> findAll(Pageable pageable) {
-	log.debug("Request to get all Departments");
-	return departmentRepository.findAll(pageable)
-		.map(departmentMapper::toDto);
+    public Page<DepartmentDTO> findAll(final Pageable pageable) {
+	this.log.debug("Request to get all Departments");
+	return this.departmentRepository.findAll(pageable)
+		.map(this.departmentMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<DepartmentDTO> findOne(Long id) {
-	log.debug("Request to get Department : {}", id);
-	return departmentRepository.findById(id).map(departmentMapper::toDto);
+    public Optional<DepartmentDTO> findOne(final Long id) {
+	this.log.debug("Request to get Department : {}", id);
+	return this.departmentRepository.findById(id)
+		.map(this.departmentMapper::toDto);
     }
 
     @Override
-    public void delete(Long id) {
-	log.debug("Request to delete Department : {}", id);
-	departmentRepository.deleteById(id);
+    public Page<UserPerDepartmentDTO> getDepartmentUsers(final Long id,
+	    final Pageable pageable) {
+	return this.userPerDepartmentRepository.findByDepatment(id, pageable)
+		.map(this.userPerDepartmentMapper::toDto);
     }
 
     @Override
     public List<DepartmentDTO> getMyDeps() {
-	return userPerDepartmentRepository.findByRealUserIsCurrentUser()
-		.stream().map(u -> u.getDepartment())
-		.map(departmentMapper::toDto).collect(Collectors.toList());
+	return this.userPerDepartmentRepository.findByRealUserIsCurrentUser()
+		.stream().map(UserPerDepartment::getDepartment)
+		.map(this.departmentMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
-    public DepartmentDTO join(Long departmentId, String password,
-	    UserPerDepartmentDTO u) {
-	if (!this.findOne(departmentId).isPresent())
+    public DepartmentDTO join(final Long departmentId, final String password,
+	    final UserPerDepartmentDTO u) {
+	if (!this.findOne(departmentId).isPresent()) {
 	    throw new EntityNotFoundException("department not found");
-	var dep = this.findOne(departmentId).get();
-	if (!dep.getPassword().equals(password))
+	}
+	final var dep = this.findOne(departmentId).get();
+	if (!dep.getPassword().equals(password)) {
 	    throw new InvalidParameterException("department password is wrong");
+	}
 
 	this.userPerDepartmentService.save(u);
 	return this.findOne(departmentId).get();
     }
 
     @Override
-    public Page<UserPerDepartmentDTO> getDepartmentUsers(Long id,
-	    Pageable pageable) {
-	return this.userPerDepartmentRepository.findByDepatment(id, pageable)
-		.map(userPerDepartmentMapper::toDto);
+    public DepartmentDTO save(final DepartmentDTO departmentDTO) {
+	this.log.debug("Request to save Department : {}", departmentDTO);
+	Department department = this.departmentMapper.toEntity(departmentDTO);
+	department = this.departmentRepository.save(department);
+	return this.departmentMapper.toDto(department);
     }
 
 }

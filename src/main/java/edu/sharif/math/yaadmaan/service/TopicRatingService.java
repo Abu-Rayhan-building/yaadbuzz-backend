@@ -1,14 +1,16 @@
 package edu.sharif.math.yaadmaan.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import edu.sharif.math.yaadmaan.service.dto.TopicRatingDTO;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing {@link edu.sharif.math.yaadmaan.domain.TopicRating}.
  */
-public interface TopicRatingService {
+public interface TopicRatingService extends ServiceWithCurrentUserCrudAccess{
 
     /**
      * Save a topicRating.
@@ -21,9 +23,10 @@ public interface TopicRatingService {
     /**
      * Get all the topicRatings.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<TopicRatingDTO> findAll();
+    Page<TopicRatingDTO> findAll(Pageable pageable);
 
 
     /**

@@ -8,7 +8,6 @@ import edu.sharif.math.yaadmaan.domain.TopicRating;
 /**
  * Spring Data  repository for the TopicRating entity.
  */
-@SuppressWarnings("unused")
 @Repository
 public interface TopicRatingRepository extends JpaRepository<TopicRating, Long> {
 }

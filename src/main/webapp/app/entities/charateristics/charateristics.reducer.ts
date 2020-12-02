@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import {
+  parseHeaderForLinks,
+  loadMoreDataWhenScrolled,
+  ICrudGetAction,
+  ICrudGetAllAction,
+  ICrudPutAction,
+  ICrudDeleteAction,
+} from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
@@ -20,7 +27,9 @@ const initialState = {
   errorMessage: null,
   entities: [] as ReadonlyArray<ICharateristics>,
   entity: defaultValue,
+  links: { next: 0 },
   updating: false,
+  totalItems: 0,
   updateSuccess: false,
 };
 
@@ -59,12 +68,17 @@ export default (state: CharateristicsState = initialState, action): Charateristi
         updateSuccess: false,
         errorMessage: action.payload,
       };
-    case SUCCESS(ACTION_TYPES.FETCH_CHARATERISTICS_LIST):
+    case SUCCESS(ACTION_TYPES.FETCH_CHARATERISTICS_LIST): {
+      const links = parseHeaderForLinks(action.payload.headers.link);
+
       return {
         ...state,
         loading: false,
-        entities: action.payload.data,
+        links,
+        entities: loadMoreDataWhenScrolled(state.entities, action.payload.data, links),
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
+    }
     case SUCCESS(ACTION_TYPES.FETCH_CHARATERISTICS):
       return {
         ...state,
@@ -99,10 +113,13 @@ const apiUrl = 'api/charateristics';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<ICharateristics> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_CHARATERISTICS_LIST,
-  payload: axios.get<ICharateristics>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
-});
+export const getEntities: ICrudGetAllAction<ICharateristics> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_CHARATERISTICS_LIST,
+    payload: axios.get<ICharateristics>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
+  };
+};
 
 export const getEntity: ICrudGetAction<ICharateristics> = id => {
   const requestUrl = `${apiUrl}/${id}`;
@@ -117,7 +134,6 @@ export const createEntity: ICrudPutAction<ICharateristics> = entity => async dis
     type: ACTION_TYPES.CREATE_CHARATERISTICS,
     payload: axios.post(apiUrl, cleanEntity(entity)),
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -135,7 +151,6 @@ export const deleteEntity: ICrudDeleteAction<ICharateristics> = id => async disp
     type: ACTION_TYPES.DELETE_CHARATERISTICS,
     payload: axios.delete(requestUrl),
   });
-  dispatch(getEntities());
   return result;
 };
 

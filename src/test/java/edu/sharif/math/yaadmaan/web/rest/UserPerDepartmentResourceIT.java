@@ -1,5 +1,14 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.YaadmaanApp;
+import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
+import edu.sharif.math.yaadmaan.domain.User;
+import edu.sharif.math.yaadmaan.domain.Department;
+import edu.sharif.math.yaadmaan.repository.UserPerDepartmentRepository;
+import edu.sharif.math.yaadmaan.service.UserPerDepartmentService;
+import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadmaan.service.mapper.UserPerDepartmentMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import edu.sharif.math.yaadmaan.YaadmaanApp;
-import edu.sharif.math.yaadmaan.domain.Department;
-import edu.sharif.math.yaadmaan.domain.User;
-import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
-import edu.sharif.math.yaadmaan.repository.UserPerDepartmentRepository;
-import edu.sharif.math.yaadmaan.service.UserPerDepartmentService;
-import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
-import edu.sharif.math.yaadmaan.service.mapper.UserPerDepartmentMapper;
-import edu.sharif.math.yaadmaan.web.rest.UserPerDepartmentResource;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -47,9 +45,6 @@ public class UserPerDepartmentResourceIT {
 
     @Autowired
     private UserPerDepartmentMapper userPerDepartmentMapper;
-
-    @Autowired
-    private UserPerDepartmentService userPerDepartmentService;
 
     @Autowired
     private EntityManager em;

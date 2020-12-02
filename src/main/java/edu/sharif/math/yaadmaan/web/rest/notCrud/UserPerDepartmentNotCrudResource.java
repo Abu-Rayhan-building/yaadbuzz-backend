@@ -1,45 +1,38 @@
 package edu.sharif.math.yaadmaan.web.rest.notCrud;
 
-import org.springframework.data.domain.Sort;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
 
-import org.hibernate.service.spi.InjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import edu.sharif.math.yaadmaan.config.Constants;
-import edu.sharif.math.yaadmaan.domain.Department;
 import edu.sharif.math.yaadmaan.domain.User;
 import edu.sharif.math.yaadmaan.repository.UserRepository;
-import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
-import edu.sharif.math.yaadmaan.security.SecurityUtils;
 import edu.sharif.math.yaadmaan.service.DepartmentService;
 import edu.sharif.math.yaadmaan.service.MailService;
+import edu.sharif.math.yaadmaan.service.UserPerDepartmentService;
 import edu.sharif.math.yaadmaan.service.UserService;
-import edu.sharif.math.yaadmaan.service.dto.DepartmentDTO;
-import edu.sharif.math.yaadmaan.service.dto.MemoryDTO;
-import edu.sharif.math.yaadmaan.service.dto.UserDTO;
 import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
 import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
-import edu.sharif.math.yaadmaan.web.rest.errors.EmailAlreadyUsedException;
-import edu.sharif.math.yaadmaan.web.rest.errors.LoginAlreadyUsedException;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 
 /**
  * REST controller for managing users.
@@ -72,11 +65,13 @@ import java.util.*;
  * case.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/department/{depId}")
 public class UserPerDepartmentNotCrudResource {
     private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections
 	    .unmodifiableList(Arrays.asList("id", "login", "firstName",
 		    "lastName", "email", "activated", "langKey"));
+
+    private static final String ENTITY_NAME = "userPerDepartment";
 
     private final Logger log = LoggerFactory
 	    .getLogger(UserPerDepartmentNotCrudResource.class);
@@ -84,34 +79,65 @@ public class UserPerDepartmentNotCrudResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final UserService userService;
-
-    private final UserRepository userRepository;
-
-    private final MailService mailService;
-
-    public UserPerDepartmentNotCrudResource(DepartmentService departmentService,
-	    UserService userService, UserRepository userRepository,
-	    MailService mailService) {
-	this.userService = userService;
-	this.userRepository = userRepository;
-	this.mailService = mailService;
-	this.departmentService = departmentService;
-    }
-
     private final DepartmentService departmentService;
 
-    @GetMapping("/department/{id}/users")
-    public ResponseEntity<List<UserPerDepartmentDTO>> getUsersInDep(  final Pageable pageable,
-	    @PathVariable Long id) {
-	
+    private final UserPerDepartmentService userPerDepartmentService;
+
+    public UserPerDepartmentNotCrudResource(
+	    final DepartmentService departmentService,
+	    final UserService userService, final UserRepository userRepository,
+	    final MailService mailService,
+	    final UserPerDepartmentService userPerDepartmentService) {
+	this.departmentService = departmentService;
+	this.userPerDepartmentService = userPerDepartmentService;
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserPerDepartmentDTO>> getUsersInDep(
+	    final Pageable pageable, @PathVariable final Long depId) {
+
 	Page<UserPerDepartmentDTO> page;
-	page = this.departmentService.getDepartmentUsers(id, pageable);
+	page = this.departmentService.getDepartmentUsers(depId, pageable);
 	final HttpHeaders headers = PaginationUtil
 		.generatePaginationHttpHeaders(
 			ServletUriComponentsBuilder.fromCurrentRequest(), page);
 	return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    /**
+     * {@code PUT  /user-per-departments} : Updates an existing
+     * userPerDepartment.
+     *
+     * @param userPerDepartmentDTO the userPerDepartmentDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated userPerDepartmentDTO, or with status
+     *         {@code 400 (Bad Request)} if the userPerDepartmentDTO is not
+     *         valid, or with status {@code 500 (Internal Server Error)} if the
+     *         userPerDepartmentDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/user-per-departments")
+    public ResponseEntity<UserPerDepartmentDTO> updateUserPerDepartment(
+	    @Valid @RequestBody final UserPerDepartmentDTO userPerDepartmentDTO)
+	    throws URISyntaxException {
+	this.log.debug("REST request to update UserPerDepartment : {}",
+		userPerDepartmentDTO);
+	if (userPerDepartmentDTO.getId() == null) {
+	    throw new BadRequestAlertException("Invalid id",
+		    UserPerDepartmentNotCrudResource.ENTITY_NAME, "idnull");
+	}
+	if (!this.userPerDepartmentService
+		.currentuserHasUpdateAccess(userPerDepartmentDTO.getId())) {
+	    throw new AccessDeniedException("cant update upd");
+	}
+	final UserPerDepartmentDTO result = this.userPerDepartmentService
+		.save(userPerDepartmentDTO);
+	return ResponseEntity.ok()
+		.headers(HeaderUtil.createEntityUpdateAlert(
+			this.applicationName, true,
+			UserPerDepartmentNotCrudResource.ENTITY_NAME,
+			userPerDepartmentDTO.getId().toString()))
+		.body(result);
+    }
 
 }

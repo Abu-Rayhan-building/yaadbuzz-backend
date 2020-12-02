@@ -1,15 +1,15 @@
 package edu.sharif.math.yaadmaan.service.mapper;
 
 
-import org.mapstruct.*;
-
 import edu.sharif.math.yaadmaan.domain.*;
 import edu.sharif.math.yaadmaan.service.dto.CommentDTO;
+
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link Comment} and its DTO {@link CommentDTO}.
  */
-@Mapper(componentModel = "spring", uses = {UserPerDepartmentMapper.class, MemoryMapper.class})
+@Mapper(componentModel = "spring", uses = {PictureMapper.class, UserPerDepartmentMapper.class, MemoryMapper.class})
 public interface CommentMapper extends EntityMapper<CommentDTO, Comment> {
 
     @Mapping(source = "writer.id", target = "writerId")
@@ -17,6 +17,7 @@ public interface CommentMapper extends EntityMapper<CommentDTO, Comment> {
     CommentDTO toDto(Comment comment);
 
     @Mapping(source = "writerId", target = "writer")
+    @Mapping(target = "removePictures", ignore = true)
     @Mapping(source = "memoryId", target = "memory")
     Comment toEntity(CommentDTO commentDTO);
 

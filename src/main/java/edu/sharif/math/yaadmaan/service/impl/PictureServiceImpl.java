@@ -1,21 +1,19 @@
 package edu.sharif.math.yaadmaan.service.impl;
 
+import edu.sharif.math.yaadmaan.service.PictureService;
+import edu.sharif.math.yaadmaan.domain.Picture;
+import edu.sharif.math.yaadmaan.repository.PictureRepository;
+import edu.sharif.math.yaadmaan.service.dto.PictureDTO;
+import edu.sharif.math.yaadmaan.service.mapper.PictureMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.sharif.math.yaadmaan.domain.Picture;
-import edu.sharif.math.yaadmaan.repository.PictureRepository;
-import edu.sharif.math.yaadmaan.service.PictureService;
-import edu.sharif.math.yaadmaan.service.dto.PictureDTO;
-import edu.sharif.math.yaadmaan.service.mapper.PictureMapper;
-
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link Picture}.
@@ -45,11 +43,10 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<PictureDTO> findAll() {
+    public Page<PictureDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Pictures");
-        return pictureRepository.findAll().stream()
-            .map(pictureMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return pictureRepository.findAll(pageable)
+            .map(pictureMapper::toDto);
     }
 
 
@@ -65,5 +62,15 @@ public class PictureServiceImpl implements PictureService {
     public void delete(Long id) {
         log.debug("Request to delete Picture : {}", id);
         pictureRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean currentuserHasUpdateAccess(Long id) {
+	return false;
+    }
+
+    @Override
+    public boolean currentuserHasGetAccess(Long id) {
+	return false;
     }
 }

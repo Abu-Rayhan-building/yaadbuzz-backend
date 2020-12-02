@@ -19,7 +19,6 @@ import edu.sharif.math.yaadmaan.repository.UserRepository;
 import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
 import edu.sharif.math.yaadmaan.service.dto.UserDTO;
 import edu.sharif.math.yaadmaan.service.mapper.UserMapper;
-import edu.sharif.math.yaadmaan.web.rest.UserResource;
 import edu.sharif.math.yaadmaan.web.rest.vm.ManagedUserVM;
 
 import javax.persistence.EntityManager;

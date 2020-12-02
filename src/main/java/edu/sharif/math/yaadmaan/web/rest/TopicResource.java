@@ -1,17 +1,22 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
+import edu.sharif.math.yaadmaan.service.TopicService;
+import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
+import edu.sharif.math.yaadmaan.service.dto.TopicDTO;
+
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
-import edu.sharif.math.yaadmaan.service.TopicService;
-import edu.sharif.math.yaadmaan.service.dto.TopicDTO;
-import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -84,13 +89,21 @@ public class TopicResource {
     /**
      * {@code GET  /topics} : get all the topics.
      *
+     * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of topics in body.
      */
     @GetMapping("/topics")
-    public List<TopicDTO> getAllTopics(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all Topics");
-        return topicService.findAll();
+    public ResponseEntity<List<TopicDTO>> getAllTopics(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get a page of Topics");
+        Page<TopicDTO> page;
+        if (eagerload) {
+            page = topicService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = topicService.findAll(pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**

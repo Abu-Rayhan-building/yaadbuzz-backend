@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * Spring Data  repository for the Department entity.
  */
-@SuppressWarnings("unused")
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 

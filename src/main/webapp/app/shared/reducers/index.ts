@@ -33,10 +33,6 @@ import picture, {
   PictureState
 } from 'app/entities/picture/picture.reducer';
 // prettier-ignore
-import memoryPicture, {
-  MemoryPictureState
-} from 'app/entities/memory-picture/memory-picture.reducer';
-// prettier-ignore
 import topic, {
   TopicState
 } from 'app/entities/topic/topic.reducer';
@@ -49,9 +45,6 @@ import charateristics, {
   CharateristicsState
 } from 'app/entities/charateristics/charateristics.reducer';
 // prettier-ignore
-import charateristicsRepetation, {
-  CharateristicsRepetationState
-} from 'app/entities/charateristics-repetation/charateristics-repetation.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -70,11 +63,9 @@ export interface IRootState {
   readonly memory: MemoryState;
   readonly comment: CommentState;
   readonly picture: PictureState;
-  readonly memoryPicture: MemoryPictureState;
   readonly topic: TopicState;
   readonly topicRating: TopicRatingState;
   readonly charateristics: CharateristicsState;
-  readonly charateristicsRepetation: CharateristicsRepetationState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -95,11 +86,9 @@ const rootReducer = combineReducers<IRootState>({
   memory,
   comment,
   picture,
-  memoryPicture,
   topic,
   topicRating,
   charateristics,
-  charateristicsRepetation,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

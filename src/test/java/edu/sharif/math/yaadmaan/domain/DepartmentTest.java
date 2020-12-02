@@ -2,7 +2,6 @@ package edu.sharif.math.yaadmaan.domain;
 
 import org.junit.jupiter.api.Test;
 
-import edu.sharif.math.yaadmaan.domain.Department;
 import edu.sharif.math.yaadmaan.web.rest.TestUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,5 +1,14 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.YaadmaanApp;
+import edu.sharif.math.yaadmaan.domain.TopicRating;
+import edu.sharif.math.yaadmaan.domain.Topic;
+import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
+import edu.sharif.math.yaadmaan.repository.TopicRatingRepository;
+import edu.sharif.math.yaadmaan.service.TopicRatingService;
+import edu.sharif.math.yaadmaan.service.dto.TopicRatingDTO;
+import edu.sharif.math.yaadmaan.service.mapper.TopicRatingMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import edu.sharif.math.yaadmaan.YaadmaanApp;
-import edu.sharif.math.yaadmaan.domain.Topic;
-import edu.sharif.math.yaadmaan.domain.TopicRating;
-import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
-import edu.sharif.math.yaadmaan.repository.TopicRatingRepository;
-import edu.sharif.math.yaadmaan.service.TopicRatingService;
-import edu.sharif.math.yaadmaan.service.dto.TopicRatingDTO;
-import edu.sharif.math.yaadmaan.service.mapper.TopicRatingMapper;
-import edu.sharif.math.yaadmaan.web.rest.TopicRatingResource;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -44,9 +42,6 @@ public class TopicRatingResourceIT {
 
     @Autowired
     private TopicRatingMapper topicRatingMapper;
-
-    @Autowired
-    private TopicRatingService topicRatingService;
 
     @Autowired
     private EntityManager em;

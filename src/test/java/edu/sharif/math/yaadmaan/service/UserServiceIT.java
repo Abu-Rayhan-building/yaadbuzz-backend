@@ -18,7 +18,6 @@ import edu.sharif.math.yaadmaan.YaadmaanApp;
 import edu.sharif.math.yaadmaan.config.Constants;
 import edu.sharif.math.yaadmaan.domain.User;
 import edu.sharif.math.yaadmaan.repository.UserRepository;
-import edu.sharif.math.yaadmaan.service.UserService;
 import edu.sharif.math.yaadmaan.service.dto.UserDTO;
 
 import java.time.Instant;

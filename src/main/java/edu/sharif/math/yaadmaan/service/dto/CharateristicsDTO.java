@@ -13,8 +13,10 @@ public class CharateristicsDTO implements Serializable {
     @NotNull
     private String title;
 
+    private Integer repetation;
 
-    private Long departmentId;
+
+    private Long userPerDepartmentId;
     
     public Long getId() {
         return id;
@@ -32,12 +34,20 @@ public class CharateristicsDTO implements Serializable {
         this.title = title;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public Integer getRepetation() {
+        return repetation;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setRepetation(Integer repetation) {
+        this.repetation = repetation;
+    }
+
+    public Long getUserPerDepartmentId() {
+        return userPerDepartmentId;
+    }
+
+    public void setUserPerDepartmentId(Long userPerDepartmentId) {
+        this.userPerDepartmentId = userPerDepartmentId;
     }
 
     @Override
@@ -63,7 +73,8 @@ public class CharateristicsDTO implements Serializable {
         return "CharateristicsDTO{" +
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
-            ", departmentId=" + getDepartmentId() +
+            ", repetation=" + getRepetation() +
+            ", userPerDepartmentId=" + getUserPerDepartmentId() +
             "}";
     }
 }

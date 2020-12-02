@@ -30,9 +30,7 @@ export const TopicRatingUpdate = (props: ITopicRatingUpdateProps) => {
   };
 
   useEffect(() => {
-    if (isNew) {
-      props.reset();
-    } else {
+    if (!isNew) {
       props.getEntity(props.match.params.id);
     }
 

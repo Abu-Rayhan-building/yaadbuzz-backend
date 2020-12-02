@@ -1,6 +1,5 @@
 package edu.sharif.math.yaadmaan.service.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;

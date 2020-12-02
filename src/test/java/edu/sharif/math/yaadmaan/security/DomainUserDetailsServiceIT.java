@@ -1,6 +1,9 @@
 package edu.sharif.math.yaadmaan.security;
 
+import java.util.Locale;
+
 import org.apache.commons.lang3.RandomStringUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.sharif.math.yaadmaan.YaadmaanApp;
 import edu.sharif.math.yaadmaan.domain.User;
 import edu.sharif.math.yaadmaan.repository.UserRepository;
-import edu.sharif.math.yaadmaan.security.DomainUserDetailsService;
-import edu.sharif.math.yaadmaan.security.UserNotActivatedException;
-
-import java.util.Locale;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Integrations tests for {@link DomainUserDetailsService}.
@@ -40,78 +36,92 @@ public class DomainUserDetailsServiceIT {
     @Autowired
     private UserDetailsService domainUserDetailsService;
 
-    @BeforeEach
-    public void init() {
-        User userOne = new User();
-        userOne.setLogin(USER_ONE_LOGIN);
-        userOne.setPassword(RandomStringUtils.random(60));
-        userOne.setActivated(true);
-        userOne.setEmail(USER_ONE_EMAIL);
-        userOne.setFirstName("userOne");
-        userOne.setLastName("doe");
-        userOne.setLangKey("en");
-        userRepository.save(userOne);
-
-        User userTwo = new User();
-        userTwo.setLogin(USER_TWO_LOGIN);
-        userTwo.setPassword(RandomStringUtils.random(60));
-        userTwo.setActivated(true);
-        userTwo.setEmail(USER_TWO_EMAIL);
-        userTwo.setFirstName("userTwo");
-        userTwo.setLastName("doe");
-        userTwo.setLangKey("en");
-        userRepository.save(userTwo);
-
-        User userThree = new User();
-        userThree.setLogin(USER_THREE_LOGIN);
-        userThree.setPassword(RandomStringUtils.random(60));
-        userThree.setActivated(false);
-        userThree.setEmail(USER_THREE_EMAIL);
-        userThree.setFirstName("userThree");
-        userThree.setLastName("doe");
-        userThree.setLangKey("en");
-        userRepository.save(userThree);
-    }
-
     @Test
-    public void assertThatUserCanBeFoundByLogin() {
-        UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN);
-        assertThat(userDetails).isNotNull();
-        assertThat(userDetails.getUsername()).isEqualTo(USER_ONE_LOGIN);
-    }
-
-    @Test
-    public void assertThatUserCanBeFoundByLoginIgnoreCase() {
-        UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN.toUpperCase(Locale.ENGLISH));
-        assertThat(userDetails).isNotNull();
-        assertThat(userDetails.getUsername()).isEqualTo(USER_ONE_LOGIN);
+    public void assertThatEmailIsPrioritizedOverLogin() {
+	final UserDetails userDetails = this.domainUserDetailsService
+		.loadUserByUsername(DomainUserDetailsServiceIT.USER_ONE_EMAIL);
+	Assertions.assertThat(userDetails).isNotNull();
+	Assertions.assertThat(userDetails.getUsername())
+		.isEqualTo(DomainUserDetailsServiceIT.USER_ONE_LOGIN);
     }
 
     @Test
     public void assertThatUserCanBeFoundByEmail() {
-        UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_TWO_EMAIL);
-        assertThat(userDetails).isNotNull();
-        assertThat(userDetails.getUsername()).isEqualTo(USER_TWO_LOGIN);
+	final UserDetails userDetails = this.domainUserDetailsService
+		.loadUserByUsername(DomainUserDetailsServiceIT.USER_TWO_EMAIL);
+	Assertions.assertThat(userDetails).isNotNull();
+	Assertions.assertThat(userDetails.getUsername())
+		.isEqualTo(DomainUserDetailsServiceIT.USER_TWO_LOGIN);
     }
 
     @Test
     public void assertThatUserCanBeFoundByEmailIgnoreCase() {
-        UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_TWO_EMAIL.toUpperCase(Locale.ENGLISH));
-        assertThat(userDetails).isNotNull();
-        assertThat(userDetails.getUsername()).isEqualTo(USER_TWO_LOGIN);
+	final UserDetails userDetails = this.domainUserDetailsService
+		.loadUserByUsername(DomainUserDetailsServiceIT.USER_TWO_EMAIL
+			.toUpperCase(Locale.ENGLISH));
+	Assertions.assertThat(userDetails).isNotNull();
+	Assertions.assertThat(userDetails.getUsername())
+		.isEqualTo(DomainUserDetailsServiceIT.USER_TWO_LOGIN);
     }
 
     @Test
-    public void assertThatEmailIsPrioritizedOverLogin() {
-        UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_EMAIL);
-        assertThat(userDetails).isNotNull();
-        assertThat(userDetails.getUsername()).isEqualTo(USER_ONE_LOGIN);
+    public void assertThatUserCanBeFoundByLogin() {
+	final UserDetails userDetails = this.domainUserDetailsService
+		.loadUserByUsername(DomainUserDetailsServiceIT.USER_ONE_LOGIN);
+	Assertions.assertThat(userDetails).isNotNull();
+	Assertions.assertThat(userDetails.getUsername())
+		.isEqualTo(DomainUserDetailsServiceIT.USER_ONE_LOGIN);
+    }
+
+    @Test
+    public void assertThatUserCanBeFoundByLoginIgnoreCase() {
+	final UserDetails userDetails = this.domainUserDetailsService
+		.loadUserByUsername(DomainUserDetailsServiceIT.USER_ONE_LOGIN
+			.toUpperCase(Locale.ENGLISH));
+	Assertions.assertThat(userDetails).isNotNull();
+	Assertions.assertThat(userDetails.getUsername())
+		.isEqualTo(DomainUserDetailsServiceIT.USER_ONE_LOGIN);
     }
 
     @Test
     public void assertThatUserNotActivatedExceptionIsThrownForNotActivatedUsers() {
-        assertThatExceptionOfType(UserNotActivatedException.class).isThrownBy(
-            () -> domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN));
+	Assertions.assertThatExceptionOfType(UserNotActivatedException.class)
+		.isThrownBy(
+			() -> this.domainUserDetailsService.loadUserByUsername(
+				DomainUserDetailsServiceIT.USER_THREE_LOGIN));
+    }
+
+    @BeforeEach
+    public void init() {
+	final User userOne = new User();
+	userOne.setLogin(DomainUserDetailsServiceIT.USER_ONE_LOGIN);
+	userOne.setPassword(RandomStringUtils.random(60));
+	userOne.setActivated(true);
+	userOne.setEmail(DomainUserDetailsServiceIT.USER_ONE_EMAIL);
+	userOne.setFirstName("userOne");
+	userOne.setLastName("doe");
+	userOne.setLangKey("en");
+	this.userRepository.save(userOne);
+
+	final User userTwo = new User();
+	userTwo.setLogin(DomainUserDetailsServiceIT.USER_TWO_LOGIN);
+	userTwo.setPassword(RandomStringUtils.random(60));
+	userTwo.setActivated(true);
+	userTwo.setEmail(DomainUserDetailsServiceIT.USER_TWO_EMAIL);
+	userTwo.setFirstName("userTwo");
+	userTwo.setLastName("doe");
+	userTwo.setLangKey("en");
+	this.userRepository.save(userTwo);
+
+	final User userThree = new User();
+	userThree.setLogin(DomainUserDetailsServiceIT.USER_THREE_LOGIN);
+	userThree.setPassword(RandomStringUtils.random(60));
+	userThree.setActivated(false);
+	userThree.setEmail(DomainUserDetailsServiceIT.USER_THREE_EMAIL);
+	userThree.setFirstName("userThree");
+	userThree.setLastName("doe");
+	userThree.setLangKey("en");
+	this.userRepository.save(userThree);
     }
 
 }

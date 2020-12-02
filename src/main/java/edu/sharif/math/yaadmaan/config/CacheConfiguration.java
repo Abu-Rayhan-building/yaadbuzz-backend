@@ -58,7 +58,6 @@ public class CacheConfiguration {
             createCache(cm, edu.sharif.math.yaadmaan.domain.Memory.class.getName() + ".tageds");
             createCache(cm, edu.sharif.math.yaadmaan.domain.Comment.class.getName());
             createCache(cm, edu.sharif.math.yaadmaan.domain.Picture.class.getName());
-            createCache(cm, edu.sharif.math.yaadmaan.domain.MemoryPicture.class.getName());
             createCache(cm, edu.sharif.math.yaadmaan.domain.UserPerDepartment.class.getName() + ".topicAssigneds");
             createCache(cm, edu.sharif.math.yaadmaan.domain.UserPerDepartment.class.getName() + ".charateristics");
             createCache(cm, edu.sharif.math.yaadmaan.domain.Topic.class.getName());
@@ -68,11 +67,11 @@ public class CacheConfiguration {
             createCache(cm, edu.sharif.math.yaadmaan.domain.Department.class.getName() + ".memories");
             createCache(cm, edu.sharif.math.yaadmaan.domain.UserPerDepartment.class.getName() + ".charateristicsRepetations");
             createCache(cm, edu.sharif.math.yaadmaan.domain.Topic.class.getName() + ".voters");
-            createCache(cm, edu.sharif.math.yaadmaan.domain.CharateristicsRepetation.class.getName());
             createCache(cm, edu.sharif.math.yaadmaan.domain.UserPerDepartment.class.getName() + ".topicsVoteds");
             createCache(cm, edu.sharif.math.yaadmaan.domain.UserPerDepartment.class.getName() + ".characteristicsVoteds");
             createCache(cm, edu.sharif.math.yaadmaan.domain.Charateristics.class.getName() + ".charateristicsRepetations");
             createCache(cm, edu.sharif.math.yaadmaan.domain.Charateristics.class.getName() + ".voters");
+            createCache(cm, edu.sharif.math.yaadmaan.domain.Comment.class.getName() + ".pictures");
             // jhipster-needle-ehcache-add-entry
         };
     }

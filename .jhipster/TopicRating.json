@@ -27,7 +27,7 @@
   "changelogDate": "20201115101920",
   "entityTableName": "topic_rating",
   "dto": "mapstruct",
-  "pagination": "no",
+  "pagination": "infinite-scroll",
   "service": "serviceImpl",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,

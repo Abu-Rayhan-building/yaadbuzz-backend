@@ -2,17 +2,14 @@ package edu.sharif.math.yaadmaan.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-
 import edu.sharif.math.yaadmaan.service.dto.MemoryDTO;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
  * Service Interface for managing {@link edu.sharif.math.yaadmaan.domain.Memory}.
  */
-public interface MemoryService {
+public interface MemoryService extends ServiceWithCurrentUserCrudAccess {
 
     /**
      * Save a memory.
@@ -59,4 +56,8 @@ public interface MemoryService {
 
     Page<MemoryDTO> findAllWithUserTagedIn(Long depid, Long userInDepId,
 	    Pageable pageable);
+
+    boolean currentuserHasAccessToComments(Long memid);
+
+    boolean currentuserHasCreatAccess(Long depId);
 }

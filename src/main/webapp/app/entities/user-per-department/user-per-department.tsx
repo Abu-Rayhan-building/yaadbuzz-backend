@@ -115,8 +115,7 @@ export const UserPerDepartment = (props: IUserPerDepartmentProps) => {
                     <Translate contentKey="yaadmaanApp.userPerDepartment.realUser">Real User</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.userPerDepartment.department">Department</Translate>{' '}
-                    <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadmaanApp.userPerDepartment.department">Department</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>

@@ -8,11 +8,11 @@
     -->
     <changeSet id="20201115102020-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="department_id"
+        <addForeignKeyConstraint baseColumnNames="user_per_department_id"
                                  baseTableName="charateristics"
-                                 constraintName="fk_charateristics_department_id"
+                                 constraintName="fk_charateristics_user_per_department_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="department"/>
+                                 referencedTableName="user_per_department"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -39,10 +39,6 @@ public class Memory implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "memory")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<MemoryPicture> pictures = new HashSet<>();
-
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = "memories", allowSetters = true)
@@ -136,31 +132,6 @@ public class Memory implements Serializable {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
-    }
-
-    public Set<MemoryPicture> getPictures() {
-        return pictures;
-    }
-
-    public Memory pictures(Set<MemoryPicture> memoryPictures) {
-        this.pictures = memoryPictures;
-        return this;
-    }
-
-    public Memory addPictures(MemoryPicture memoryPicture) {
-        this.pictures.add(memoryPicture);
-        memoryPicture.setMemory(this);
-        return this;
-    }
-
-    public Memory removePictures(MemoryPicture memoryPicture) {
-        this.pictures.remove(memoryPicture);
-        memoryPicture.setMemory(null);
-        return this;
-    }
-
-    public void setPictures(Set<MemoryPicture> memoryPictures) {
-        this.pictures = memoryPictures;
     }
 
     public Comment getText() {

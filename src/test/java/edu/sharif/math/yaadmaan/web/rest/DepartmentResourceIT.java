@@ -17,8 +17,6 @@ import edu.sharif.math.yaadmaan.repository.DepartmentRepository;
 import edu.sharif.math.yaadmaan.service.DepartmentService;
 import edu.sharif.math.yaadmaan.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadmaan.service.mapper.DepartmentMapper;
-import edu.sharif.math.yaadmaan.web.rest.DepartmentResource;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -46,9 +44,6 @@ public class DepartmentResourceIT {
 
     @Autowired
     private DepartmentMapper departmentMapper;
-
-    @Autowired
-    private DepartmentService departmentService;
 
     @Autowired
     private EntityManager em;

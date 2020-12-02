@@ -5,28 +5,26 @@
       "fieldName": "title",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "repetation",
+      "fieldType": "Integer"
     }
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "charateristicsRepetation",
-      "otherEntityRelationshipName": "charactristic",
-      "relationshipName": "charateristicsRepetation"
-    },
-    {
       "relationshipType": "many-to-one",
-      "otherEntityName": "department",
+      "otherEntityName": "userPerDepartment",
       "otherEntityRelationshipName": "charateristics",
       "relationshipValidateRules": "required",
-      "relationshipName": "department",
+      "relationshipName": "userPerDepartment",
       "otherEntityField": "id"
     }
   ],
   "changelogDate": "20201115102020",
   "entityTableName": "charateristics",
   "dto": "mapstruct",
-  "pagination": "no",
+  "pagination": "infinite-scroll",
   "service": "serviceImpl",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,

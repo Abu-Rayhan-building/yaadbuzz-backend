@@ -7,6 +7,8 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, setFileData, o
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { IComment } from 'app/shared/model/comment.model';
+import { getEntities as getComments } from 'app/entities/comment/comment.reducer';
 import { getEntity, updateEntity, createEntity, setBlob, reset } from './picture.reducer';
 import { IPicture } from 'app/shared/model/picture.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -15,9 +17,10 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface IPictureUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const PictureUpdate = (props: IPictureUpdateProps) => {
+  const [commentId, setCommentId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { pictureEntity, loading, updating } = props;
+  const { pictureEntity, comments, loading, updating } = props;
 
   const { image, imageContentType } = pictureEntity;
 
@@ -26,11 +29,11 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
   };
 
   useEffect(() => {
-    if (isNew) {
-      props.reset();
-    } else {
+    if (!isNew) {
       props.getEntity(props.match.params.id);
     }
+
+    props.getComments();
   }, []);
 
   const onBlobChange = (isAnImage, name) => event => {
@@ -124,6 +127,21 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
                   />
                 </AvGroup>
               </AvGroup>
+              <AvGroup>
+                <Label for="picture-comment">
+                  <Translate contentKey="yaadmaanApp.picture.comment">Comment</Translate>
+                </Label>
+                <AvInput id="picture-comment" type="select" className="form-control" name="commentId">
+                  <option value="" key="0" />
+                  {comments
+                    ? comments.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/picture" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -146,6 +164,7 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
+  comments: storeState.comment.entities,
   pictureEntity: storeState.picture.entity,
   loading: storeState.picture.loading,
   updating: storeState.picture.updating,
@@ -153,6 +172,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getComments,
   getEntity,
   updateEntity,
   setBlob,

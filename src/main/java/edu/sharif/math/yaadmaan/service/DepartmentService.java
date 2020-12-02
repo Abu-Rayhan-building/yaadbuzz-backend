@@ -2,8 +2,6 @@ package edu.sharif.math.yaadmaan.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-
 import edu.sharif.math.yaadmaan.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
 
@@ -13,7 +11,7 @@ import java.util.Optional;
 /**
  * Service Interface for managing {@link edu.sharif.math.yaadmaan.domain.Department}.
  */
-public interface DepartmentService {
+public interface DepartmentService extends ServiceWithCurrentUserCrudAccess{
 
     /**
      * Save a department.

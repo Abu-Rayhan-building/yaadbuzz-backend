@@ -19,21 +19,18 @@
     <include file="config/liquibase/changelog/20201114203802_added_entity_Memory.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201114203902_added_entity_Comment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201114204002_added_entity_Picture.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20201114204102_added_entity_MemoryPicture.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201115101820_added_entity_Topic.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201115101920_added_entity_TopicRating.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201115102020_added_entity_Charateristics.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20201116223416_added_entity_CharateristicsRepetation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20201114203602_added_entity_constraints_UserPerDepartment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201114203702_added_entity_constraints_Department.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201114203802_added_entity_constraints_Memory.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201114203902_added_entity_constraints_Comment.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20201114204102_added_entity_constraints_MemoryPicture.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201114204002_added_entity_constraints_Picture.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201115101820_added_entity_constraints_Topic.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201115101920_added_entity_constraints_TopicRating.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201115102020_added_entity_constraints_Charateristics.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20201116223416_added_entity_constraints_CharateristicsRepetation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

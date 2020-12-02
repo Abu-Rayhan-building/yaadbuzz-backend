@@ -2,10 +2,6 @@ package edu.sharif.math.yaadmaan.service.mapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import edu.sharif.math.yaadmaan.service.mapper.CommentMapper;
-import edu.sharif.math.yaadmaan.service.mapper.CommentMapperImpl;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CommentMapperTest {

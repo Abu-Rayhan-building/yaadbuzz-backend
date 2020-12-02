@@ -17,6 +17,7 @@
         "title": "Comment"
       },
       "text": "Text",
+      "pictures": "Pictures",
       "writer": "Writer",
       "memory": "Memory"
     }

@@ -1,10 +1,10 @@
 package edu.sharif.math.yaadmaan.service.mapper;
 
 
-import org.mapstruct.*;
-
 import edu.sharif.math.yaadmaan.domain.*;
 import edu.sharif.math.yaadmaan.service.dto.MemoryDTO;
+
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link Memory} and its DTO {@link MemoryDTO}.
@@ -19,8 +19,6 @@ public interface MemoryMapper extends EntityMapper<MemoryDTO, Memory> {
 
     @Mapping(target = "comments", ignore = true)
     @Mapping(target = "removeComments", ignore = true)
-    @Mapping(target = "pictures", ignore = true)
-    @Mapping(target = "removePictures", ignore = true)
     @Mapping(source = "textId", target = "text")
     @Mapping(source = "writerId", target = "writer")
     @Mapping(target = "removeTaged", ignore = true)

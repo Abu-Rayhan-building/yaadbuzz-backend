@@ -1,11 +1,8 @@
 package edu.sharif.math.yaadmaan.domain;
 
 import org.junit.jupiter.api.Test;
-
-import edu.sharif.math.yaadmaan.domain.Memory;
-import edu.sharif.math.yaadmaan.web.rest.TestUtil;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import edu.sharif.math.yaadmaan.web.rest.TestUtil;
 
 public class MemoryTest {
 

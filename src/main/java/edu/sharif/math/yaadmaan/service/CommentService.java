@@ -1,16 +1,17 @@
 package edu.sharif.math.yaadmaan.service;
 
+import edu.sharif.math.yaadmaan.service.dto.CommentDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import edu.sharif.math.yaadmaan.service.dto.CommentDTO;
 
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link edu.sharif.math.yaadmaan.domain.Comment}.
+ * Service Interface for managing
+ * {@link edu.sharif.math.yaadmaan.domain.Comment}.
  */
-public interface CommentService {
+public interface CommentService extends ServiceWithCurrentUserCrudAccess{
 
     /**
      * Save a comment.
@@ -28,7 +29,6 @@ public interface CommentService {
      */
     Page<CommentDTO> findAll(Pageable pageable);
 
-
     /**
      * Get the "id" comment.
      *
@@ -43,4 +43,11 @@ public interface CommentService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    boolean currentuserHasCreateAccess(Long memid);
+
+    Page<CommentDTO> findAllForMemory(Long memid, Pageable pageable);
+
+
+
 }
