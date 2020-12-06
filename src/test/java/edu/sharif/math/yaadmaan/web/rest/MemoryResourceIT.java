@@ -9,6 +9,8 @@ import edu.sharif.math.yaadmaan.repository.MemoryRepository;
 import edu.sharif.math.yaadmaan.service.MemoryService;
 import edu.sharif.math.yaadmaan.service.dto.MemoryDTO;
 import edu.sharif.math.yaadmaan.service.mapper.MemoryMapper;
+import edu.sharif.math.yaadmaan.service.dto.MemoryCriteria;
+import edu.sharif.math.yaadmaan.service.MemoryQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -48,9 +51,6 @@ public class MemoryResourceIT {
     private static final Boolean DEFAULT_IS_PRIVATE = false;
     private static final Boolean UPDATED_IS_PRIVATE = true;
 
-    private static final Boolean DEFAULT_IS_ANNONYMOS = false;
-    private static final Boolean UPDATED_IS_ANNONYMOS = true;
-
     @Autowired
     private MemoryRepository memoryRepository;
 
@@ -62,6 +62,12 @@ public class MemoryResourceIT {
 
     @Mock
     private MemoryService memoryServiceMock;
+
+    @Autowired
+    private MemoryService memoryService;
+
+    @Autowired
+    private MemoryQueryService memoryQueryService;
 
     @Autowired
     private EntityManager em;
@@ -80,8 +86,7 @@ public class MemoryResourceIT {
     public static Memory createEntity(EntityManager em) {
         Memory memory = new Memory()
             .title(DEFAULT_TITLE)
-            .isPrivate(DEFAULT_IS_PRIVATE)
-            .isAnnonymos(DEFAULT_IS_ANNONYMOS);
+            .isPrivate(DEFAULT_IS_PRIVATE);
         // Add required entity
         Comment comment;
         if (TestUtil.findAll(em, Comment.class).isEmpty()) {
@@ -123,8 +128,7 @@ public class MemoryResourceIT {
     public static Memory createUpdatedEntity(EntityManager em) {
         Memory memory = new Memory()
             .title(UPDATED_TITLE)
-            .isPrivate(UPDATED_IS_PRIVATE)
-            .isAnnonymos(UPDATED_IS_ANNONYMOS);
+            .isPrivate(UPDATED_IS_PRIVATE);
         // Add required entity
         Comment comment;
         if (TestUtil.findAll(em, Comment.class).isEmpty()) {
@@ -180,7 +184,6 @@ public class MemoryResourceIT {
         Memory testMemory = memoryList.get(memoryList.size() - 1);
         assertThat(testMemory.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testMemory.isIsPrivate()).isEqualTo(DEFAULT_IS_PRIVATE);
-        assertThat(testMemory.isIsAnnonymos()).isEqualTo(DEFAULT_IS_ANNONYMOS);
     }
 
     @Test
@@ -216,8 +219,7 @@ public class MemoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(memory.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())))
-            .andExpect(jsonPath("$.[*].isAnnonymos").value(hasItem(DEFAULT_IS_ANNONYMOS.booleanValue())));
+            .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())));
     }
     
     @SuppressWarnings({"unchecked"})
@@ -252,9 +254,281 @@ public class MemoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(memory.getId().intValue()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
-            .andExpect(jsonPath("$.isPrivate").value(DEFAULT_IS_PRIVATE.booleanValue()))
-            .andExpect(jsonPath("$.isAnnonymos").value(DEFAULT_IS_ANNONYMOS.booleanValue()));
+            .andExpect(jsonPath("$.isPrivate").value(DEFAULT_IS_PRIVATE.booleanValue()));
     }
+
+
+    @Test
+    @Transactional
+    public void getMemoriesByIdFiltering() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        Long id = memory.getId();
+
+        defaultMemoryShouldBeFound("id.equals=" + id);
+        defaultMemoryShouldNotBeFound("id.notEquals=" + id);
+
+        defaultMemoryShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultMemoryShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultMemoryShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultMemoryShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByTitleIsEqualToSomething() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        // Get all the memoryList where title equals to DEFAULT_TITLE
+        defaultMemoryShouldBeFound("title.equals=" + DEFAULT_TITLE);
+
+        // Get all the memoryList where title equals to UPDATED_TITLE
+        defaultMemoryShouldNotBeFound("title.equals=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByTitleIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        // Get all the memoryList where title not equals to DEFAULT_TITLE
+        defaultMemoryShouldNotBeFound("title.notEquals=" + DEFAULT_TITLE);
+
+        // Get all the memoryList where title not equals to UPDATED_TITLE
+        defaultMemoryShouldBeFound("title.notEquals=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByTitleIsInShouldWork() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        // Get all the memoryList where title in DEFAULT_TITLE or UPDATED_TITLE
+        defaultMemoryShouldBeFound("title.in=" + DEFAULT_TITLE + "," + UPDATED_TITLE);
+
+        // Get all the memoryList where title equals to UPDATED_TITLE
+        defaultMemoryShouldNotBeFound("title.in=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByTitleIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        // Get all the memoryList where title is not null
+        defaultMemoryShouldBeFound("title.specified=true");
+
+        // Get all the memoryList where title is null
+        defaultMemoryShouldNotBeFound("title.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllMemoriesByTitleContainsSomething() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        // Get all the memoryList where title contains DEFAULT_TITLE
+        defaultMemoryShouldBeFound("title.contains=" + DEFAULT_TITLE);
+
+        // Get all the memoryList where title contains UPDATED_TITLE
+        defaultMemoryShouldNotBeFound("title.contains=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByTitleNotContainsSomething() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        // Get all the memoryList where title does not contain DEFAULT_TITLE
+        defaultMemoryShouldNotBeFound("title.doesNotContain=" + DEFAULT_TITLE);
+
+        // Get all the memoryList where title does not contain UPDATED_TITLE
+        defaultMemoryShouldBeFound("title.doesNotContain=" + UPDATED_TITLE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByIsPrivateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        // Get all the memoryList where isPrivate equals to DEFAULT_IS_PRIVATE
+        defaultMemoryShouldBeFound("isPrivate.equals=" + DEFAULT_IS_PRIVATE);
+
+        // Get all the memoryList where isPrivate equals to UPDATED_IS_PRIVATE
+        defaultMemoryShouldNotBeFound("isPrivate.equals=" + UPDATED_IS_PRIVATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByIsPrivateIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        // Get all the memoryList where isPrivate not equals to DEFAULT_IS_PRIVATE
+        defaultMemoryShouldNotBeFound("isPrivate.notEquals=" + DEFAULT_IS_PRIVATE);
+
+        // Get all the memoryList where isPrivate not equals to UPDATED_IS_PRIVATE
+        defaultMemoryShouldBeFound("isPrivate.notEquals=" + UPDATED_IS_PRIVATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByIsPrivateIsInShouldWork() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        // Get all the memoryList where isPrivate in DEFAULT_IS_PRIVATE or UPDATED_IS_PRIVATE
+        defaultMemoryShouldBeFound("isPrivate.in=" + DEFAULT_IS_PRIVATE + "," + UPDATED_IS_PRIVATE);
+
+        // Get all the memoryList where isPrivate equals to UPDATED_IS_PRIVATE
+        defaultMemoryShouldNotBeFound("isPrivate.in=" + UPDATED_IS_PRIVATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByIsPrivateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        // Get all the memoryList where isPrivate is not null
+        defaultMemoryShouldBeFound("isPrivate.specified=true");
+
+        // Get all the memoryList where isPrivate is null
+        defaultMemoryShouldNotBeFound("isPrivate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByCommentsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+        Comment comments = CommentResourceIT.createEntity(em);
+        em.persist(comments);
+        em.flush();
+        memory.addComments(comments);
+        memoryRepository.saveAndFlush(memory);
+        Long commentsId = comments.getId();
+
+        // Get all the memoryList where comments equals to commentsId
+        defaultMemoryShouldBeFound("commentsId.equals=" + commentsId);
+
+        // Get all the memoryList where comments equals to commentsId + 1
+        defaultMemoryShouldNotBeFound("commentsId.equals=" + (commentsId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByTextIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        Comment text = memory.getText();
+        memoryRepository.saveAndFlush(memory);
+        Long textId = text.getId();
+
+        // Get all the memoryList where text equals to textId
+        defaultMemoryShouldBeFound("textId.equals=" + textId);
+
+        // Get all the memoryList where text equals to textId + 1
+        defaultMemoryShouldNotBeFound("textId.equals=" + (textId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByWriterIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        UserPerDepartment writer = memory.getWriter();
+        memoryRepository.saveAndFlush(memory);
+        Long writerId = writer.getId();
+
+        // Get all the memoryList where writer equals to writerId
+        defaultMemoryShouldBeFound("writerId.equals=" + writerId);
+
+        // Get all the memoryList where writer equals to writerId + 1
+        defaultMemoryShouldNotBeFound("writerId.equals=" + (writerId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByTagedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+        UserPerDepartment taged = UserPerDepartmentResourceIT.createEntity(em);
+        em.persist(taged);
+        em.flush();
+        memory.addTaged(taged);
+        memoryRepository.saveAndFlush(memory);
+        Long tagedId = taged.getId();
+
+        // Get all the memoryList where taged equals to tagedId
+        defaultMemoryShouldBeFound("tagedId.equals=" + tagedId);
+
+        // Get all the memoryList where taged equals to tagedId + 1
+        defaultMemoryShouldNotBeFound("tagedId.equals=" + (tagedId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMemoriesByDepartmentIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        Department department = memory.getDepartment();
+        memoryRepository.saveAndFlush(memory);
+        Long departmentId = department.getId();
+
+        // Get all the memoryList where department equals to departmentId
+        defaultMemoryShouldBeFound("departmentId.equals=" + departmentId);
+
+        // Get all the memoryList where department equals to departmentId + 1
+        defaultMemoryShouldNotBeFound("departmentId.equals=" + (departmentId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultMemoryShouldBeFound(String filter) throws Exception {
+        restMemoryMockMvc.perform(get("/api/memories?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(memory.getId().intValue())))
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
+            .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())));
+
+        // Check, that the count call also returns 1
+        restMemoryMockMvc.perform(get("/api/memories/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultMemoryShouldNotBeFound(String filter) throws Exception {
+        restMemoryMockMvc.perform(get("/api/memories?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restMemoryMockMvc.perform(get("/api/memories/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
+    }
+
     @Test
     @Transactional
     public void getNonExistingMemory() throws Exception {
@@ -277,8 +551,7 @@ public class MemoryResourceIT {
         em.detach(updatedMemory);
         updatedMemory
             .title(UPDATED_TITLE)
-            .isPrivate(UPDATED_IS_PRIVATE)
-            .isAnnonymos(UPDATED_IS_ANNONYMOS);
+            .isPrivate(UPDATED_IS_PRIVATE);
         MemoryDTO memoryDTO = memoryMapper.toDto(updatedMemory);
 
         restMemoryMockMvc.perform(put("/api/memories")
@@ -292,7 +565,6 @@ public class MemoryResourceIT {
         Memory testMemory = memoryList.get(memoryList.size() - 1);
         assertThat(testMemory.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testMemory.isIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
-        assertThat(testMemory.isIsAnnonymos()).isEqualTo(UPDATED_IS_ANNONYMOS);
     }
 
     @Test

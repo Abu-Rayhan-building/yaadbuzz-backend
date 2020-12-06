@@ -14,7 +14,7 @@ import { ICharateristics } from 'app/shared/model/charateristics.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface ICharateristicsUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> { }
+export interface ICharateristicsUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const CharateristicsUpdate = (props: ICharateristicsUpdateProps) => {
   const [userPerDepartmentId, setUserPerDepartmentId] = useState('0');
@@ -69,60 +69,66 @@ export const CharateristicsUpdate = (props: ICharateristicsUpdateProps) => {
           {loading ? (
             <p>Loading...</p>
           ) : (
-              <AvForm model={isNew ? {} : charateristicsEntity} onSubmit={saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="charateristics-id">
-                      <Translate contentKey="global.field.id">ID</Translate>
-                    </Label>
-                    <AvInput id="charateristics-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
+            <AvForm model={isNew ? {} : charateristicsEntity} onSubmit={saveEntity}>
+              {!isNew ? (
                 <AvGroup>
-                  <Label id="titleLabel" for="charateristics-title">
-                    <Translate contentKey="yaadmaanApp.charateristics.title">Title</Translate>
+                  <Label for="charateristics-id">
+                    <Translate contentKey="global.field.id">ID</Translate>
                   </Label>
-                  <AvField
-                    id="charateristics-title"
-                    type="text"
-                    name="title"
-                    validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') },
-                    }}
-                  />
+                  <AvInput id="charateristics-id" type="text" className="form-control" name="id" required readOnly />
                 </AvGroup>
-                <AvGroup>
-                  <Label for="charateristics-userPerDepartment">
-                    <Translate contentKey="yaadmaanApp.charateristics.userPerDepartment">User Per Department</Translate>
-                  </Label>
-                  <AvInput id="charateristics-userPerDepartment" type="select" className="form-control" name="userPerDepartmentId" required>
-                    {userPerDepartments
-                      ? userPerDepartments.map(otherEntity => (
+              ) : null}
+              <AvGroup>
+                <Label id="titleLabel" for="charateristics-title">
+                  <Translate contentKey="yaadmaanApp.charateristics.title">Title</Translate>
+                </Label>
+                <AvField
+                  id="charateristics-title"
+                  type="text"
+                  name="title"
+                  validate={{
+                    required: { value: true, errorMessage: translate('entity.validation.required') },
+                  }}
+                />
+              </AvGroup>
+              <AvGroup>
+                <Label id="repetationLabel" for="charateristics-repetation">
+                  <Translate contentKey="yaadmaanApp.charateristics.repetation">Repetation</Translate>
+                </Label>
+                <AvField id="charateristics-repetation" type="string" className="form-control" name="repetation" />
+              </AvGroup>
+              <AvGroup>
+                <Label for="charateristics-userPerDepartment">
+                  <Translate contentKey="yaadmaanApp.charateristics.userPerDepartment">User Per Department</Translate>
+                </Label>
+                <AvInput id="charateristics-userPerDepartment" type="select" className="form-control" name="userPerDepartmentId" required>
+                  {userPerDepartments
+                    ? userPerDepartments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
                           {otherEntity.id}
                         </option>
                       ))
-                      : null}
-                  </AvInput>
-                  <AvFeedback>
-                    <Translate contentKey="entity.validation.required">This field is required.</Translate>
-                  </AvFeedback>
-                </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/charateristics" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                    : null}
+                </AvInput>
+                <AvFeedback>
+                  <Translate contentKey="entity.validation.required">This field is required.</Translate>
+                </AvFeedback>
+              </AvGroup>
+              <Button tag={Link} id="cancel-save" to="/charateristics" replace color="info">
+                <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
+                  <Translate contentKey="entity.action.back">Back</Translate>
+                </span>
+              </Button>
               &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
+              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+                <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
-              </AvForm>
-            )}
+              </Button>
+            </AvForm>
+          )}
         </Col>
       </Row>
     </div>

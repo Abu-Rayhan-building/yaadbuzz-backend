@@ -32,9 +32,6 @@ public class Memory implements Serializable {
     @Column(name = "is_private")
     private Boolean isPrivate;
 
-    @Column(name = "is_annonymos")
-    private Boolean isAnnonymos;
-
     @OneToMany(mappedBy = "memory")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Comment> comments = new HashSet<>();
@@ -94,19 +91,6 @@ public class Memory implements Serializable {
 
     public void setIsPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
-    }
-
-    public Boolean isIsAnnonymos() {
-        return isAnnonymos;
-    }
-
-    public Memory isAnnonymos(Boolean isAnnonymos) {
-        this.isAnnonymos = isAnnonymos;
-        return this;
-    }
-
-    public void setIsAnnonymos(Boolean isAnnonymos) {
-        this.isAnnonymos = isAnnonymos;
     }
 
     public Set<Comment> getComments() {
@@ -222,7 +206,6 @@ public class Memory implements Serializable {
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
             ", isPrivate='" + isIsPrivate() + "'" +
-            ", isAnnonymos='" + isIsAnnonymos() + "'" +
             "}";
     }
 }

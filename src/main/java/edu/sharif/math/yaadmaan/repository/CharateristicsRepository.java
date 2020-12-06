@@ -1,10 +1,16 @@
 package edu.sharif.math.yaadmaan.repository;
 
+import edu.sharif.math.yaadmaan.domain.Charateristics;
+
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -13,12 +19,12 @@ import edu.sharif.math.yaadmaan.domain.Comment;
 import edu.sharif.math.yaadmaan.service.dto.CharateristicsDTO;
 
 /**
- * Spring Data repository for the Charateristics entity.
+ * Spring Data  repository for the Charateristics entity.
  */
 @SuppressWarnings("unused")
 @Repository
 public interface CharateristicsRepository
-	extends JpaRepository<Charateristics, Long> {
+	extends JpaRepository<Charateristics, Long>, JpaSpecificationExecutor<Charateristics> {
 
     @Query("select charateristics from Charateristics charateristics where charateristics.userPerDepartment.id = :updId")
     Page<Charateristics> findUsersCharactersInDep(@Param("updId") Long updId,

@@ -4,6 +4,8 @@ import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
 import edu.sharif.math.yaadmaan.service.TopicRatingService;
 import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
 import edu.sharif.math.yaadmaan.service.dto.TopicRatingDTO;
+import edu.sharif.math.yaadmaan.service.dto.TopicRatingCriteria;
+import edu.sharif.math.yaadmaan.service.TopicRatingQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +45,11 @@ public class TopicRatingResource {
 
     private final TopicRatingService topicRatingService;
 
-    public TopicRatingResource(TopicRatingService topicRatingService) {
+    private final TopicRatingQueryService topicRatingQueryService;
+
+    public TopicRatingResource(TopicRatingService topicRatingService, TopicRatingQueryService topicRatingQueryService) {
         this.topicRatingService = topicRatingService;
+        this.topicRatingQueryService = topicRatingQueryService;
     }
 
     /**
@@ -90,14 +96,27 @@ public class TopicRatingResource {
      * {@code GET  /topic-ratings} : get all the topicRatings.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of topicRatings in body.
      */
     @GetMapping("/topic-ratings")
-    public ResponseEntity<List<TopicRatingDTO>> getAllTopicRatings(Pageable pageable) {
-        log.debug("REST request to get a page of TopicRatings");
-        Page<TopicRatingDTO> page = topicRatingService.findAll(pageable);
+    public ResponseEntity<List<TopicRatingDTO>> getAllTopicRatings(TopicRatingCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get TopicRatings by criteria: {}", criteria);
+        Page<TopicRatingDTO> page = topicRatingQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /topic-ratings/count} : count all the topicRatings.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/topic-ratings/count")
+    public ResponseEntity<Long> countTopicRatings(TopicRatingCriteria criteria) {
+        log.debug("REST request to count TopicRatings by criteria: {}", criteria);
+        return ResponseEntity.ok().body(topicRatingQueryService.countByCriteria(criteria));
     }
 
     /**

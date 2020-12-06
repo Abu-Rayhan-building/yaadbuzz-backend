@@ -1,5 +1,12 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.service.CommentService;
+import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
+import edu.sharif.math.yaadmaan.service.dto.CommentDTO;
+import edu.sharif.math.yaadmaan.service.dto.CommentCriteria;
+import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
+import edu.sharif.math.yaadmaan.service.CommentQueryService;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -9,13 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
-import edu.sharif.math.yaadmaan.service.CommentService;
-import edu.sharif.math.yaadmaan.service.dto.CommentDTO;
-import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,8 +45,11 @@ public class CommentResource {
 
     private final CommentService commentService;
 
-    public CommentResource(CommentService commentService) {
+    private final CommentQueryService commentQueryService;
+
+    public CommentResource(CommentService commentService, CommentQueryService commentQueryService) {
         this.commentService = commentService;
+        this.commentQueryService = commentQueryService;
     }
 
     /**
@@ -91,14 +96,27 @@ public class CommentResource {
      * {@code GET  /comments} : get all the comments.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of comments in body.
      */
     @GetMapping("/comments")
-    public ResponseEntity<List<CommentDTO>> getAllComments(Pageable pageable) {
-        log.debug("REST request to get a page of Comments");
-        Page<CommentDTO> page = commentService.findAll(pageable);
+    public ResponseEntity<List<CommentDTO>> getAllComments(CommentCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Comments by criteria: {}", criteria);
+        Page<CommentDTO> page = commentQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /comments/count} : count all the comments.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/comments/count")
+    public ResponseEntity<Long> countComments(CommentCriteria criteria) {
+        log.debug("REST request to count Comments by criteria: {}", criteria);
+        return ResponseEntity.ok().body(commentQueryService.countByCriteria(criteria));
     }
 
     /**

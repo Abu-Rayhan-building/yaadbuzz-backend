@@ -1,5 +1,6 @@
 package edu.sharif.math.yaadmaan.service;
 
+
 public interface ServiceWithCurrentUserCrudAccess {
 
     boolean currentuserHasUpdateAccess(Long id);
@@ -10,7 +11,6 @@ public interface ServiceWithCurrentUserCrudAccess {
     default boolean currentuserHasDeleteAccess(Long id) {
 	return currentuserHasUpdateAccess(id);
     }
-
 
 
 }

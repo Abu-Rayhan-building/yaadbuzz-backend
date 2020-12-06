@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Long> {
-
+public interface CommentRepository extends JpaRepository<Comment, Long>, JpaSpecificationExecutor<Comment> {
     @Query("select comment from Comment comment where comment.memory.id = :id")
     Page<Comment> findAllForMemory(@Param("id") Long id,Pageable pageable);
+
 }

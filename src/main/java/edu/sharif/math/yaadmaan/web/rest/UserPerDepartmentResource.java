@@ -1,5 +1,11 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.service.UserPerDepartmentService;
+import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
+import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentCriteria;
+import edu.sharif.math.yaadmaan.service.UserPerDepartmentQueryService;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -9,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
@@ -43,8 +50,11 @@ public class UserPerDepartmentResource {
 
     private final UserPerDepartmentService userPerDepartmentService;
 
-    public UserPerDepartmentResource(UserPerDepartmentService userPerDepartmentService) {
+    private final UserPerDepartmentQueryService userPerDepartmentQueryService;
+
+    public UserPerDepartmentResource(UserPerDepartmentService userPerDepartmentService, UserPerDepartmentQueryService userPerDepartmentQueryService) {
         this.userPerDepartmentService = userPerDepartmentService;
+        this.userPerDepartmentQueryService = userPerDepartmentQueryService;
     }
 
     /**
@@ -91,14 +101,27 @@ public class UserPerDepartmentResource {
      * {@code GET  /user-per-departments} : get all the userPerDepartments.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userPerDepartments in body.
      */
     @GetMapping("/user-per-departments")
-    public ResponseEntity<List<UserPerDepartmentDTO>> getAllUserPerDepartments(Pageable pageable) {
-        log.debug("REST request to get a page of UserPerDepartments");
-        Page<UserPerDepartmentDTO> page = userPerDepartmentService.findAll(pageable);
+    public ResponseEntity<List<UserPerDepartmentDTO>> getAllUserPerDepartments(UserPerDepartmentCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get UserPerDepartments by criteria: {}", criteria);
+        Page<UserPerDepartmentDTO> page = userPerDepartmentQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /user-per-departments/count} : count all the userPerDepartments.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/user-per-departments/count")
+    public ResponseEntity<Long> countUserPerDepartments(UserPerDepartmentCriteria criteria) {
+        log.debug("REST request to count UserPerDepartments by criteria: {}", criteria);
+        return ResponseEntity.ok().body(userPerDepartmentQueryService.countByCriteria(criteria));
     }
 
     /**

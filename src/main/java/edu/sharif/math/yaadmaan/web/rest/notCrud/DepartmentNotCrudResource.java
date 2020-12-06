@@ -33,6 +33,7 @@ import edu.sharif.math.yaadmaan.service.UserPerDepartmentService;
 import edu.sharif.math.yaadmaan.service.UserService;
 import edu.sharif.math.yaadmaan.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadmaan.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -140,6 +141,13 @@ public class DepartmentNotCrudResource {
 	return new ResponseEntity<>(d, HttpStatus.OK);
     }
     
+    @GetMapping("department/{departmentId}/my-stats")
+    public ResponseEntity<MyUserPerDepartmentStatsDTO> getMyUPDWithStats(
+	    @PathVariable final Long departmentId
+	    ) {
+	final var d = this.departmentService.getMyStatsInDep(departmentId);
+	return new ResponseEntity<>(d, HttpStatus.OK);
+    }
     @PostMapping("department/{departmentId}/join")
     public ResponseEntity<DepartmentDTO> join(
 	    @PathVariable final Long departmentId,

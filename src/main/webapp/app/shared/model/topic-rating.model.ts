@@ -1,7 +1,7 @@
 export interface ITopicRating {
   id?: number;
   repetitions?: number;
-  ratingId?: number;
+  topicId?: number;
   userId?: number;
 }
 

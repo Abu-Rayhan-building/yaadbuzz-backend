@@ -4,6 +4,8 @@ import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
 import edu.sharif.math.yaadmaan.service.TopicService;
 import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
 import edu.sharif.math.yaadmaan.service.dto.TopicDTO;
+import edu.sharif.math.yaadmaan.service.dto.TopicCriteria;
+import edu.sharif.math.yaadmaan.service.TopicQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +45,11 @@ public class TopicResource {
 
     private final TopicService topicService;
 
-    public TopicResource(TopicService topicService) {
+    private final TopicQueryService topicQueryService;
+
+    public TopicResource(TopicService topicService, TopicQueryService topicQueryService) {
         this.topicService = topicService;
+        this.topicQueryService = topicQueryService;
     }
 
     /**
@@ -90,20 +96,27 @@ public class TopicResource {
      * {@code GET  /topics} : get all the topics.
      *
      * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of topics in body.
      */
     @GetMapping("/topics")
-    public ResponseEntity<List<TopicDTO>> getAllTopics(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get a page of Topics");
-        Page<TopicDTO> page;
-        if (eagerload) {
-            page = topicService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = topicService.findAll(pageable);
-        }
+    public ResponseEntity<List<TopicDTO>> getAllTopics(TopicCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Topics by criteria: {}", criteria);
+        Page<TopicDTO> page = topicQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /topics/count} : count all the topics.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/topics/count")
+    public ResponseEntity<Long> countTopics(TopicCriteria criteria) {
+        log.debug("REST request to count Topics by criteria: {}", criteria);
+        return ResponseEntity.ok().body(topicQueryService.countByCriteria(criteria));
     }
 
     /**

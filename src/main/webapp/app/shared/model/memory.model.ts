@@ -5,7 +5,6 @@ export interface IMemory {
   id?: number;
   title?: string;
   isPrivate?: boolean;
-  isAnnonymos?: boolean;
   comments?: IComment[];
   textId?: number;
   writerId?: number;
@@ -15,5 +14,4 @@ export interface IMemory {
 
 export const defaultValue: Readonly<IMemory> = {
   isPrivate: false,
-  isAnnonymos: false,
 };

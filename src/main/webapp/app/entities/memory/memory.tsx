@@ -108,9 +108,6 @@ export const Memory = (props: IMemoryProps) => {
                   <th className="hand" onClick={sort('isPrivate')}>
                     <Translate contentKey="yaadmaanApp.memory.isPrivate">Is Private</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th className="hand" onClick={sort('isAnnonymos')}>
-                    <Translate contentKey="yaadmaanApp.memory.isAnnonymos">Is Annonymos</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
                   <th>
                     <Translate contentKey="yaadmaanApp.memory.text">Text</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
@@ -133,7 +130,6 @@ export const Memory = (props: IMemoryProps) => {
                     </td>
                     <td>{memory.title}</td>
                     <td>{memory.isPrivate ? 'true' : 'false'}</td>
-                    <td>{memory.isAnnonymos ? 'true' : 'false'}</td>
                     <td>{memory.textId ? <Link to={`comment/${memory.textId}`}>{memory.textId}</Link> : ''}</td>
                     <td>{memory.writerId ? <Link to={`user-per-department/${memory.writerId}`}>{memory.writerId}</Link> : ''}</td>
                     <td>{memory.departmentId ? <Link to={`department/${memory.departmentId}`}>{memory.departmentId}</Link> : ''}</td>

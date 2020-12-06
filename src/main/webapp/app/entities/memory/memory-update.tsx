@@ -101,12 +101,6 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
                   <Translate contentKey="yaadmaanApp.memory.isPrivate">Is Private</Translate>
                 </Label>
               </AvGroup>
-              <AvGroup check>
-                <Label id="isAnnonymosLabel">
-                  <AvInput id="memory-isAnnonymos" type="checkbox" className="form-check-input" name="isAnnonymos" />
-                  <Translate contentKey="yaadmaanApp.memory.isAnnonymos">Is Annonymos</Translate>
-                </Label>
-              </AvGroup>
               <AvGroup>
                 <Label for="memory-text">
                   <Translate contentKey="yaadmaanApp.memory.text">Text</Translate>

@@ -12,7 +12,7 @@
       "otherEntityName": "topic",
       "otherEntityRelationshipName": "ratings",
       "relationshipValidateRules": "required",
-      "relationshipName": "rating",
+      "relationshipName": "topic",
       "otherEntityField": "id"
     },
     {
@@ -29,7 +29,7 @@
   "dto": "mapstruct",
   "pagination": "infinite-scroll",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": false,
+  "jpaMetamodelFiltering": true,
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,

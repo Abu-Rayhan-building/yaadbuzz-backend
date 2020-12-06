@@ -8,6 +8,8 @@ import edu.sharif.math.yaadmaan.repository.TopicRatingRepository;
 import edu.sharif.math.yaadmaan.service.TopicRatingService;
 import edu.sharif.math.yaadmaan.service.dto.TopicRatingDTO;
 import edu.sharif.math.yaadmaan.service.mapper.TopicRatingMapper;
+import edu.sharif.math.yaadmaan.service.dto.TopicRatingCriteria;
+import edu.sharif.math.yaadmaan.service.TopicRatingQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,12 +38,19 @@ public class TopicRatingResourceIT {
 
     private static final Integer DEFAULT_REPETITIONS = 1;
     private static final Integer UPDATED_REPETITIONS = 2;
+    private static final Integer SMALLER_REPETITIONS = 1 - 1;
 
     @Autowired
     private TopicRatingRepository topicRatingRepository;
 
     @Autowired
     private TopicRatingMapper topicRatingMapper;
+
+    @Autowired
+    private TopicRatingService topicRatingService;
+
+    @Autowired
+    private TopicRatingQueryService topicRatingQueryService;
 
     @Autowired
     private EntityManager em;
@@ -69,7 +78,7 @@ public class TopicRatingResourceIT {
         } else {
             topic = TestUtil.findAll(em, Topic.class).get(0);
         }
-        topicRating.setRating(topic);
+        topicRating.setTopic(topic);
         // Add required entity
         UserPerDepartment userPerDepartment;
         if (TestUtil.findAll(em, UserPerDepartment.class).isEmpty()) {
@@ -100,7 +109,7 @@ public class TopicRatingResourceIT {
         } else {
             topic = TestUtil.findAll(em, Topic.class).get(0);
         }
-        topicRating.setRating(topic);
+        topicRating.setTopic(topic);
         // Add required entity
         UserPerDepartment userPerDepartment;
         if (TestUtil.findAll(em, UserPerDepartment.class).isEmpty()) {
@@ -185,6 +194,197 @@ public class TopicRatingResourceIT {
             .andExpect(jsonPath("$.id").value(topicRating.getId().intValue()))
             .andExpect(jsonPath("$.repetitions").value(DEFAULT_REPETITIONS));
     }
+
+
+    @Test
+    @Transactional
+    public void getTopicRatingsByIdFiltering() throws Exception {
+        // Initialize the database
+        topicRatingRepository.saveAndFlush(topicRating);
+
+        Long id = topicRating.getId();
+
+        defaultTopicRatingShouldBeFound("id.equals=" + id);
+        defaultTopicRatingShouldNotBeFound("id.notEquals=" + id);
+
+        defaultTopicRatingShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultTopicRatingShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultTopicRatingShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultTopicRatingShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTopicRatingsByRepetitionsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        topicRatingRepository.saveAndFlush(topicRating);
+
+        // Get all the topicRatingList where repetitions equals to DEFAULT_REPETITIONS
+        defaultTopicRatingShouldBeFound("repetitions.equals=" + DEFAULT_REPETITIONS);
+
+        // Get all the topicRatingList where repetitions equals to UPDATED_REPETITIONS
+        defaultTopicRatingShouldNotBeFound("repetitions.equals=" + UPDATED_REPETITIONS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTopicRatingsByRepetitionsIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        topicRatingRepository.saveAndFlush(topicRating);
+
+        // Get all the topicRatingList where repetitions not equals to DEFAULT_REPETITIONS
+        defaultTopicRatingShouldNotBeFound("repetitions.notEquals=" + DEFAULT_REPETITIONS);
+
+        // Get all the topicRatingList where repetitions not equals to UPDATED_REPETITIONS
+        defaultTopicRatingShouldBeFound("repetitions.notEquals=" + UPDATED_REPETITIONS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTopicRatingsByRepetitionsIsInShouldWork() throws Exception {
+        // Initialize the database
+        topicRatingRepository.saveAndFlush(topicRating);
+
+        // Get all the topicRatingList where repetitions in DEFAULT_REPETITIONS or UPDATED_REPETITIONS
+        defaultTopicRatingShouldBeFound("repetitions.in=" + DEFAULT_REPETITIONS + "," + UPDATED_REPETITIONS);
+
+        // Get all the topicRatingList where repetitions equals to UPDATED_REPETITIONS
+        defaultTopicRatingShouldNotBeFound("repetitions.in=" + UPDATED_REPETITIONS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTopicRatingsByRepetitionsIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        topicRatingRepository.saveAndFlush(topicRating);
+
+        // Get all the topicRatingList where repetitions is not null
+        defaultTopicRatingShouldBeFound("repetitions.specified=true");
+
+        // Get all the topicRatingList where repetitions is null
+        defaultTopicRatingShouldNotBeFound("repetitions.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTopicRatingsByRepetitionsIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        topicRatingRepository.saveAndFlush(topicRating);
+
+        // Get all the topicRatingList where repetitions is greater than or equal to DEFAULT_REPETITIONS
+        defaultTopicRatingShouldBeFound("repetitions.greaterThanOrEqual=" + DEFAULT_REPETITIONS);
+
+        // Get all the topicRatingList where repetitions is greater than or equal to UPDATED_REPETITIONS
+        defaultTopicRatingShouldNotBeFound("repetitions.greaterThanOrEqual=" + UPDATED_REPETITIONS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTopicRatingsByRepetitionsIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        topicRatingRepository.saveAndFlush(topicRating);
+
+        // Get all the topicRatingList where repetitions is less than or equal to DEFAULT_REPETITIONS
+        defaultTopicRatingShouldBeFound("repetitions.lessThanOrEqual=" + DEFAULT_REPETITIONS);
+
+        // Get all the topicRatingList where repetitions is less than or equal to SMALLER_REPETITIONS
+        defaultTopicRatingShouldNotBeFound("repetitions.lessThanOrEqual=" + SMALLER_REPETITIONS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTopicRatingsByRepetitionsIsLessThanSomething() throws Exception {
+        // Initialize the database
+        topicRatingRepository.saveAndFlush(topicRating);
+
+        // Get all the topicRatingList where repetitions is less than DEFAULT_REPETITIONS
+        defaultTopicRatingShouldNotBeFound("repetitions.lessThan=" + DEFAULT_REPETITIONS);
+
+        // Get all the topicRatingList where repetitions is less than UPDATED_REPETITIONS
+        defaultTopicRatingShouldBeFound("repetitions.lessThan=" + UPDATED_REPETITIONS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTopicRatingsByRepetitionsIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        topicRatingRepository.saveAndFlush(topicRating);
+
+        // Get all the topicRatingList where repetitions is greater than DEFAULT_REPETITIONS
+        defaultTopicRatingShouldNotBeFound("repetitions.greaterThan=" + DEFAULT_REPETITIONS);
+
+        // Get all the topicRatingList where repetitions is greater than SMALLER_REPETITIONS
+        defaultTopicRatingShouldBeFound("repetitions.greaterThan=" + SMALLER_REPETITIONS);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTopicRatingsByTopicIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        Topic topic = topicRating.getTopic();
+        topicRatingRepository.saveAndFlush(topicRating);
+        Long topicId = topic.getId();
+
+        // Get all the topicRatingList where topic equals to topicId
+        defaultTopicRatingShouldBeFound("topicId.equals=" + topicId);
+
+        // Get all the topicRatingList where topic equals to topicId + 1
+        defaultTopicRatingShouldNotBeFound("topicId.equals=" + (topicId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTopicRatingsByUserIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        UserPerDepartment user = topicRating.getUser();
+        topicRatingRepository.saveAndFlush(topicRating);
+        Long userId = user.getId();
+
+        // Get all the topicRatingList where user equals to userId
+        defaultTopicRatingShouldBeFound("userId.equals=" + userId);
+
+        // Get all the topicRatingList where user equals to userId + 1
+        defaultTopicRatingShouldNotBeFound("userId.equals=" + (userId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultTopicRatingShouldBeFound(String filter) throws Exception {
+        restTopicRatingMockMvc.perform(get("/api/topic-ratings?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(topicRating.getId().intValue())))
+            .andExpect(jsonPath("$.[*].repetitions").value(hasItem(DEFAULT_REPETITIONS)));
+
+        // Check, that the count call also returns 1
+        restTopicRatingMockMvc.perform(get("/api/topic-ratings/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultTopicRatingShouldNotBeFound(String filter) throws Exception {
+        restTopicRatingMockMvc.perform(get("/api/topic-ratings?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restTopicRatingMockMvc.perform(get("/api/topic-ratings/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
+    }
+
     @Test
     @Transactional
     public void getNonExistingTopicRating() throws Exception {

@@ -32,9 +32,9 @@ export const TopicRatingDetail = (props: ITopicRatingDetailProps) => {
           </dt>
           <dd>{topicRatingEntity.repetitions}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.topicRating.rating">Rating</Translate>
+            <Translate contentKey="yaadmaanApp.topicRating.topic">Topic</Translate>
           </dt>
-          <dd>{topicRatingEntity.ratingId ? topicRatingEntity.ratingId : ''}</dd>
+          <dd>{topicRatingEntity.topicId ? topicRatingEntity.topicId : ''}</dd>
           <dt>
             <Translate contentKey="yaadmaanApp.topicRating.user">User</Translate>
           </dt>

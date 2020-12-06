@@ -30,7 +30,7 @@ public class Topic implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "rating")
+    @OneToMany(mappedBy = "topic")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<TopicRating> ratings = new HashSet<>();
 
@@ -79,13 +79,13 @@ public class Topic implements Serializable {
 
     public Topic addRatings(TopicRating topicRating) {
         this.ratings.add(topicRating);
-        topicRating.setRating(this);
+        topicRating.setTopic(this);
         return this;
     }
 
     public Topic removeRatings(TopicRating topicRating) {
         this.ratings.remove(topicRating);
-        topicRating.setRating(null);
+        topicRating.setTopic(null);
         return this;
     }
 

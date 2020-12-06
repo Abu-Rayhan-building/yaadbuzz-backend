@@ -17,7 +17,7 @@
         "title": "Topic Rating"
       },
       "repetitions": "Repetitions",
-      "rating": "Rating",
+      "topic": "Topic",
       "user": "User"
     }
   }

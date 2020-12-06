@@ -38,12 +38,6 @@ export const MemoryDetail = (props: IMemoryDetailProps) => {
           </dt>
           <dd>{memoryEntity.isPrivate ? 'true' : 'false'}</dd>
           <dt>
-            <span id="isAnnonymos">
-              <Translate contentKey="yaadmaanApp.memory.isAnnonymos">Is Annonymos</Translate>
-            </span>
-          </dt>
-          <dd>{memoryEntity.isAnnonymos ? 'true' : 'false'}</dd>
-          <dt>
             <Translate contentKey="yaadmaanApp.memory.text">Text</Translate>
           </dt>
           <dd>{memoryEntity.textId ? memoryEntity.textId : ''}</dd>

@@ -45,6 +45,10 @@ import charateristics, {
   CharateristicsState
 } from 'app/entities/charateristics/charateristics.reducer';
 // prettier-ignore
+// prettier-ignore
+import memorial, {
+  MemorialState
+} from 'app/entities/memorial/memorial.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -66,6 +70,7 @@ export interface IRootState {
   readonly topic: TopicState;
   readonly topicRating: TopicRatingState;
   readonly charateristics: CharateristicsState;
+  readonly memorial: MemorialState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -89,6 +94,7 @@ const rootReducer = combineReducers<IRootState>({
   topic,
   topicRating,
   charateristics,
+  memorial,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

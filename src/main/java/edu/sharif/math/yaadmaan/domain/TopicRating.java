@@ -30,7 +30,7 @@ public class TopicRating implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = "ratings", allowSetters = true)
-    private Topic rating;
+    private Topic topic;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -59,17 +59,17 @@ public class TopicRating implements Serializable {
         this.repetitions = repetitions;
     }
 
-    public Topic getRating() {
-        return rating;
+    public Topic getTopic() {
+        return topic;
     }
 
-    public TopicRating rating(Topic topic) {
-        this.rating = topic;
+    public TopicRating topic(Topic topic) {
+        this.topic = topic;
         return this;
     }
 
-    public void setRating(Topic topic) {
-        this.rating = topic;
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     public UserPerDepartment getUser() {

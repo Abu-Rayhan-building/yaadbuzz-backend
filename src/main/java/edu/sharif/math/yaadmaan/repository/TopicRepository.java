@@ -1,12 +1,12 @@
 package edu.sharif.math.yaadmaan.repository;
 
+import edu.sharif.math.yaadmaan.domain.Topic;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import edu.sharif.math.yaadmaan.domain.Topic;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import java.util.Optional;
  * Spring Data  repository for the Topic entity.
  */
 @Repository
-public interface TopicRepository extends JpaRepository<Topic, Long> {
+public interface TopicRepository extends JpaRepository<Topic, Long>, JpaSpecificationExecutor<Topic> {
 
     @Query(value = "select distinct topic from Topic topic left join fetch topic.voters",
         countQuery = "select count(distinct topic) from Topic topic")

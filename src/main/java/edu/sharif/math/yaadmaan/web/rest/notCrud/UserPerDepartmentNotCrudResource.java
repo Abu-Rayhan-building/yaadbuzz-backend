@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import edu.sharif.math.yaadmaan.service.DepartmentService;
 import edu.sharif.math.yaadmaan.service.MailService;
 import edu.sharif.math.yaadmaan.service.UserPerDepartmentService;
 import edu.sharif.math.yaadmaan.service.UserService;
+import edu.sharif.math.yaadmaan.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
 import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -92,7 +94,7 @@ public class UserPerDepartmentNotCrudResource {
 	this.userPerDepartmentService = userPerDepartmentService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/user-per-department")
     public ResponseEntity<List<UserPerDepartmentDTO>> getUsersInDep(
 	    final Pageable pageable, @PathVariable final Long depId) {
 
@@ -116,7 +118,7 @@ public class UserPerDepartmentNotCrudResource {
      *         userPerDepartmentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/user-per-departments")
+    @PutMapping("/user-per-department")
     public ResponseEntity<UserPerDepartmentDTO> updateUserPerDepartment(
 	    @Valid @RequestBody final UserPerDepartmentDTO userPerDepartmentDTO)
 	    throws URISyntaxException {
@@ -139,5 +141,7 @@ public class UserPerDepartmentNotCrudResource {
 			userPerDepartmentDTO.getId().toString()))
 		.body(result);
     }
+    
+
 
 }

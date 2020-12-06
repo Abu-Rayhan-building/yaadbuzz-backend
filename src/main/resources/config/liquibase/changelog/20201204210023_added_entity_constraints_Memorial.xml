@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity Memorial.
+    -->
+    <changeSet id="20201204210023-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="anonymous_comment_id"
+                                 baseTableName="memorial"
+                                 constraintName="fk_memorial_anonymous_comment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="comment"/>
+
+        <addForeignKeyConstraint baseColumnNames="not_anonymous_comment_id"
+                                 baseTableName="memorial"
+                                 constraintName="fk_memorial_not_anonymous_comment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="comment"/>
+
+        <addForeignKeyConstraint baseColumnNames="writer_id"
+                                 baseTableName="memorial"
+                                 constraintName="fk_memorial_writer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_per_department"/>
+
+        <addForeignKeyConstraint baseColumnNames="recipient_id"
+                                 baseTableName="memorial"
+                                 constraintName="fk_memorial_recipient_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_per_department"/>
+
+    </changeSet>
+</databaseChangeLog>

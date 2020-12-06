@@ -24,6 +24,7 @@ import edu.sharif.math.yaadmaan.service.UserPerDepartmentService;
 import edu.sharif.math.yaadmaan.service.UserService;
 import edu.sharif.math.yaadmaan.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadmaan.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadmaan.service.mapper.DepartmentMapper;
 import edu.sharif.math.yaadmaan.service.mapper.UserPerDepartmentMapper;
 
@@ -64,19 +65,18 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     public void setUserPerDepartmentService(
-    	UserPerDepartmentService userPerDepartmentService) {
-        this.userPerDepartmentService = userPerDepartmentService;
+	    UserPerDepartmentService userPerDepartmentService) {
+	this.userPerDepartmentService = userPerDepartmentService;
     }
 
     @Override
     public boolean currentuserHasGetAccess(final Long id) {
 	final var currentUserId = this.userService.getCurrentUserId();
 	final var dep = this.departmentRepository.findById(id).get();
-	return dep.getUserPerDepartments().parallelStream()
-		.anyMatch(upd -> {
-		    
-		return upd.getRealUser().getId().equals(currentUserId);
-		});
+	return dep.getUserPerDepartments().parallelStream().anyMatch(upd -> {
+
+	    return upd.getRealUser().getId().equals(currentUserId);
+	});
     }
 
     @Override
@@ -143,6 +143,19 @@ public class DepartmentServiceImpl implements DepartmentService {
 	Department department = this.departmentMapper.toEntity(departmentDTO);
 	department = this.departmentRepository.save(department);
 	return this.departmentMapper.toDto(department);
+    }
+
+    @Override
+    public MyUserPerDepartmentStatsDTO getMyStatsInDep(Long depId) {
+	return userPerDepartmentService
+			.getCurrentUserStatsInDep(depId);
+		
+    }
+
+    @Override
+    public List<UserPerDepartmentDTO> getAllDepartmentUsers(Long depid) {
+	return this.userPerDepartmentRepository.findByDepatment(depid)
+		.stream().map(this.userPerDepartmentMapper::toDto).collect(Collectors.toList());
     }
 
 }

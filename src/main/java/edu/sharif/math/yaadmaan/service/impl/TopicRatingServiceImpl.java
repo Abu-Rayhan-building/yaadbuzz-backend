@@ -38,7 +38,8 @@ public class TopicRatingServiceImpl implements TopicRatingService {
     public TopicRatingServiceImpl(
 	    final TopicRatingRepository topicRatingRepository,
 	    final TopicRatingMapper topicRatingMapper,
-	    final UserPerDepartmentService userPerDepartmentService, DepartmentService departmentService) {
+	    final UserPerDepartmentService userPerDepartmentService,
+	    final DepartmentService departmentService) {
 	this.topicRatingRepository = topicRatingRepository;
 	this.topicRatingMapper = topicRatingMapper;
 	this.departmentService = departmentService;

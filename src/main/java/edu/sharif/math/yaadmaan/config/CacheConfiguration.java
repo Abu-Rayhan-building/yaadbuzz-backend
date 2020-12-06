@@ -72,6 +72,7 @@ public class CacheConfiguration {
             createCache(cm, edu.sharif.math.yaadmaan.domain.Charateristics.class.getName() + ".charateristicsRepetations");
             createCache(cm, edu.sharif.math.yaadmaan.domain.Charateristics.class.getName() + ".voters");
             createCache(cm, edu.sharif.math.yaadmaan.domain.Comment.class.getName() + ".pictures");
+            createCache(cm, edu.sharif.math.yaadmaan.domain.Memorial.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

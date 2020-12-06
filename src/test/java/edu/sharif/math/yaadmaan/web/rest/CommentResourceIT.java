@@ -9,6 +9,8 @@ import edu.sharif.math.yaadmaan.repository.CommentRepository;
 import edu.sharif.math.yaadmaan.service.CommentService;
 import edu.sharif.math.yaadmaan.service.dto.CommentDTO;
 import edu.sharif.math.yaadmaan.service.mapper.CommentMapper;
+import edu.sharif.math.yaadmaan.service.dto.CommentCriteria;
+import edu.sharif.math.yaadmaan.service.CommentQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +45,12 @@ public class CommentResourceIT {
 
     @Autowired
     private CommentMapper commentMapper;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private CommentQueryService commentQueryService;
 
     @Autowired
     private EntityManager em;
@@ -226,6 +234,173 @@ public class CommentResourceIT {
             .andExpect(jsonPath("$.id").value(comment.getId().intValue()))
             .andExpect(jsonPath("$.text").value(DEFAULT_TEXT));
     }
+
+
+    @Test
+    @Transactional
+    public void getCommentsByIdFiltering() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+
+        Long id = comment.getId();
+
+        defaultCommentShouldBeFound("id.equals=" + id);
+        defaultCommentShouldNotBeFound("id.notEquals=" + id);
+
+        defaultCommentShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultCommentShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultCommentShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultCommentShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCommentsByTextIsEqualToSomething() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+
+        // Get all the commentList where text equals to DEFAULT_TEXT
+        defaultCommentShouldBeFound("text.equals=" + DEFAULT_TEXT);
+
+        // Get all the commentList where text equals to UPDATED_TEXT
+        defaultCommentShouldNotBeFound("text.equals=" + UPDATED_TEXT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCommentsByTextIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+
+        // Get all the commentList where text not equals to DEFAULT_TEXT
+        defaultCommentShouldNotBeFound("text.notEquals=" + DEFAULT_TEXT);
+
+        // Get all the commentList where text not equals to UPDATED_TEXT
+        defaultCommentShouldBeFound("text.notEquals=" + UPDATED_TEXT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCommentsByTextIsInShouldWork() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+
+        // Get all the commentList where text in DEFAULT_TEXT or UPDATED_TEXT
+        defaultCommentShouldBeFound("text.in=" + DEFAULT_TEXT + "," + UPDATED_TEXT);
+
+        // Get all the commentList where text equals to UPDATED_TEXT
+        defaultCommentShouldNotBeFound("text.in=" + UPDATED_TEXT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCommentsByTextIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+
+        // Get all the commentList where text is not null
+        defaultCommentShouldBeFound("text.specified=true");
+
+        // Get all the commentList where text is null
+        defaultCommentShouldNotBeFound("text.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllCommentsByTextContainsSomething() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+
+        // Get all the commentList where text contains DEFAULT_TEXT
+        defaultCommentShouldBeFound("text.contains=" + DEFAULT_TEXT);
+
+        // Get all the commentList where text contains UPDATED_TEXT
+        defaultCommentShouldNotBeFound("text.contains=" + UPDATED_TEXT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCommentsByTextNotContainsSomething() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+
+        // Get all the commentList where text does not contain DEFAULT_TEXT
+        defaultCommentShouldNotBeFound("text.doesNotContain=" + DEFAULT_TEXT);
+
+        // Get all the commentList where text does not contain UPDATED_TEXT
+        defaultCommentShouldBeFound("text.doesNotContain=" + UPDATED_TEXT);
+    }
+
+
+
+
+
+    @Test
+    @Transactional
+    public void getAllCommentsByWriterIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        UserPerDepartment writer = comment.getWriter();
+        commentRepository.saveAndFlush(comment);
+        Long writerId = writer.getId();
+
+        // Get all the commentList where writer equals to writerId
+        defaultCommentShouldBeFound("writerId.equals=" + writerId);
+
+        // Get all the commentList where writer equals to writerId + 1
+        defaultCommentShouldNotBeFound("writerId.equals=" + (writerId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCommentsByMemoryIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        Memory memory = comment.getMemory();
+        commentRepository.saveAndFlush(comment);
+        Long memoryId = memory.getId();
+
+        // Get all the commentList where memory equals to memoryId
+        defaultCommentShouldBeFound("memoryId.equals=" + memoryId);
+
+        // Get all the commentList where memory equals to memoryId + 1
+        defaultCommentShouldNotBeFound("memoryId.equals=" + (memoryId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultCommentShouldBeFound(String filter) throws Exception {
+        restCommentMockMvc.perform(get("/api/comments?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(comment.getId().intValue())))
+            .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT)));
+
+        // Check, that the count call also returns 1
+        restCommentMockMvc.perform(get("/api/comments/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultCommentShouldNotBeFound(String filter) throws Exception {
+        restCommentMockMvc.perform(get("/api/comments?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restCommentMockMvc.perform(get("/api/comments/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
+    }
+
     @Test
     @Transactional
     public void getNonExistingComment() throws Exception {

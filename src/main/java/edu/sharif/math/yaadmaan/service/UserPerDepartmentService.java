@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadmaan.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 
 import java.util.Optional;
 
@@ -45,4 +46,6 @@ public interface UserPerDepartmentService extends ServiceWithCurrentUserCrudAcce
     void delete(Long id);
 
     UserPerDepartmentDTO getCurrentUserInDep(Long depid);
+
+    MyUserPerDepartmentStatsDTO getCurrentUserStatsInDep(Long depId);
 }

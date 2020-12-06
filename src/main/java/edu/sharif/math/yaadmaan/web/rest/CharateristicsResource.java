@@ -4,6 +4,8 @@ import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
 import edu.sharif.math.yaadmaan.service.CharateristicsService;
 import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
 import edu.sharif.math.yaadmaan.service.dto.CharateristicsDTO;
+import edu.sharif.math.yaadmaan.service.dto.CharateristicsCriteria;
+import edu.sharif.math.yaadmaan.service.CharateristicsQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +45,11 @@ public class CharateristicsResource {
 
     private final CharateristicsService charateristicsService;
 
-    public CharateristicsResource(CharateristicsService charateristicsService) {
+    private final CharateristicsQueryService charateristicsQueryService;
+
+    public CharateristicsResource(CharateristicsService charateristicsService, CharateristicsQueryService charateristicsQueryService) {
         this.charateristicsService = charateristicsService;
+        this.charateristicsQueryService = charateristicsQueryService;
     }
 
     /**
@@ -90,14 +96,27 @@ public class CharateristicsResource {
      * {@code GET  /charateristics} : get all the charateristics.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of charateristics in body.
      */
     @GetMapping("/charateristics")
-    public ResponseEntity<List<CharateristicsDTO>> getAllCharateristics(Pageable pageable) {
-        log.debug("REST request to get a page of Charateristics");
-        Page<CharateristicsDTO> page = charateristicsService.findAll(pageable);
+    public ResponseEntity<List<CharateristicsDTO>> getAllCharateristics(CharateristicsCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Charateristics by criteria: {}", criteria);
+        Page<CharateristicsDTO> page = charateristicsQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /charateristics/count} : count all the charateristics.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/charateristics/count")
+    public ResponseEntity<Long> countCharateristics(CharateristicsCriteria criteria) {
+        log.debug("REST request to count Charateristics by criteria: {}", criteria);
+        return ResponseEntity.ok().body(charateristicsQueryService.countByCriteria(criteria));
     }
 
     /**

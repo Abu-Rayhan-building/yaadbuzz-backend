@@ -1,5 +1,7 @@
 package edu.sharif.math.yaadmaan.repository;
 
+import edu.sharif.math.yaadmaan.domain.Memory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -13,12 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Spring Data repository for the Memory entity.
+ * Spring Data  repository for the Memory entity.
  */
 @Repository
-public interface MemoryRepository extends JpaRepository<Memory, Long> {
+public interface MemoryRepository extends JpaRepository<Memory, Long>, JpaSpecificationExecutor<Memory> {
 
-    @Query(value = "select distinct memory from Memory memory left join fetch memory.tageds", countQuery = "select count(distinct memory) from Memory memory")
+    @Query(value = "select distinct memory from Memory memory left join fetch memory.tageds",
+        countQuery = "select count(distinct memory) from Memory memory")
     Page<Memory> findAllWithEagerRelationships(Pageable pageable);
 
     @Query("select distinct memory from Memory memory left join fetch memory.tageds")

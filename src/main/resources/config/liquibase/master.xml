@@ -33,4 +33,10 @@
     <include file="config/liquibase/changelog/20201115102020_added_entity_constraints_Charateristics.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20201204210023_added_entity_Memorial.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201204210023_added_entity_constraints_Memorial.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201206140440_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201206165631_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201207024823_changelog.xml" relativeToChangelogFile="false"/>
+    
 </databaseChangeLog>

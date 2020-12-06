@@ -1,0 +1,25 @@
+{
+  "yaadmaanApp": {
+    "memorial": {
+      "home": {
+        "title": "Memorials",
+        "createLabel": "Create a new Memorial",
+        "createOrEditLabel": "Create or edit a Memorial",
+        "notFound": "No Memorials found"
+      },
+      "created": "A new Memorial is created with identifier {{ param }}",
+      "updated": "A Memorial is updated with identifier {{ param }}",
+      "deleted": "A Memorial is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Memorial {{ id }}?"
+      },
+      "detail": {
+        "title": "Memorial"
+      },
+      "anonymousComment": "Anonymous Comment",
+      "notAnonymousComment": "Not Anonymous Comment",
+      "writer": "Writer",
+      "recipient": "Recipient"
+    }
+  }
+}

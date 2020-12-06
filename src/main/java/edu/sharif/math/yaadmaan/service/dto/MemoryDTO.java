@@ -1,5 +1,6 @@
 package edu.sharif.math.yaadmaan.service.dto;
 
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,8 +15,6 @@ public class MemoryDTO implements Serializable {
     private String title;
 
     private Boolean isPrivate;
-
-    private Boolean isAnnonymos;
 
 
     private Long textId;
@@ -47,14 +46,6 @@ public class MemoryDTO implements Serializable {
 
     public void setIsPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
-    }
-
-    public Boolean isIsAnnonymos() {
-        return isAnnonymos;
-    }
-
-    public void setIsAnnonymos(Boolean isAnnonymos) {
-        this.isAnnonymos = isAnnonymos;
     }
 
     public Long getTextId() {
@@ -113,7 +104,6 @@ public class MemoryDTO implements Serializable {
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
             ", isPrivate='" + isIsPrivate() + "'" +
-            ", isAnnonymos='" + isIsAnnonymos() + "'" +
             ", textId=" + getTextId() +
             ", writerId=" + getWriterId() +
             ", tageds='" + getTageds() + "'" +

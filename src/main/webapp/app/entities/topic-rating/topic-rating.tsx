@@ -106,7 +106,7 @@ export const TopicRating = (props: ITopicRatingProps) => {
                     <Translate contentKey="yaadmaanApp.topicRating.repetitions">Repetitions</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.topicRating.rating">Rating</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadmaanApp.topicRating.topic">Topic</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
                     <Translate contentKey="yaadmaanApp.topicRating.user">User</Translate> <FontAwesomeIcon icon="sort" />
@@ -123,7 +123,7 @@ export const TopicRating = (props: ITopicRatingProps) => {
                       </Button>
                     </td>
                     <td>{topicRating.repetitions}</td>
-                    <td>{topicRating.ratingId ? <Link to={`topic/${topicRating.ratingId}`}>{topicRating.ratingId}</Link> : ''}</td>
+                    <td>{topicRating.topicId ? <Link to={`topic/${topicRating.topicId}`}>{topicRating.topicId}</Link> : ''}</td>
                     <td>{topicRating.userId ? <Link to={`user-per-department/${topicRating.userId}`}>{topicRating.userId}</Link> : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">

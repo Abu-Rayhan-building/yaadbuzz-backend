@@ -1,5 +1,6 @@
 package edu.sharif.math.yaadmaan.service.dto;
 
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
@@ -12,7 +13,7 @@ public class TopicRatingDTO implements Serializable {
     private Integer repetitions;
 
 
-    private Long ratingId;
+    private Long topicId;
 
     private Long userId;
     
@@ -32,12 +33,12 @@ public class TopicRatingDTO implements Serializable {
         this.repetitions = repetitions;
     }
 
-    public Long getRatingId() {
-        return ratingId;
+    public Long getTopicId() {
+        return topicId;
     }
 
-    public void setRatingId(Long topicId) {
-        this.ratingId = topicId;
+    public void setTopicId(Long topicId) {
+        this.topicId = topicId;
     }
 
     public Long getUserId() {
@@ -71,7 +72,7 @@ public class TopicRatingDTO implements Serializable {
         return "TopicRatingDTO{" +
             "id=" + getId() +
             ", repetitions=" + getRepetitions() +
-            ", ratingId=" + getRatingId() +
+            ", topicId=" + getTopicId() +
             ", userId=" + getUserId() +
             "}";
     }

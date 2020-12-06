@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+	<changeSet author="hosseinmp76 (generated)"
+		id="1607250890933-2">
+		<createTable tableName="comment_picture">
+			<column name="comment_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="picture_id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="hosseinmp76 (generated)"
+		id="1607250890933-8">
+		<addUniqueConstraint columnNames="picture_id"
+			constraintName="UK_b5v65qrh2kpf1w4aq29yctuyc"
+			tableName="comment_picture" />
+	</changeSet>
+	<changeSet author="hosseinmp76 (generated)"
+		id="1607250890933-10">
+		<addForeignKeyConstraint
+			baseColumnNames="picture_id" baseTableName="comment_picture"
+			constraintName="FK9xaulihax1y39evjf5pkghn0n" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="picture" validate="true" />
+	</changeSet>
+
+	<changeSet author="hosseinmp76 (generated)"
+		id="1607250890933-13">
+		<addForeignKeyConstraint
+			baseColumnNames="comment_id" baseTableName="comment_picture"
+			constraintName="FKgud53vurgcliqkh1rmnk4080g" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="comment" validate="true" />
+	</changeSet>
+
+	<changeSet author="hosseinmp76 (generated)"
+		id="1607250890933-17">
+		<dropForeignKeyConstraint
+			baseTableName="picture" constraintName="fk_picture_comment_id" />
+	</changeSet>
+
+</databaseChangeLog>

@@ -1,5 +1,11 @@
 package edu.sharif.math.yaadmaan.web.rest;
 
+import edu.sharif.math.yaadmaan.service.MemoryService;
+import edu.sharif.math.yaadmaan.web.rest.errors.BadRequestAlertException;
+import edu.sharif.math.yaadmaan.service.dto.MemoryDTO;
+import edu.sharif.math.yaadmaan.service.dto.MemoryCriteria;
+import edu.sharif.math.yaadmaan.service.MemoryQueryService;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -9,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.sharif.math.yaadmaan.security.AuthoritiesConstants;
@@ -43,8 +50,11 @@ public class MemoryResource {
 
     private final MemoryService memoryService;
 
-    public MemoryResource(MemoryService memoryService) {
+    private final MemoryQueryService memoryQueryService;
+
+    public MemoryResource(MemoryService memoryService, MemoryQueryService memoryQueryService) {
         this.memoryService = memoryService;
+        this.memoryQueryService = memoryQueryService;
     }
 
     /**
@@ -91,20 +101,27 @@ public class MemoryResource {
      * {@code GET  /memories} : get all the memories.
      *
      * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of memories in body.
      */
     @GetMapping("/memories")
-    public ResponseEntity<List<MemoryDTO>> getAllMemories(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get a page of Memories");
-        Page<MemoryDTO> page;
-        if (eagerload) {
-            page = memoryService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = memoryService.findAll(pageable);
-        }
+    public ResponseEntity<List<MemoryDTO>> getAllMemories(MemoryCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Memories by criteria: {}", criteria);
+        Page<MemoryDTO> page = memoryQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /memories/count} : count all the memories.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/memories/count")
+    public ResponseEntity<Long> countMemories(MemoryCriteria criteria) {
+        log.debug("REST request to count Memories by criteria: {}", criteria);
+        return ResponseEntity.ok().body(memoryQueryService.countByCriteria(criteria));
     }
 
     /**

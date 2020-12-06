@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import edu.sharif.math.yaadmaan.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadmaan.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadmaan.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,4 +51,9 @@ public interface DepartmentService extends ServiceWithCurrentUserCrudAccess{
     List<DepartmentDTO> getMyDeps();
 
     Page<UserPerDepartmentDTO> getDepartmentUsers(Long id, Pageable pageable);
+
+
+    MyUserPerDepartmentStatsDTO getMyStatsInDep(Long depId);
+
+    List<UserPerDepartmentDTO> getAllDepartmentUsers(Long depid);
 }

@@ -1,5 +1,7 @@
 package edu.sharif.math.yaadmaan.repository;
 
+import edu.sharif.math.yaadmaan.domain.UserPerDepartment;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -14,12 +16,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Spring Data repository for the UserPerDepartment entity.
+ * Spring Data  repository for the UserPerDepartment entity.
  */
 @SuppressWarnings("unused")
 @Repository
-public interface UserPerDepartmentRepository
-	extends JpaRepository<UserPerDepartment, Long> {
+public interface UserPerDepartmentRepository extends JpaRepository<UserPerDepartment, Long>, JpaSpecificationExecutor<UserPerDepartment> {
 
     @Query("select userPerDepartment from UserPerDepartment userPerDepartment where userPerDepartment.realUser.login = ?#{principal.username}")
     List<UserPerDepartment> findByRealUserIsCurrentUser();
@@ -28,7 +29,11 @@ public interface UserPerDepartmentRepository
     Page<UserPerDepartment> findByDepatment(@Param("id") Long id,
 	    Pageable pageable);
 
+    @Query("select userPerDepartment from UserPerDepartment userPerDepartment where userPerDepartment.department.id = :id")
+    List<UserPerDepartment> findByDepatment(@Param("id") Long id);
+    
     @Query("select userPerDepartment from UserPerDepartment userPerDepartment where userPerDepartment.department.id = :depid and userPerDepartment.realUser.login = ?#{principal.username}")
     UserPerDepartment getCurrentUserInDep(Long depid);
+
 
 }

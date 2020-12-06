@@ -19,7 +19,7 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface ITopicRatingUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const TopicRatingUpdate = (props: ITopicRatingUpdateProps) => {
-  const [ratingId, setRatingId] = useState('0');
+  const [topicId, setTopicId] = useState('0');
   const [userId, setUserId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
@@ -89,10 +89,10 @@ export const TopicRatingUpdate = (props: ITopicRatingUpdateProps) => {
                 <AvField id="topic-rating-repetitions" type="string" className="form-control" name="repetitions" />
               </AvGroup>
               <AvGroup>
-                <Label for="topic-rating-rating">
-                  <Translate contentKey="yaadmaanApp.topicRating.rating">Rating</Translate>
+                <Label for="topic-rating-topic">
+                  <Translate contentKey="yaadmaanApp.topicRating.topic">Topic</Translate>
                 </Label>
-                <AvInput id="topic-rating-rating" type="select" className="form-control" name="ratingId" required>
+                <AvInput id="topic-rating-topic" type="select" className="form-control" name="topicId" required>
                   {topics
                     ? topics.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
