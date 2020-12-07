@@ -8,9 +8,17 @@ services:
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_DATASOURCE_URL=jdbc:postgresql://yaadmaan-postgresql:5432/yaadmaan
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-    ports:
-      - 8080:8080
+      - VIRTUAL_HOST=admin.yaadbuzz.ir
+
   yaadmaan-postgresql:
     extends:
       file: postgresql.yml
       service: yaadmaan-postgresql
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
