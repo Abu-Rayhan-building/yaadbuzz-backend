@@ -59,7 +59,7 @@ management:
 
 spring:
   application:
-    name: yaadmaan
+    name: yaadbuzz_backend
   profiles:
     # The commented value for `active` can be replaced with valid Spring profiles to load.
     # Otherwise, it will be filled in by gradle when building the JAR file
@@ -99,13 +99,13 @@ spring:
     allow-bean-definition-overriding: true
   task:
     execution:
-      thread-name-prefix: yaadmaan-task-
+      thread-name-prefix: yaadbuzz-backend-task-
       pool:
         core-size: 2
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: yaadmaan-scheduling-
+      thread-name-prefix: yaadbuzz-backend-scheduling-
       pool:
         size: 2
   thymeleaf:
@@ -133,7 +133,7 @@ info:
 
 jhipster:
   clientApp:
-    name: 'yaadmaanApp'
+    name: 'yaadbuzzBackendApp'
   # By default CORS is disabled. Uncomment to enable.
   # cors:
   #     allowed-origins: "*"
@@ -143,17 +143,17 @@ jhipster:
   #     allow-credentials: true
   #     max-age: 1800
   mail:
-    from: yaadmaan@localhost
+    from: yaadbuzz_backend@localhost
   swagger:
     default-include-pattern: /api/.*
-    title: yaadmaan API
-    description: yaadmaan API documentation
-    version: 0.2.0
+    title: yaadbuzz_backend API
+    description: yaadbuzz_backend API documentation
+    version: 0.3.0
     terms-of-service-url:
     contact-name:
     contact-url:
     contact-email:
-    license: unlicensed
+    license: AGPL
     license-url:
 # ===================================================================
 # Application specific properties

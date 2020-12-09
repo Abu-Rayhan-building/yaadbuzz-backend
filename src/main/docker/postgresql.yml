@@ -1,11 +1,11 @@
 version: '2'
 services:
-  yaadmaan-postgresql:
+  yaadbuzz-postgresql:
     image: postgres:12.3
     # volumes:
-    #     - ~/volumes/jhipster/yaadmaan/postgresql/:/var/lib/postgresql/data/
+    #     - ~/volumes/jhipster/yaadbuzz/postgresql/:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=yaadmaan
+      - POSTGRES_USER=yaadbuzz
       - POSTGRES_PASSWORD=
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports:

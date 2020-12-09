@@ -3,7 +3,7 @@ jib {
         image = "adoptopenjdk:14-jre-hotspot"
     }
     to {
-        image = "yaadmaan:latest"
+        image = "yaadbuzz_backend:latest"
     }
     container {
         entrypoint = ["bash", "-c", "/entrypoint.sh"]

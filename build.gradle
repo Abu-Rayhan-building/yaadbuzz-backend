@@ -6,7 +6,6 @@ buildscript {
         maven { url "https://repo.spring.io/plugins-release" }
     }
     dependencies {
-        classpath "gradle.plugin.com.heroku.sdk:heroku-gradle:1.0.4"
         //jhipster-needle-gradle-buildscript-dependency - JHipster will add additional gradle build script plugins here
     }
 }
@@ -29,8 +28,8 @@ plugins {
     //jhipster-needle-gradle-plugins - JHipster will add additional gradle plugins here
 }
 
-group = "edu.sharif.math.yaadmaan"
-version = "0.1.0-SNAPSHOT"
+group = "edu.sharif.math.yaadbuzz"
+version = "0.3.0-SNAPSHOT"
 
 description = ""
 
@@ -40,8 +39,6 @@ assert System.properties["java.specification.version"] == "14"
 
 apply from: "gradle/docker.gradle"
 apply from: "gradle/sonar.gradle"
-
-apply from: 'gradle/heroku.gradle'
 //jhipster-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
 
 if (project.hasProperty("prod") || project.hasProperty("gae")) {
@@ -91,7 +88,7 @@ classpath {
 defaultTasks "bootRun"
 
 springBoot {
-    mainClassName = "edu.sharif.math.yaadmaan.YaadmaanApp"
+    mainClassName = "edu.sharif.math.yaadbuzz.YaadbuzzBackendApp"
 }
 
 test {
@@ -152,7 +149,7 @@ liquibase {
             username "heartstonedb"
             password "heartstonedb"
             changeLogFile "src/main/resources/config/liquibase/master.xml"
-            referenceUrl "hibernate:spring:edu.sharif.math.yaadmaan.domain?dialect=io.github.jhipster.domain.util.FixedPostgreSQL10Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+            referenceUrl "hibernate:spring:edu.sharif.math.yaadbuzz.domain?dialect=io.github.jhipster.domain.util.FixedPostgreSQL10Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
             defaultSchemaName ""
             logLevel "debug"
             classpath "src/main/resources/"
@@ -163,7 +160,7 @@ liquibase {
             username "heartstonedb"
             password "heartstonedb"
             changeLogFile project.ext.diffChangelogFile
-            referenceUrl "hibernate:spring:edu.sharif.math.yaadmaan.domain?dialect=io.github.jhipster.domain.util.FixedPostgreSQL10Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+            referenceUrl "hibernate:spring:edu.sharif.math.yaadbuzz.domain?dialect=io.github.jhipster.domain.util.FixedPostgreSQL10Dialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
             defaultSchemaName ""
             logLevel "debug"
             classpath "$buildDir/classes/java/main"
@@ -283,9 +280,6 @@ dependencies {
     testImplementation "com.tngtech.archunit:archunit-junit5-api:${archunit_junit5_version}"
     testRuntimeOnly "com.tngtech.archunit:archunit-junit5-engine:${archunit_junit5_version}"
     testImplementation "com.h2database:h2"
-    liquibaseRuntime "com.h2database:h2"
-    implementation "org.springframework.cloud:spring-cloud-localconfig-connector"
-    implementation "org.springframework.cloud:spring-cloud-heroku-connector"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 

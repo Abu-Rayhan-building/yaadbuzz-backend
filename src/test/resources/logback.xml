@@ -4,7 +4,7 @@
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <logger name="edu.sharif.math.yaadmaan" level="INFO"/>
+    <logger name="edu.sharif.math.yaadbuzz" level="INFO"/>
 
     <logger name="io.github.jhipster" level="WARN"/>
 

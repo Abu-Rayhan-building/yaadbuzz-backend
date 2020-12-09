@@ -1,9 +1,9 @@
 {
-  "name": "yaadmaan",
+  "name": "yaadbuzz-backend",
   "version": "0.0.1-SNAPSHOT",
-  "description": "Description for yaadmaan",
+  "description": "Description for yaadbuzz_backend",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "AGPL",
   "cacheDirectories": [
     "node_modules"
   ],
