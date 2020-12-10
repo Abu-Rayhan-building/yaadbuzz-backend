@@ -6,7 +6,7 @@
     },
     "jhipsterVersion": "6.10.5",
     "applicationType": "monolith",
-    "baseName": "yaadbuzz_backend",
+    "baseName": "yaadbuzz",
     "packageName": "edu.sharif.math.yaadbuzz",
     "packageFolder": "edu/sharif/math/yaadbuzz",
     "serverPort": "8080",

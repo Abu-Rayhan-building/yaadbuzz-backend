@@ -33,7 +33,7 @@ public class YaadbuzzBackendApp {
     }
 
     /**
-     * Initializes yaadbuzz_backend.
+     * Initializes yaadbuzz.
      * <p>
      * Spring profiles can be configured with a program argument --spring.profiles.active=your-active-profile
      * <p>

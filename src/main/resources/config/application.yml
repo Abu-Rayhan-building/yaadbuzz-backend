@@ -59,7 +59,7 @@ management:
 
 spring:
   application:
-    name: yaadbuzz_backend
+    name: yaadbuzz
   profiles:
     # The commented value for `active` can be replaced with valid Spring profiles to load.
     # Otherwise, it will be filled in by gradle when building the JAR file
@@ -99,13 +99,13 @@ spring:
     allow-bean-definition-overriding: true
   task:
     execution:
-      thread-name-prefix: yaadbuzz-backend-task-
+      thread-name-prefix: yaadbuzz-task-
       pool:
         core-size: 2
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: yaadbuzz-backend-scheduling-
+      thread-name-prefix: yaadbuzz-scheduling-
       pool:
         size: 2
   thymeleaf:
@@ -143,11 +143,11 @@ jhipster:
   #     allow-credentials: true
   #     max-age: 1800
   mail:
-    from: yaadbuzz_backend@localhost
+    from: yaadbuzz@localhost
   swagger:
     default-include-pattern: /api/.*
-    title: yaadbuzz_backend API
-    description: yaadbuzz_backend API documentation
+    title: yaadbuzz API
+    description: yaadbuzz API documentation
     version: 0.3.0
     terms-of-service-url:
     contact-name:

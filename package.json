@@ -1,7 +1,7 @@
 {
-  "name": "yaadbuzz-backend",
+  "name": "yaadbuzz",
   "version": "0.0.1-SNAPSHOT",
-  "description": "Description for yaadbuzz_backend",
+  "description": "Description for yaadbuzz",
   "private": true,
   "license": "AGPL",
   "cacheDirectories": [
