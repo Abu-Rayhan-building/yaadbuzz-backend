@@ -21,6 +21,6 @@ services:
     restart: always
     volumes:
       - ../../../build/resources/main/static:/data/admin
-      - ../../../../yaadmaan-frontend/out:/data/panel
+      - ../../../../yaadbuzz-frontend/out:/data/panel
     ports:
       - 80:80
