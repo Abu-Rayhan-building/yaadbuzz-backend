@@ -20,8 +20,6 @@ services:
       context: ./web
     restart: always
     volumes:
-      - workshop_media_volume:/home/app/workshop_media
-      - workshop_static_volume:/home/app/workshop_staticfiles
       - ../../../build/resources/main/static:/data/admin
       - ../../../../yaadmaan-frontend/build:/data/panel
     ports:
