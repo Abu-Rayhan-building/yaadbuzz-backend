@@ -14,3 +14,15 @@ services:
     extends:
       file: postgresql.yml
       service: yaadbuzz-postgresql
+
+  webserver:
+    build:
+      context: ./web
+    restart: always
+    volumes:
+      - workshop_media_volume:/home/app/workshop_media
+      - workshop_static_volume:/home/app/workshop_staticfiles
+      - ../../../build/resources/main/static:/data/admin
+      - ../../../../yaadmaan-frontend/build:/data/panel
+    ports:
+      - 80:80
