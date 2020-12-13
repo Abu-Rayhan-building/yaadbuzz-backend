@@ -8,9 +8,17 @@ services:
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_DATASOURCE_URL=jdbc:postgresql://yaadbuzz-postgresql:5432/yaadbuzz
       - JHIPSTER_SLEEP=3 # gives time for other services to boot before the application
-    ports:
-      - 8080:8080
   yaadbuzz-postgresql:
     extends:
       file: postgresql.yml
       service: yaadbuzz-postgresql
+
+  webserver:
+    build:
+      context: ./web
+    restart: always
+    volumes:
+      - ../../../build/resources/main/static:/data/admin
+      - ../../../../yaadbuzz-frontend/out:/data/panel
+    ports:
+      - 80:80
