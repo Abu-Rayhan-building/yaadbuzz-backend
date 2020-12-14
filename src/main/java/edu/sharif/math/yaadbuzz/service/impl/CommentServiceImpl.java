@@ -16,6 +16,7 @@ import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.MemoryService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentUpdateUDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.CommentMapper;
 
 /**
@@ -103,8 +104,22 @@ public class CommentServiceImpl implements CommentService {
 	    if (!com.get().getMemoryId().equals(commentDTO.getMemoryId())) {
 		throw new RuntimeException("bad req in CommentDTO save");
 	    }
+	    if (!com.get().getWriterId().equals(commentDTO.getWriterId())) {
+		throw new RuntimeException("bad req in CommentDTO save");
+	    }
 	}
 	Comment comment = this.commentMapper.toEntity(commentDTO);
+	comment = this.commentRepository.save(comment);
+	return this.commentMapper.toDto(comment);
+    }
+
+    @Override
+    public CommentDTO save(final CommentUpdateUDTO commentUpdateReqDTO) {
+	this.log.debug("Request to save Comment : {}", commentUpdateReqDTO);
+	var com = this.findOne(commentUpdateReqDTO.getId()).get();
+	com.setText(commentUpdateReqDTO.getText());
+	com.setPictures(commentUpdateReqDTO.getPictures());
+	Comment comment = this.commentMapper.toEntity(com);
 	comment = this.commentRepository.save(comment);
 	return this.commentMapper.toDto(comment);
     }

@@ -10,7 +10,6 @@ public class MemorialDTO implements Serializable {
     
     private Long id;
 
-
     private Long anonymousCommentId;
 
     private Long notAnonymousCommentId;

@@ -33,7 +33,11 @@ import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.DepartmentCreateUDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.DepartmentWiteUPDCreateUDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.DepartmentWithUserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.UserPerDepartmentUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -140,19 +144,21 @@ public class DepartmentNotCrudResource {
 	final var d = this.departmentService.getMyDeps();
 	return new ResponseEntity<>(d, HttpStatus.OK);
     }
-    
+
     @GetMapping("department/{departmentId}/my-stats")
     public ResponseEntity<MyUserPerDepartmentStatsDTO> getMyUPDWithStats(
-	    @PathVariable final Long departmentId
-	    ) {
+	    @PathVariable final Long departmentId) {
 	final var d = this.departmentService.getMyStatsInDep(departmentId);
 	return new ResponseEntity<>(d, HttpStatus.OK);
     }
+
     @PostMapping("department/{departmentId}/join")
     public ResponseEntity<DepartmentDTO> join(
 	    @PathVariable final Long departmentId,
 	    @RequestBody final String password,
-	    @RequestBody final UserPerDepartmentDTO userPerDepartmentDTO) {
+	    @RequestBody final UserPerDepartmentUDTO userPerDepartmentDepJoinReqDTO) {
+	UserPerDepartmentDTO userPerDepartmentDTO = userPerDepartmentDepJoinReqDTO
+		.build();
 	userPerDepartmentDTO.setDepartmentId(departmentId);
 	final Optional<User> isUser = this.userService.getUserWithAuthorities();
 	userPerDepartmentDTO.setRealUserId(isUser.get().getId());
@@ -172,26 +178,15 @@ public class DepartmentNotCrudResource {
      */
     @PostMapping("/department/create")
     public ResponseEntity<DepartmentWithUserPerDepartmentDTO> createDepartment(
-	    @Valid @RequestBody DepartmentWithUserPerDepartmentDTO departmentWithUserPerDepartmentDTO)
+	    @Valid @RequestBody DepartmentWiteUPDCreateUDTO departmentWiteUPDCreateUDTO)
 	    throws URISyntaxException {
 	log.debug("REST request to save Department : {}",
-		departmentWithUserPerDepartmentDTO);
-	if (departmentWithUserPerDepartmentDTO.getDepartmentDTO()
-		.getId() != null
-		|| departmentWithUserPerDepartmentDTO.getUserPerDepartmentDTO()
-			.getId() != null
-		|| departmentWithUserPerDepartmentDTO.getUserPerDepartmentDTO()
-			.getDepartmentId() != null) {
-	    throw new BadRequestAlertException(
-		    "A new department or upd or udp's dep's id cannot already have an ID",
-		    ENTITY_NAME, "idexists");
-	}
-	DepartmentDTO res = departmentService
-		.save(departmentWithUserPerDepartmentDTO.getDepartmentDTO());
-	departmentWithUserPerDepartmentDTO.getUserPerDepartmentDTO()
-		.setDepartmentId(res.getId());
-	var res2 = userPerDepartmentService.save(
-		departmentWithUserPerDepartmentDTO.getUserPerDepartmentDTO());
+		departmentWiteUPDCreateUDTO);
+	var input = departmentWiteUPDCreateUDTO.build();
+	DepartmentDTO res = departmentService.save(input.getDepartmentDTO());
+	input.getUserPerDepartmentDTO().setDepartmentId(res.getId());
+	var res2 = userPerDepartmentService
+		.save(input.getUserPerDepartmentDTO());
 
 	var result = new DepartmentWithUserPerDepartmentDTO();
 	result.setDepartmentDTO(res);
@@ -203,29 +198,6 @@ public class DepartmentNotCrudResource {
 			true, ENTITY_NAME,
 			result.getDepartmentDTO().getId().toString()))
 		.body(result);
-    }
-
-}
-
-class DepartmentWithUserPerDepartmentDTO implements Serializable {
-    DepartmentDTO departmentDTO;
-    UserPerDepartmentDTO userPerDepartmentDTO;
-
-    public DepartmentDTO getDepartmentDTO() {
-	return departmentDTO;
-    }
-
-    public void setDepartmentDTO(DepartmentDTO departmentDTO) {
-	this.departmentDTO = departmentDTO;
-    }
-
-    public UserPerDepartmentDTO getUserPerDepartmentDTO() {
-	return userPerDepartmentDTO;
-    }
-
-    public void setUserPerDepartmentDTO(
-	    UserPerDepartmentDTO userPerDepartmentDTO) {
-	this.userPerDepartmentDTO = userPerDepartmentDTO;
     }
 
 }

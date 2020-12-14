@@ -9,11 +9,9 @@ public class UserPerDepartmentDTO implements Serializable {
     
     private Long id;
 
-    
     private String nicName;
 
     private String bio;
-
 
     private Long avatarId;
 

@@ -32,6 +32,8 @@ import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.UserPerDepartmentUDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.UserPerDepartmentWithIdUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -120,25 +122,30 @@ public class UserPerDepartmentNotCrudResource {
      */
     @PutMapping("/user-per-department")
     public ResponseEntity<UserPerDepartmentDTO> updateUserPerDepartment(
-	    @Valid @RequestBody final UserPerDepartmentDTO userPerDepartmentDTO)
+	    @Valid @RequestBody final UserPerDepartmentWithIdUDTO departmentWithIdUDTO)
 	    throws URISyntaxException {
 	this.log.debug("REST request to update UserPerDepartment : {}",
-		userPerDepartmentDTO);
-	if (userPerDepartmentDTO.getId() == null) {
+		departmentWithIdUDTO);
+	if (departmentWithIdUDTO.getId() == null) {
 	    throw new BadRequestAlertException("Invalid id",
 		    UserPerDepartmentNotCrudResource.ENTITY_NAME, "idnull");
 	}
 	if (!this.userPerDepartmentService
-		.currentuserHasUpdateAccess(userPerDepartmentDTO.getId())) {
+		.currentuserHasUpdateAccess(departmentWithIdUDTO.getId())) {
 	    throw new AccessDeniedException("cant update upd");
 	}
+	var old = this.userPerDepartmentService.findOne(departmentWithIdUDTO.getId()).get();
+	var newUPD = departmentWithIdUDTO.build();
+	newUPD.setDepartmentId(old.getDepartmentId());
+	newUPD.setRealUserId(old.getRealUserId());
+	
 	final UserPerDepartmentDTO result = this.userPerDepartmentService
-		.save(userPerDepartmentDTO);
+		.save(newUPD);
 	return ResponseEntity.ok()
 		.headers(HeaderUtil.createEntityUpdateAlert(
 			this.applicationName, true,
 			UserPerDepartmentNotCrudResource.ENTITY_NAME,
-			userPerDepartmentDTO.getId().toString()))
+			newUPD.getId().toString()))
 		.body(result);
     }
     

@@ -45,7 +45,9 @@ public interface UserPerDepartmentService extends ServiceWithCurrentUserCrudAcce
      */
     void delete(Long id);
 
-    UserPerDepartmentDTO getCurrentUserInDep(Long depid);
+    UserPerDepartmentDTO getCurrentUserInDep(Long depId);
 
+    Long getCurrentUserUserPerDepeartmentIdInDep(Long depId) ;
+    
     MyUserPerDepartmentStatsDTO getCurrentUserStatsInDep(Long depId);
 }

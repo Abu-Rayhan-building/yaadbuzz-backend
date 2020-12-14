@@ -29,6 +29,7 @@ import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.MemorialCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.MemorialUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -69,6 +70,7 @@ public class MemorialNotCrudResource {
 	this.userPerDepartmentService = userPerDepartmentService;
     }
 
+    // fuck
     /**
      * {@code POST  /memorials} : Create a new memorial.
      *
@@ -80,15 +82,15 @@ public class MemorialNotCrudResource {
      */
     @PostMapping("/memorial/assign/")
     public ResponseEntity<MemorialDTO> createMemorial(
-	    @Valid @RequestBody final MemorialDTO memorialDTO)
+	    @PathVariable final Long depId,
+	    @Valid @RequestBody final MemorialUDTO memorialUDTO)
 	    throws URISyntaxException {
-	this.log.debug("REST request to save Memorial : {}", memorialDTO);
-	if (memorialDTO.getId() != null) {
-	    throw new BadRequestAlertException(
-		    "A new memorial cannot already have an ID",
-		    MemorialNotCrudResource.ENTITY_NAME, "idexists");
-	}
-	final MemorialDTO result = this.memorialService.save(memorialDTO);
+	this.log.debug("REST request to save Memorial : {}", memorialUDTO);
+	var memeorialDTO = memorialUDTO.build();
+	memeorialDTO.setWriterId(this.userPerDepartmentService
+		.getCurrentUserUserPerDepeartmentIdInDep(depId));
+
+	final MemorialDTO result = this.memorialService.save(memeorialDTO);
 	return ResponseEntity
 		.created(new URI("/api/memorials/" + result.getId()))
 		.headers(HeaderUtil.createEntityCreationAlert(

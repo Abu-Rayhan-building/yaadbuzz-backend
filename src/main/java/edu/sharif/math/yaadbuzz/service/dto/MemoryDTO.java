@@ -16,7 +16,6 @@ public class MemoryDTO implements Serializable {
 
     private Boolean isPrivate;
 
-
     private Long textId;
 
     private Long writerId;

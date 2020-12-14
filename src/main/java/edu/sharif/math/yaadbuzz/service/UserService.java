@@ -276,7 +276,6 @@ public class UserService {
     
     public Long getCurrentUserId() {
         return this.getUserWithoutAuthorities().get().getId();
-
     }
     
     

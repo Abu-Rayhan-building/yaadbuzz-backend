@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -88,5 +89,25 @@ public class TopicRatingServiceImpl implements TopicRatingService {
 		.toEntity(topicRatingDTO);
 	topicRating = this.topicRatingRepository.save(topicRating);
 	return this.topicRatingMapper.toDto(topicRating);
+    }
+
+    @Override
+    public TopicRatingDTO addBallot(Long topicId, Long ballotForUPD) {
+	TopicRatingDTO old = this.findOne(topicId, ballotForUPD)
+		.orElseGet(() -> null);
+	if (old == null) {
+	    old = new TopicRatingDTO();
+	    old.setTopicId(topicId);
+	    old.setUserId(ballotForUPD);
+	    old.setRepetitions(0);
+	}
+	old.setRepetitions(old.getRepetitions() + 1);
+	return this.save(old);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<TopicRatingDTO> findOne(Long topicId, Long ballotForUPD) {
+	return this.topicRatingRepository.findOne(topicId, ballotForUPD).map(this.topicRatingMapper::toDto);
     }
 }
