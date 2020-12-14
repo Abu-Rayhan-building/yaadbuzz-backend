@@ -26,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.sharif.math.yaadbuzz.service.TopicService;
 import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.TopicVoteUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -63,19 +64,16 @@ public class TopicNotCrudResource {
      */
     @PostMapping("/topic")
     public ResponseEntity<TopicDTO> createTopic(@PathVariable final Long depId,
-	    @Valid @RequestBody final TopicDTO topicDTO)
-	    throws URISyntaxException {
-	this.log.debug("REST request to save Topic : {}", topicDTO);
-	if (topicDTO.getId() != null) {
-	    throw new BadRequestAlertException(
-		    "A new topic cannot already have an ID",
-		    TopicNotCrudResource.ENTITY_NAME, "idexists");
-	}
-	if (!this.topicService
-		.currentuserHasCreateAccess(topicDTO.getDepartmentId())) {
+	    @Valid @RequestBody final String title) throws URISyntaxException {
+	this.log.debug("REST request to save Topic : {}", title);
+	
+	if (!this.topicService.currentuserHasCreateAccess(depId)) {
 	    throw new AccessDeniedException("can't create topic upd");
 	}
-	final TopicDTO result = this.topicService.save(topicDTO);
+	var input = new TopicDTO();
+	input.setTitle(title);
+	input.setDepartmentId(depId);
+	final TopicDTO result = this.topicService.save(input);
 	return ResponseEntity.created(new URI("/api/topics/" + result.getId()))
 		.headers(HeaderUtil.createEntityCreationAlert(
 			this.applicationName, true,
@@ -139,18 +137,18 @@ public class TopicNotCrudResource {
      */
     @PostMapping("/topic/vote")
     public ResponseEntity<TopicDTO> vote(@PathVariable final Long depId,
-	    @Valid @RequestBody final TopicDTO topicDTO)
+	    @Valid @RequestBody final TopicVoteUDTO topicVoteUDTO)
 	    throws URISyntaxException {
-	this.log.debug("REST request to save Topic : {}", topicDTO);
-	if (topicDTO.getId() != null) {
+	this.log.debug("REST request to save Topic : {}", topicVoteUDTO);
+	if (topicVoteUDTO.getTopicId() != null) {
 	    throw new BadRequestAlertException(
-		    "A new topic cannot already have an ID",
-		    TopicNotCrudResource.ENTITY_NAME, "idexists");
+		    "no such id",
+		    TopicNotCrudResource.ENTITY_NAME, "idnotexists");
 	}
-	if (!this.topicService.currentuserHasVoteAccess(topicDTO.getId())) {
+	if (!this.topicService.currentuserHasVoteAccess(topicVoteUDTO.getTopicId())) {
 	    throw new AccessDeniedException("can't vote for topic");
 	}
-	final TopicDTO result = this.topicService.save(topicDTO);
+	final TopicDTO result = this.topicService.vote(depId, topicVoteUDTO);
 	return ResponseEntity.created(new URI("/api/topics/" + result.getId()))
 		.headers(HeaderUtil.createEntityCreationAlert(
 			this.applicationName, true,

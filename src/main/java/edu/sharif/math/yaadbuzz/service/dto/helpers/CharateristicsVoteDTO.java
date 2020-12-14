@@ -9,11 +9,8 @@ public class CharateristicsVoteDTO implements Serializable {
     @NotNull
     private String title;
 
-
     private Long userPerDepartmentId;
     
-
-
     public String getTitle() {
         return title;
     }

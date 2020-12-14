@@ -184,4 +184,9 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 		.save(userPerDepartment);
 	return this.userPerDepartmentMapper.toDto(userPerDepartment);
     }
+
+    @Override
+    public Long getCurrentUserUserPerDepeartmentIdInDep(Long depid) {
+	return this.getCurrentUserInDep(depid).getId();
+    }
 }

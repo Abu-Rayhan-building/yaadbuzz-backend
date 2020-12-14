@@ -43,4 +43,8 @@ public interface TopicRatingService extends ServiceWithCurrentUserCrudAccess{
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    TopicRatingDTO addBallot(Long topicId, Long ballotForUPD);
+
+    Optional<TopicRatingDTO> findOne(Long topicId, Long ballotForUPD);
 }

@@ -15,7 +15,6 @@ public class CharateristicsDTO implements Serializable {
 
     private Integer repetation;
 
-
     private Long userPerDepartmentId;
     
     public Long getId() {

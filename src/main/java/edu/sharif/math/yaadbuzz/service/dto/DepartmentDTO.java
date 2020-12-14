@@ -16,7 +16,6 @@ public class DepartmentDTO implements Serializable {
     @NotNull
     private String password;
 
-
     private Long avatarId;
 
     private Long ownerId;

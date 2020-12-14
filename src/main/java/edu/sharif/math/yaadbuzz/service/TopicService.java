@@ -1,11 +1,14 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.TopicVoteUDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 /**
  * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.Topic}.
@@ -54,4 +57,6 @@ public interface TopicService extends ServiceWithCurrentUserCrudAccess{
     boolean currentuserHasVoteAccess(Long id);
 
     boolean currentuserHasCreateAccess(Long departmentId);
+
+    TopicDTO vote(Long depId, @Valid TopicVoteUDTO topicVoteUDTO);
 }

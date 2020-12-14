@@ -64,7 +64,7 @@ public class MemorialServiceImpl implements MemorialService {
         memorialRepository.deleteById(id);
     }
     
-    // funck
+    // fuck
     @Override
     public boolean currentuserHasUpdateAccess(Long id) {
 	// TODO Auto-generated method stub

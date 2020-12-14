@@ -12,7 +12,6 @@ public class TopicRatingDTO implements Serializable {
 
     private Integer repetitions;
 
-
     private Long topicId;
 
     private Long userId;

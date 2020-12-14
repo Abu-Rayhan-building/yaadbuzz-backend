@@ -32,8 +32,11 @@ import edu.sharif.math.yaadbuzz.repository.UserRepository;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.MailService;
 import edu.sharif.math.yaadbuzz.service.MemoryService;
+import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.MemoryUDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.MemoryWithIdUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -86,10 +89,14 @@ public class MemoryNotCrudResource {
 
     private final MemoryService memoryService;
 
+    private final UserPerDepartmentService userPerDepartmentService;
+
     public MemoryNotCrudResource(final DepartmentService departmentService,
 	    final UserService userService, final UserRepository userRepository,
-	    final MailService mailService, final MemoryService memoryService) {
+	    final MailService mailService, final MemoryService memoryService,
+	    final UserPerDepartmentService userPerDepartmentService) {
 	this.memoryService = memoryService;
+	this.userPerDepartmentService = userPerDepartmentService;
     }
 
     /**
@@ -104,18 +111,19 @@ public class MemoryNotCrudResource {
     @PostMapping("/memory")
     public ResponseEntity<MemoryDTO> createMemory(
 	    @PathVariable final Long depId,
-	    @Valid @RequestBody final MemoryDTO memoryDTO)
+	    @Valid @RequestBody final MemoryUDTO memoryUDTO)
 	    throws URISyntaxException {
-	this.log.debug("REST request to save Memory : {}", memoryDTO);
-	if (memoryDTO.getId() != null) {
-	    throw new BadRequestAlertException(
-		    "A new memory cannot already have an ID",
-		    MemoryNotCrudResource.ENTITY_NAME, "idexists");
-	}
+	this.log.debug("REST request to save Memory : {}", memoryUDTO);
 	if (!this.memoryService.currentuserHasCreatAccess(depId)) {
 	    throw new AccessDeniedException("cant create memory");
 	}
-	final MemoryDTO result = this.memoryService.save(memoryDTO);
+	final var input = memoryUDTO.build();
+
+	input.setDepartmentId(depId);
+	input.setWriterId(this.userPerDepartmentService
+		.getCurrentUserUserPerDepeartmentIdInDep(depId));
+
+	final MemoryDTO result = this.memoryService.save(input);
 	return ResponseEntity
 		.created(new URI("/api/memories/" + result.getId()))
 		.headers(HeaderUtil.createEntityCreationAlert(
@@ -209,19 +217,26 @@ public class MemoryNotCrudResource {
      */
     @PutMapping("/memory")
     public ResponseEntity<MemoryDTO> updateMemory(
-	    @Valid @RequestBody final MemoryDTO memoryDTO)
+	    @Valid @RequestBody final MemoryWithIdUDTO memoryWithIdUDTO)
 	    throws URISyntaxException {
-	this.log.debug("REST request to update Memory : {}", memoryDTO);
-	if (memoryDTO.getId() == null) {
+	this.log.debug("REST request to update Memory : {}", memoryWithIdUDTO);
+	if (memoryWithIdUDTO.getId() == null) {
 	    throw new BadRequestAlertException("Invalid id",
 		    MemoryNotCrudResource.ENTITY_NAME, "idnull");
 	}
-	if (!this.memoryService.currentuserHasUpdateAccess(memoryDTO.getId())) {
-	    throw new AccessDeniedException("cant create memory");
+	if (!this.memoryService
+		.currentuserHasUpdateAccess(memoryWithIdUDTO.getId())) {
+	    throw new AccessDeniedException("cant update memory");
 	}
-	final MemoryDTO result = this.memoryService.save(memoryDTO);
+	final var old = this.memoryService.findOne(memoryWithIdUDTO.getId())
+		.get();
+	final var newMem = memoryWithIdUDTO.build();
+	newMem.setDepartmentId(old.getDepartmentId());
+	newMem.setWriterId(old.getWriterId());
+
+	final MemoryDTO result = this.memoryService.save(newMem);
 	return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(
 		this.applicationName, true, MemoryNotCrudResource.ENTITY_NAME,
-		memoryDTO.getId().toString())).body(result);
+		newMem.getId().toString())).body(result);
     }
 }

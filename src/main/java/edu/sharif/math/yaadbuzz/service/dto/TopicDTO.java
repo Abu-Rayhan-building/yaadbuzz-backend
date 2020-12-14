@@ -15,8 +15,8 @@ public class TopicDTO implements Serializable {
     @NotNull
     private String title;
 
-
     private Long departmentId;
+    
     private Set<UserPerDepartmentDTO> voters = new HashSet<>();
     
     public Long getId() {

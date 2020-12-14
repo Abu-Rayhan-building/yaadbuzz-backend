@@ -32,8 +32,11 @@ import edu.sharif.math.yaadbuzz.service.CommentService;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.MailService;
 import edu.sharif.math.yaadbuzz.service.MemoryService;
+import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentCreateUDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentUpdateUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -86,13 +89,16 @@ public class CommentNotCrudResource {
     private final CommentService commentService;
 
     private final MemoryService memoryService;
+    private final UserPerDepartmentService userPerDepartmentService;
 
     public CommentNotCrudResource(final DepartmentService departmentService,
 	    final UserService userService, final UserRepository userRepository,
 	    final MailService mailService, final CommentService commentService,
-	    final MemoryService memoryService) {
+	    final MemoryService memoryService,
+	    UserPerDepartmentService userPerDepartmentService) {
 	this.commentService = commentService;
 	this.memoryService = memoryService;
+	this.userPerDepartmentService = userPerDepartmentService;
     }
 
     /*
@@ -108,26 +114,24 @@ public class CommentNotCrudResource {
      */
     @PostMapping("/comment")
     public ResponseEntity<CommentDTO> createComment(
-	    @PathVariable final Long depId,
-	    @PathVariable final Long memId,
-	    @Valid @RequestBody final CommentDTO commentDTO)
+	    @PathVariable final Long depId, @PathVariable final Long memId,
+	    @Valid @RequestBody final CommentCreateUDTO commentCreateReqDTO)
 	    throws URISyntaxException {
-	this.log.debug("REST request to save Comment : {}", commentDTO);
-	if (commentDTO.getId() != null) {
-	    throw new BadRequestAlertException(
-		    "A new comment cannot already have an ID",
-		    CommentNotCrudResource.ENTITY_NAME, "idexists");
-	}
-	if(!commentDTO.getMemoryId().equals(memId) ) {
-	    throw new BadRequestAlertException(
-		    "bad req createComment",
-		    CommentNotCrudResource.ENTITY_NAME, "idexists");
-	}
-	
+	this.log.debug("REST request to save Comment : {}",
+		commentCreateReqDTO);
+
 	if (!this.commentService.currentuserHasCreateAccess(memId)) {
 	    throw new AccessDeniedException("cant create comment");
 	}
-	final CommentDTO result = this.commentService.save(commentDTO);
+
+	CommentDTO dto = new CommentDTO();
+	dto.setMemoryId(memId);
+	dto.setPictures(commentCreateReqDTO.getPictures());
+	dto.setText(commentCreateReqDTO.getText());
+	var udpid = this.userPerDepartmentService
+		.getCurrentUserUserPerDepeartmentIdInDep(depId);
+	dto.setWriterId(udpid);
+	final CommentDTO result = this.commentService.save(dto);
 	return ResponseEntity
 		.created(new URI("/api/comments/" + result.getId()))
 		.headers(HeaderUtil.createEntityCreationAlert(
@@ -147,7 +151,7 @@ public class CommentNotCrudResource {
     public ResponseEntity<Void> deleteComment(@PathVariable final Long id) {
 	this.log.debug("REST request to delete Comment : {}", id);
 	if (!this.commentService.currentuserHasDeleteAccess(id)) {
-	    throw new AccessDeniedException("cant create comment");
+	    throw new AccessDeniedException("cant delete comment");
 	}
 	this.commentService.delete(id);
 	return ResponseEntity.noContent()
@@ -170,7 +174,7 @@ public class CommentNotCrudResource {
 	    final Pageable pageable) {
 
 	if (!this.memoryService.currentuserHasAccessToComments(memId)) {
-	    throw new AccessDeniedException("cant create comment");
+	    throw new AccessDeniedException("cant get comments");
 	}
 
 	this.log.debug("REST request to get a page of Comments");
@@ -195,20 +199,22 @@ public class CommentNotCrudResource {
      */
     @PutMapping("/comment")
     public ResponseEntity<CommentDTO> updateComment(
-	    @Valid @RequestBody final CommentDTO commentDTO)
+	    @Valid @RequestBody final CommentUpdateUDTO commentUpdateReqDTO)
 	    throws URISyntaxException {
-	this.log.debug("REST request to update Comment : {}", commentDTO);
-	if (commentDTO.getId() == null) {
+	this.log.debug("REST request to update Comment : {}",
+		commentUpdateReqDTO);
+	if (commentUpdateReqDTO.getId() == null) {
 	    throw new BadRequestAlertException("Invalid id",
 		    CommentNotCrudResource.ENTITY_NAME, "idnull");
 	}
-	final var comId = commentDTO.getId();
+
+	final var comId = commentUpdateReqDTO.getId();
 	if (!this.commentService.currentuserHasUpdateAccess(comId)) {
-	    throw new AccessDeniedException("cant create comment");
+	    throw new AccessDeniedException("cant update comment");
 	}
-	final CommentDTO result = this.commentService.save(commentDTO);
+	final CommentDTO result = this.commentService.save(commentUpdateReqDTO);
 	return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(
 		this.applicationName, true, CommentNotCrudResource.ENTITY_NAME,
-		commentDTO.getId().toString())).body(result);
+		result.getId().toString())).body(result);
     }
 }
