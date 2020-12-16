@@ -70,7 +70,6 @@ public class MemorialNotCrudResource {
 	this.userPerDepartmentService = userPerDepartmentService;
     }
 
-    // fuck
     /**
      * {@code POST  /memorials} : Create a new memorial.
      *
@@ -86,11 +85,9 @@ public class MemorialNotCrudResource {
 	    @Valid @RequestBody final MemorialUDTO memorialUDTO)
 	    throws URISyntaxException {
 	this.log.debug("REST request to save Memorial : {}", memorialUDTO);
-	var memeorialDTO = memorialUDTO.build();
-	memeorialDTO.setWriterId(this.userPerDepartmentService
-		.getCurrentUserUserPerDepeartmentIdInDep(depId));
 
-	final MemorialDTO result = this.memorialService.save(memeorialDTO);
+	final MemorialDTO result = this.memorialService.create(depId,
+		memorialUDTO);
 	return ResponseEntity
 		.created(new URI("/api/memorials/" + result.getId()))
 		.headers(HeaderUtil.createEntityCreationAlert(

@@ -75,8 +75,8 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadmaanApp.userPerDepartment.home.createOrEditLabel">
-            <Translate contentKey="yaadmaanApp.userPerDepartment.home.createOrEditLabel">Create or edit a UserPerDepartment</Translate>
+          <h2 id="yaadbuzzApp.userPerDepartment.home.createOrEditLabel">
+            <Translate contentKey="yaadbuzzApp.userPerDepartment.home.createOrEditLabel">Create or edit a UserPerDepartment</Translate>
           </h2>
         </Col>
       </Row>
@@ -96,19 +96,19 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
               ) : null}
               <AvGroup>
                 <Label id="nicNameLabel" for="user-per-department-nicName">
-                  <Translate contentKey="yaadmaanApp.userPerDepartment.nicName">Nic Name</Translate>
+                  <Translate contentKey="yaadbuzzApp.userPerDepartment.nicName">Nic Name</Translate>
                 </Label>
                 <AvField id="user-per-department-nicName" type="text" name="nicName" validate={{}} />
               </AvGroup>
               <AvGroup>
                 <Label id="bioLabel" for="user-per-department-bio">
-                  <Translate contentKey="yaadmaanApp.userPerDepartment.bio">Bio</Translate>
+                  <Translate contentKey="yaadbuzzApp.userPerDepartment.bio">Bio</Translate>
                 </Label>
                 <AvField id="user-per-department-bio" type="text" name="bio" />
               </AvGroup>
               <AvGroup>
                 <Label for="user-per-department-avatar">
-                  <Translate contentKey="yaadmaanApp.userPerDepartment.avatar">Avatar</Translate>
+                  <Translate contentKey="yaadbuzzApp.userPerDepartment.avatar">Avatar</Translate>
                 </Label>
                 <AvInput id="user-per-department-avatar" type="select" className="form-control" name="avatarId">
                   <option value="" key="0" />
@@ -123,7 +123,7 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
               </AvGroup>
               <AvGroup>
                 <Label for="user-per-department-realUser">
-                  <Translate contentKey="yaadmaanApp.userPerDepartment.realUser">Real User</Translate>
+                  <Translate contentKey="yaadbuzzApp.userPerDepartment.realUser">Real User</Translate>
                 </Label>
                 <AvInput id="user-per-department-realUser" type="select" className="form-control" name="realUserId" required>
                   {users
@@ -140,7 +140,7 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
               </AvGroup>
               <AvGroup>
                 <Label for="user-per-department-department">
-                  <Translate contentKey="yaadmaanApp.userPerDepartment.department">Department</Translate>
+                  <Translate contentKey="yaadbuzzApp.userPerDepartment.department">Department</Translate>
                 </Label>
                 <AvInput id="user-per-department-department" type="select" className="form-control" name="departmentId" required>
                   {departments

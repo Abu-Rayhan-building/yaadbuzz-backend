@@ -14,9 +14,10 @@ import edu.sharif.math.yaadbuzz.repository.CommentRepository;
 import edu.sharif.math.yaadbuzz.service.CommentService;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.MemoryService;
+import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentUpdateUDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentWithIdUDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.CommentMapper;
 
 /**
@@ -31,18 +32,18 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final MemoryService memoryService;
-
-    private final UserService userService;
+    private final UserPerDepartmentService userPerDepartmentService;
 
     private final CommentMapper commentMapper;
 
     public CommentServiceImpl(final CommentRepository commentRepository,
 	    final CommentMapper commentMapper,
 	    final DepartmentService departmentService,
-	    final MemoryService memoryService, final UserService userService) {
+	    final MemoryService memoryService,
+	    final UserPerDepartmentService userPerDepartmentService) {
 	this.commentRepository = commentRepository;
 	this.memoryService = memoryService;
-	this.userService = userService;
+	this.userPerDepartmentService = userPerDepartmentService;
 	this.commentMapper = commentMapper;
     }
 
@@ -62,7 +63,9 @@ public class CommentServiceImpl implements CommentService {
     public boolean currentuserHasUpdateAccess(final Long id) {
 	final var comment = this.commentRepository.getOne(id);
 
-	final var currentUserId = this.userService.getCurrentUserId();
+	final var currentUserId = this.userPerDepartmentService
+		.getCurrentUserInDep(
+			comment.getMemory().getDepartment().getId());
 	return comment.getWriter().getId().equals(currentUserId);
     }
 
@@ -114,7 +117,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDTO save(final CommentUpdateUDTO commentUpdateReqDTO) {
+    public CommentDTO save(final CommentWithIdUDTO commentUpdateReqDTO) {
 	this.log.debug("Request to save Comment : {}", commentUpdateReqDTO);
 	var com = this.findOne(commentUpdateReqDTO.getId()).get();
 	com.setText(commentUpdateReqDTO.getText());

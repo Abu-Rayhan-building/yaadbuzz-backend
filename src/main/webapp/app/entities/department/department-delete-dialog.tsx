@@ -36,8 +36,8 @@ export const DepartmentDeleteDialog = (props: IDepartmentDeleteDialogProps) => {
       <ModalHeader toggle={handleClose}>
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="yaadmaanApp.department.delete.question">
-        <Translate contentKey="yaadmaanApp.department.delete.question" interpolate={{ id: departmentEntity.id }}>
+      <ModalBody id="yaadbuzzApp.department.delete.question">
+        <Translate contentKey="yaadbuzzApp.department.delete.question" interpolate={{ id: departmentEntity.id }}>
           Are you sure you want to delete this Department?
         </Translate>
       </ModalBody>

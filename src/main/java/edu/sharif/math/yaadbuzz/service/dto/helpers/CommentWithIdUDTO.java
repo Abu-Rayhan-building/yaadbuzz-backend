@@ -12,7 +12,7 @@ import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Comment} entity.
  */
-public class CommentUpdateUDTO implements Serializable, UserInputDTO<CommentDTO> {
+public class CommentWithIdUDTO implements Serializable, UserInputDTO<CommentDTO> {
     /**
     *
     */
@@ -30,11 +30,11 @@ public class CommentUpdateUDTO implements Serializable, UserInputDTO<CommentDTO>
 	if (this == o) {
 	    return true;
 	}
-	if (!(o instanceof CommentUpdateUDTO)) {
+	if (!(o instanceof CommentWithIdUDTO)) {
 	    return false;
 	}
 
-	return this.id != null && this.id.equals(((CommentUpdateUDTO) o).id);
+	return this.id != null && this.id.equals(((CommentWithIdUDTO) o).id);
     }
 
     public Long getId() {

@@ -107,6 +107,10 @@ public class MemorialQueryService extends QueryService<Memorial> {
                 specification = specification.and(buildSpecification(criteria.getRecipientId(),
                     root -> root.join(Memorial_.recipient, JoinType.LEFT).get(UserPerDepartment_.id)));
             }
+            if (criteria.getDepartmentId() != null) {
+                specification = specification.and(buildSpecification(criteria.getDepartmentId(),
+                    root -> root.join(Memorial_.department, JoinType.LEFT).get(Department_.id)));
+            }
         }
         return specification;
     }

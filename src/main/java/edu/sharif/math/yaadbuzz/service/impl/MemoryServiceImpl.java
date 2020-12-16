@@ -31,9 +31,11 @@ public class MemoryServiceImpl implements MemoryService {
     private final MemoryRepository memoryRepository;
 
     private final UserPerDepartmentRepository userPerDepartmentRepository;
+    
     private final UserPerDepartmentService userPerDepartmentService;
 
     private final DepartmentService departmentService;
+
     private final MemoryMapper memoryMapper;
 
     private final UserService userService;

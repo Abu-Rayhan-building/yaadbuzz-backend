@@ -79,11 +79,11 @@ export const Charateristics = (props: ICharateristicsProps) => {
   return (
     <div>
       <h2 id="charateristics-heading">
-        <Translate contentKey="yaadmaanApp.charateristics.home.title">Charateristics</Translate>
+        <Translate contentKey="yaadbuzzApp.charateristics.home.title">Charateristics</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
-          <Translate contentKey="yaadmaanApp.charateristics.home.createLabel">Create new Charateristics</Translate>
+          <Translate contentKey="yaadbuzzApp.charateristics.home.createLabel">Create new Charateristics</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -103,13 +103,13 @@ export const Charateristics = (props: ICharateristicsProps) => {
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('title')}>
-                    <Translate contentKey="yaadmaanApp.charateristics.title">Title</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.charateristics.title">Title</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('repetation')}>
-                    <Translate contentKey="yaadmaanApp.charateristics.repetation">Repetation</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.charateristics.repetation">Repetation</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.charateristics.userPerDepartment">User Per Department</Translate>{' '}
+                    <Translate contentKey="yaadbuzzApp.charateristics.userPerDepartment">User Per Department</Translate>{' '}
                     <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
@@ -161,7 +161,7 @@ export const Charateristics = (props: ICharateristicsProps) => {
           ) : (
             !loading && (
               <div className="alert alert-warning">
-                <Translate contentKey="yaadmaanApp.charateristics.home.notFound">No Charateristics found</Translate>
+                <Translate contentKey="yaadbuzzApp.charateristics.home.notFound">No Charateristics found</Translate>
               </div>
             )
           )}

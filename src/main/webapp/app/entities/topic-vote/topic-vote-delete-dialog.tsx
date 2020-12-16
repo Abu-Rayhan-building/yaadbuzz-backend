@@ -5,19 +5,19 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 import { Translate, ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ITopicRating } from 'app/shared/model/topic-rating.model';
+import { ITopicVote } from 'app/shared/model/topic-vote.model';
 import { IRootState } from 'app/shared/reducers';
-import { getEntity, deleteEntity } from './topic-rating.reducer';
+import { getEntity, deleteEntity } from './topic-vote.reducer';
 
-export interface ITopicRatingDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface ITopicVoteDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-export const TopicRatingDeleteDialog = (props: ITopicRatingDeleteDialogProps) => {
+export const TopicVoteDeleteDialog = (props: ITopicVoteDeleteDialogProps) => {
   useEffect(() => {
     props.getEntity(props.match.params.id);
   }, []);
 
   const handleClose = () => {
-    props.history.push('/topic-rating');
+    props.history.push('/topic-vote');
   };
 
   useEffect(() => {
@@ -27,18 +27,18 @@ export const TopicRatingDeleteDialog = (props: ITopicRatingDeleteDialogProps) =>
   }, [props.updateSuccess]);
 
   const confirmDelete = () => {
-    props.deleteEntity(props.topicRatingEntity.id);
+    props.deleteEntity(props.topicVoteEntity.id);
   };
 
-  const { topicRatingEntity } = props;
+  const { topicVoteEntity } = props;
   return (
     <Modal isOpen toggle={handleClose}>
       <ModalHeader toggle={handleClose}>
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="yaadmaanApp.topicRating.delete.question">
-        <Translate contentKey="yaadmaanApp.topicRating.delete.question" interpolate={{ id: topicRatingEntity.id }}>
-          Are you sure you want to delete this TopicRating?
+      <ModalBody id="yaadbuzzApp.topicVote.delete.question">
+        <Translate contentKey="yaadbuzzApp.topicVote.delete.question" interpolate={{ id: topicVoteEntity.id }}>
+          Are you sure you want to delete this TopicVote?
         </Translate>
       </ModalBody>
       <ModalFooter>
@@ -47,7 +47,7 @@ export const TopicRatingDeleteDialog = (props: ITopicRatingDeleteDialogProps) =>
           &nbsp;
           <Translate contentKey="entity.action.cancel">Cancel</Translate>
         </Button>
-        <Button id="jhi-confirm-delete-topicRating" color="danger" onClick={confirmDelete}>
+        <Button id="jhi-confirm-delete-topicVote" color="danger" onClick={confirmDelete}>
           <FontAwesomeIcon icon="trash" />
           &nbsp;
           <Translate contentKey="entity.action.delete">Delete</Translate>
@@ -57,9 +57,9 @@ export const TopicRatingDeleteDialog = (props: ITopicRatingDeleteDialogProps) =>
   );
 };
 
-const mapStateToProps = ({ topicRating }: IRootState) => ({
-  topicRatingEntity: topicRating.entity,
-  updateSuccess: topicRating.updateSuccess,
+const mapStateToProps = ({ topicVote }: IRootState) => ({
+  topicVoteEntity: topicVote.entity,
+  updateSuccess: topicVote.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };
@@ -67,4 +67,4 @@ const mapDispatchToProps = { getEntity, deleteEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopicRatingDeleteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(TopicVoteDeleteDialog);

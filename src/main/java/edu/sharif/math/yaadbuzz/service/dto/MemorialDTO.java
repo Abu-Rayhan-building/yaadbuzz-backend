@@ -10,6 +10,7 @@ public class MemorialDTO implements Serializable {
     
     private Long id;
 
+
     private Long anonymousCommentId;
 
     private Long notAnonymousCommentId;
@@ -17,6 +18,8 @@ public class MemorialDTO implements Serializable {
     private Long writerId;
 
     private Long recipientId;
+
+    private Long departmentId;
     
     public Long getId() {
         return id;
@@ -58,6 +61,14 @@ public class MemorialDTO implements Serializable {
         this.recipientId = userPerDepartmentId;
     }
 
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -84,6 +95,7 @@ public class MemorialDTO implements Serializable {
             ", notAnonymousCommentId=" + getNotAnonymousCommentId() +
             ", writerId=" + getWriterId() +
             ", recipientId=" + getRecipientId() +
+            ", departmentId=" + getDepartmentId() +
             "}";
     }
 }

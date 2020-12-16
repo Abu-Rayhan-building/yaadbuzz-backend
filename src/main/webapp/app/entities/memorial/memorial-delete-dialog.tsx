@@ -36,8 +36,8 @@ export const MemorialDeleteDialog = (props: IMemorialDeleteDialogProps) => {
       <ModalHeader toggle={handleClose}>
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="yaadmaanApp.memorial.delete.question">
-        <Translate contentKey="yaadmaanApp.memorial.delete.question" interpolate={{ id: memorialEntity.id }}>
+      <ModalBody id="yaadbuzzApp.memorial.delete.question">
+        <Translate contentKey="yaadbuzzApp.memorial.delete.question" interpolate={{ id: memorialEntity.id }}>
           Are you sure you want to delete this Memorial?
         </Translate>
       </ModalBody>

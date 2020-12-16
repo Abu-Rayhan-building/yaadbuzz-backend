@@ -36,8 +36,8 @@ export const CommentDeleteDialog = (props: ICommentDeleteDialogProps) => {
       <ModalHeader toggle={handleClose}>
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="yaadmaanApp.comment.delete.question">
-        <Translate contentKey="yaadmaanApp.comment.delete.question" interpolate={{ id: commentEntity.id }}>
+      <ModalBody id="yaadbuzzApp.comment.delete.question">
+        <Translate contentKey="yaadbuzzApp.comment.delete.question" interpolate={{ id: commentEntity.id }}>
           Are you sure you want to delete this Comment?
         </Translate>
       </ModalBody>

@@ -15,8 +15,8 @@ public interface TopicMapper extends EntityMapper<TopicDTO, Topic> {
     @Mapping(source = "department.id", target = "departmentId")
     TopicDTO toDto(Topic topic);
 
-    @Mapping(target = "ratings", ignore = true)
-    @Mapping(target = "removeRatings", ignore = true)
+    @Mapping(target = "votes", ignore = true)
+    @Mapping(target = "removeVotes", ignore = true)
     @Mapping(source = "departmentId", target = "department")
     @Mapping(target = "removeVoters", ignore = true)
     Topic toEntity(TopicDTO topicDTO);

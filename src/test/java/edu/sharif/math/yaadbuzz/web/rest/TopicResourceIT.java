@@ -2,7 +2,7 @@ package edu.sharif.math.yaadbuzz.web.rest;
 
 import edu.sharif.math.yaadbuzz.YaadbuzzBackendApp;
 import edu.sharif.math.yaadbuzz.domain.Topic;
-import edu.sharif.math.yaadbuzz.domain.TopicRating;
+import edu.sharif.math.yaadbuzz.domain.TopicVote;
 import edu.sharif.math.yaadbuzz.domain.Department;
 import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
 import edu.sharif.math.yaadbuzz.repository.TopicRepository;
@@ -329,21 +329,21 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicsByRatingsIsEqualToSomething() throws Exception {
+    public void getAllTopicsByVotesIsEqualToSomething() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
-        TopicRating ratings = TopicRatingResourceIT.createEntity(em);
-        em.persist(ratings);
+        TopicVote votes = TopicVoteResourceIT.createEntity(em);
+        em.persist(votes);
         em.flush();
-        topic.addRatings(ratings);
+        topic.addVotes(votes);
         topicRepository.saveAndFlush(topic);
-        Long ratingsId = ratings.getId();
+        Long votesId = votes.getId();
 
-        // Get all the topicList where ratings equals to ratingsId
-        defaultTopicShouldBeFound("ratingsId.equals=" + ratingsId);
+        // Get all the topicList where votes equals to votesId
+        defaultTopicShouldBeFound("votesId.equals=" + votesId);
 
-        // Get all the topicList where ratings equals to ratingsId + 1
-        defaultTopicShouldNotBeFound("ratingsId.equals=" + (ratingsId + 1));
+        // Get all the topicList where votes equals to votesId + 1
+        defaultTopicShouldNotBeFound("votesId.equals=" + (votesId + 1));
     }
 
 

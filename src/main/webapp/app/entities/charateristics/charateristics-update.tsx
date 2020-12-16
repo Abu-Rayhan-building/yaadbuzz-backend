@@ -59,8 +59,8 @@ export const CharateristicsUpdate = (props: ICharateristicsUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadmaanApp.charateristics.home.createOrEditLabel">
-            <Translate contentKey="yaadmaanApp.charateristics.home.createOrEditLabel">Create or edit a Charateristics</Translate>
+          <h2 id="yaadbuzzApp.charateristics.home.createOrEditLabel">
+            <Translate contentKey="yaadbuzzApp.charateristics.home.createOrEditLabel">Create or edit a Charateristics</Translate>
           </h2>
         </Col>
       </Row>
@@ -80,7 +80,7 @@ export const CharateristicsUpdate = (props: ICharateristicsUpdateProps) => {
               ) : null}
               <AvGroup>
                 <Label id="titleLabel" for="charateristics-title">
-                  <Translate contentKey="yaadmaanApp.charateristics.title">Title</Translate>
+                  <Translate contentKey="yaadbuzzApp.charateristics.title">Title</Translate>
                 </Label>
                 <AvField
                   id="charateristics-title"
@@ -93,13 +93,13 @@ export const CharateristicsUpdate = (props: ICharateristicsUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label id="repetationLabel" for="charateristics-repetation">
-                  <Translate contentKey="yaadmaanApp.charateristics.repetation">Repetation</Translate>
+                  <Translate contentKey="yaadbuzzApp.charateristics.repetation">Repetation</Translate>
                 </Label>
                 <AvField id="charateristics-repetation" type="string" className="form-control" name="repetation" />
               </AvGroup>
               <AvGroup>
                 <Label for="charateristics-userPerDepartment">
-                  <Translate contentKey="yaadmaanApp.charateristics.userPerDepartment">User Per Department</Translate>
+                  <Translate contentKey="yaadbuzzApp.charateristics.userPerDepartment">User Per Department</Translate>
                 </Label>
                 <AvInput id="charateristics-userPerDepartment" type="select" className="form-control" name="userPerDepartmentId" required>
                   {userPerDepartments

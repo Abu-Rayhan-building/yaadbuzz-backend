@@ -36,8 +36,8 @@ export const TopicDeleteDialog = (props: ITopicDeleteDialogProps) => {
       <ModalHeader toggle={handleClose}>
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="yaadmaanApp.topic.delete.question">
-        <Translate contentKey="yaadmaanApp.topic.delete.question" interpolate={{ id: topicEntity.id }}>
+      <ModalBody id="yaadbuzzApp.topic.delete.question">
+        <Translate contentKey="yaadbuzzApp.topic.delete.question" interpolate={{ id: topicEntity.id }}>
           Are you sure you want to delete this Topic?
         </Translate>
       </ModalBody>

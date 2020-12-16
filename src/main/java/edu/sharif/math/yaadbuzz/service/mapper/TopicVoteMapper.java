@@ -2,30 +2,30 @@ package edu.sharif.math.yaadbuzz.service.mapper;
 
 
 import edu.sharif.math.yaadbuzz.domain.*;
-import edu.sharif.math.yaadbuzz.service.dto.TopicRatingDTO;
+import edu.sharif.math.yaadbuzz.service.dto.TopicVoteDTO;
 
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity {@link TopicRating} and its DTO {@link TopicRatingDTO}.
+ * Mapper for the entity {@link TopicVote} and its DTO {@link TopicVoteDTO}.
  */
 @Mapper(componentModel = "spring", uses = {TopicMapper.class, UserPerDepartmentMapper.class})
-public interface TopicRatingMapper extends EntityMapper<TopicRatingDTO, TopicRating> {
+public interface TopicVoteMapper extends EntityMapper<TopicVoteDTO, TopicVote> {
 
     @Mapping(source = "topic.id", target = "topicId")
     @Mapping(source = "user.id", target = "userId")
-    TopicRatingDTO toDto(TopicRating topicRating);
+    TopicVoteDTO toDto(TopicVote topicVote);
 
     @Mapping(source = "topicId", target = "topic")
     @Mapping(source = "userId", target = "user")
-    TopicRating toEntity(TopicRatingDTO topicRatingDTO);
+    TopicVote toEntity(TopicVoteDTO topicVoteDTO);
 
-    default TopicRating fromId(Long id) {
+    default TopicVote fromId(Long id) {
         if (id == null) {
             return null;
         }
-        TopicRating topicRating = new TopicRating();
-        topicRating.setId(id);
-        return topicRating;
+        TopicVote topicVote = new TopicVote();
+        topicVote.setId(id);
+        return topicVote;
     }
 }

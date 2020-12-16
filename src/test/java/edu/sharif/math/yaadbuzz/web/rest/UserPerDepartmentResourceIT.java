@@ -2,7 +2,7 @@ package edu.sharif.math.yaadbuzz.web.rest;
 
 import edu.sharif.math.yaadbuzz.YaadbuzzBackendApp;
 import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
-import edu.sharif.math.yaadbuzz.domain.TopicRating;
+import edu.sharif.math.yaadbuzz.domain.TopicVote;
 import edu.sharif.math.yaadbuzz.domain.Picture;
 import edu.sharif.math.yaadbuzz.domain.User;
 import edu.sharif.math.yaadbuzz.domain.Department;
@@ -377,7 +377,7 @@ public class UserPerDepartmentResourceIT {
     public void getAllUserPerDepartmentsByTopicAssignedsIsEqualToSomething() throws Exception {
         // Initialize the database
         userPerDepartmentRepository.saveAndFlush(userPerDepartment);
-        TopicRating topicAssigneds = TopicRatingResourceIT.createEntity(em);
+        TopicVote topicAssigneds = TopicVoteResourceIT.createEntity(em);
         em.persist(topicAssigneds);
         em.flush();
         userPerDepartment.addTopicAssigneds(topicAssigneds);

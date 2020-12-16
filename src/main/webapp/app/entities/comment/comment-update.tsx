@@ -63,8 +63,8 @@ export const CommentUpdate = (props: ICommentUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadmaanApp.comment.home.createOrEditLabel">
-            <Translate contentKey="yaadmaanApp.comment.home.createOrEditLabel">Create or edit a Comment</Translate>
+          <h2 id="yaadbuzzApp.comment.home.createOrEditLabel">
+            <Translate contentKey="yaadbuzzApp.comment.home.createOrEditLabel">Create or edit a Comment</Translate>
           </h2>
         </Col>
       </Row>
@@ -84,7 +84,7 @@ export const CommentUpdate = (props: ICommentUpdateProps) => {
               ) : null}
               <AvGroup>
                 <Label id="textLabel" for="comment-text">
-                  <Translate contentKey="yaadmaanApp.comment.text">Text</Translate>
+                  <Translate contentKey="yaadbuzzApp.comment.text">Text</Translate>
                 </Label>
                 <AvField
                   id="comment-text"
@@ -97,7 +97,7 @@ export const CommentUpdate = (props: ICommentUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="comment-writer">
-                  <Translate contentKey="yaadmaanApp.comment.writer">Writer</Translate>
+                  <Translate contentKey="yaadbuzzApp.comment.writer">Writer</Translate>
                 </Label>
                 <AvInput id="comment-writer" type="select" className="form-control" name="writerId" required>
                   {userPerDepartments
@@ -114,7 +114,7 @@ export const CommentUpdate = (props: ICommentUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="comment-memory">
-                  <Translate contentKey="yaadmaanApp.comment.memory">Memory</Translate>
+                  <Translate contentKey="yaadbuzzApp.comment.memory">Memory</Translate>
                 </Label>
                 <AvInput id="comment-memory" type="select" className="form-control" name="memoryId" required>
                   {memories

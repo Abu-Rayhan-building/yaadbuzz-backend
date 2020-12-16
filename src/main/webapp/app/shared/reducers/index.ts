@@ -37,10 +37,6 @@ import topic, {
   TopicState
 } from 'app/entities/topic/topic.reducer';
 // prettier-ignore
-import topicRating, {
-  TopicRatingState
-} from 'app/entities/topic-rating/topic-rating.reducer';
-// prettier-ignore
 import charateristics, {
   CharateristicsState
 } from 'app/entities/charateristics/charateristics.reducer';
@@ -49,6 +45,10 @@ import charateristics, {
 import memorial, {
   MemorialState
 } from 'app/entities/memorial/memorial.reducer';
+// prettier-ignore
+import topicVote, {
+  TopicVoteState
+} from 'app/entities/topic-vote/topic-vote.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -68,9 +68,9 @@ export interface IRootState {
   readonly comment: CommentState;
   readonly picture: PictureState;
   readonly topic: TopicState;
-  readonly topicRating: TopicRatingState;
   readonly charateristics: CharateristicsState;
   readonly memorial: MemorialState;
+  readonly topicVote: TopicVoteState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -92,9 +92,9 @@ const rootReducer = combineReducers<IRootState>({
   comment,
   picture,
   topic,
-  topicRating,
   charateristics,
   memorial,
+  topicVote,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

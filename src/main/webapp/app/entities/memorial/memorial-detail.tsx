@@ -22,25 +22,29 @@ export const MemorialDetail = (props: IMemorialDetailProps) => {
     <Row>
       <Col md="8">
         <h2>
-          <Translate contentKey="yaadmaanApp.memorial.detail.title">Memorial</Translate> [<b>{memorialEntity.id}</b>]
+          <Translate contentKey="yaadbuzzApp.memorial.detail.title">Memorial</Translate> [<b>{memorialEntity.id}</b>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
-            <Translate contentKey="yaadmaanApp.memorial.anonymousComment">Anonymous Comment</Translate>
+            <Translate contentKey="yaadbuzzApp.memorial.anonymousComment">Anonymous Comment</Translate>
           </dt>
           <dd>{memorialEntity.anonymousCommentId ? memorialEntity.anonymousCommentId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.memorial.notAnonymousComment">Not Anonymous Comment</Translate>
+            <Translate contentKey="yaadbuzzApp.memorial.notAnonymousComment">Not Anonymous Comment</Translate>
           </dt>
           <dd>{memorialEntity.notAnonymousCommentId ? memorialEntity.notAnonymousCommentId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.memorial.writer">Writer</Translate>
+            <Translate contentKey="yaadbuzzApp.memorial.writer">Writer</Translate>
           </dt>
           <dd>{memorialEntity.writerId ? memorialEntity.writerId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.memorial.recipient">Recipient</Translate>
+            <Translate contentKey="yaadbuzzApp.memorial.recipient">Recipient</Translate>
           </dt>
           <dd>{memorialEntity.recipientId ? memorialEntity.recipientId : ''}</dd>
+          <dt>
+            <Translate contentKey="yaadbuzzApp.memorial.department">Department</Translate>
+          </dt>
+          <dd>{memorialEntity.departmentId ? memorialEntity.departmentId : ''}</dd>
         </dl>
         <Button tag={Link} to="/memorial" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

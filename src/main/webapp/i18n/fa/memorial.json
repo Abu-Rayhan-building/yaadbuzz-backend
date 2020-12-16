@@ -1,5 +1,5 @@
 {
-  "yaadmaanApp": {
+  "yaadbuzzApp": {
     "memorial": {
       "home": {
         "title": "Memorials",
@@ -19,7 +19,8 @@
       "anonymousComment": "Anonymous Comment",
       "notAnonymousComment": "Not Anonymous Comment",
       "writer": "Writer",
-      "recipient": "Recipient"
+      "recipient": "Recipient",
+      "department": "Department"
     }
   }
 }

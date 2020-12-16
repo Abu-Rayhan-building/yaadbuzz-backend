@@ -6,48 +6,48 @@ import { Translate, ICrudGetAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './topic-rating.reducer';
-import { ITopicRating } from 'app/shared/model/topic-rating.model';
+import { getEntity } from './topic-vote.reducer';
+import { ITopicVote } from 'app/shared/model/topic-vote.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
-export interface ITopicRatingDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface ITopicVoteDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-export const TopicRatingDetail = (props: ITopicRatingDetailProps) => {
+export const TopicVoteDetail = (props: ITopicVoteDetailProps) => {
   useEffect(() => {
     props.getEntity(props.match.params.id);
   }, []);
 
-  const { topicRatingEntity } = props;
+  const { topicVoteEntity } = props;
   return (
     <Row>
       <Col md="8">
         <h2>
-          <Translate contentKey="yaadmaanApp.topicRating.detail.title">TopicRating</Translate> [<b>{topicRatingEntity.id}</b>]
+          <Translate contentKey="yaadbuzzApp.topicVote.detail.title">TopicVote</Translate> [<b>{topicVoteEntity.id}</b>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
             <span id="repetitions">
-              <Translate contentKey="yaadmaanApp.topicRating.repetitions">Repetitions</Translate>
+              <Translate contentKey="yaadbuzzApp.topicVote.repetitions">Repetitions</Translate>
             </span>
           </dt>
-          <dd>{topicRatingEntity.repetitions}</dd>
+          <dd>{topicVoteEntity.repetitions}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.topicRating.topic">Topic</Translate>
+            <Translate contentKey="yaadbuzzApp.topicVote.topic">Topic</Translate>
           </dt>
-          <dd>{topicRatingEntity.topicId ? topicRatingEntity.topicId : ''}</dd>
+          <dd>{topicVoteEntity.topicId ? topicVoteEntity.topicId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.topicRating.user">User</Translate>
+            <Translate contentKey="yaadbuzzApp.topicVote.user">User</Translate>
           </dt>
-          <dd>{topicRatingEntity.userId ? topicRatingEntity.userId : ''}</dd>
+          <dd>{topicVoteEntity.userId ? topicVoteEntity.userId : ''}</dd>
         </dl>
-        <Button tag={Link} to="/topic-rating" replace color="info">
+        <Button tag={Link} to="/topic-vote" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>
           </span>
         </Button>
         &nbsp;
-        <Button tag={Link} to={`/topic-rating/${topicRatingEntity.id}/edit`} replace color="primary">
+        <Button tag={Link} to={`/topic-vote/${topicVoteEntity.id}/edit`} replace color="primary">
           <FontAwesomeIcon icon="pencil-alt" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.edit">Edit</Translate>
@@ -58,8 +58,8 @@ export const TopicRatingDetail = (props: ITopicRatingDetailProps) => {
   );
 };
 
-const mapStateToProps = ({ topicRating }: IRootState) => ({
-  topicRatingEntity: topicRating.entity,
+const mapStateToProps = ({ topicVote }: IRootState) => ({
+  topicVoteEntity: topicVote.entity,
 });
 
 const mapDispatchToProps = { getEntity };
@@ -67,4 +67,4 @@ const mapDispatchToProps = { getEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopicRatingDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(TopicVoteDetail);

@@ -12,18 +12,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
-import edu.sharif.math.yaadbuzz.repository.TopicRepository;
 import edu.sharif.math.yaadbuzz.repository.UserPerDepartmentRepository;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.MemorialQueryService;
 import edu.sharif.math.yaadbuzz.service.TopicQueryService;
-import edu.sharif.math.yaadbuzz.service.TopicRatingQueryService;
-import edu.sharif.math.yaadbuzz.service.TopicService;
+import edu.sharif.math.yaadbuzz.service.TopicVoteQueryService;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.MemorialCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.TopicCriteria;
-import edu.sharif.math.yaadbuzz.service.dto.TopicRatingCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.TopicVoteCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.UserPerDepartmentMapper;
@@ -43,27 +41,28 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 
     private DepartmentService departmentService;
 
-    @Autowired
-    public void setDepartmentService(DepartmentService departmentService) {
-	this.departmentService = departmentService;
-    }
-
     private final UserPerDepartmentMapper userPerDepartmentMapper;
 
     private final UserService userService;
+
+    private final TopicQueryService topicQueryService;
+
+    private final TopicVoteQueryService topicVoteQueryService;
+
+    private final MemorialQueryService memorialQueryService;
 
     public UserPerDepartmentServiceImpl(
 	    final UserPerDepartmentRepository userPerDepartmentRepository,
 	    final UserPerDepartmentMapper userPerDepartmentMapper,
 	    final UserService userService,
-	    TopicRatingQueryService topicRatingQueryService,
-	    TopicQueryService topicQueryService,
-	    MemorialQueryService memorialQueryService) {
+	    final TopicVoteQueryService topicVoteQueryService,
+	    final TopicQueryService topicQueryService,
+	    final MemorialQueryService memorialQueryService) {
 	this.userPerDepartmentRepository = userPerDepartmentRepository;
 	this.userPerDepartmentMapper = userPerDepartmentMapper;
 	this.userService = userService;
 	this.topicQueryService = topicQueryService;
-	this.topicRatingQueryService = topicRatingQueryService;
+	this.topicVoteQueryService = topicVoteQueryService;
 	this.memorialQueryService = memorialQueryService;
     }
 
@@ -108,36 +107,34 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 
     }
 
-    private final TopicQueryService topicQueryService;
-    private final TopicRatingQueryService topicRatingQueryService;
-    private final MemorialQueryService memorialQueryService;
-
     // fuck
     @Override
     public MyUserPerDepartmentStatsDTO getCurrentUserStatsInDep(
 	    final Long depid) {
-	var res = new MyUserPerDepartmentStatsDTO();
-	var currentUserId = userPerDepartmentRepository
+	final var res = new MyUserPerDepartmentStatsDTO();
+	final var currentUPDId = this.userPerDepartmentRepository
 		.getCurrentUserInDep(depid).getId();
-
 	{
-	    var topicsNotVotedYet = new HashSet<Long>();
-	    TopicCriteria depCriteria = new TopicCriteria();
-	    var longFilter = new LongFilter();
+	    final var topicsNotVotedYet = new HashSet<Long>();
+	    final TopicCriteria depCriteria = new TopicCriteria();
+	    final var longFilter = new LongFilter();
 	    longFilter.setEquals(depid);
 	    depCriteria.setDepartmentId(longFilter);
-	    var topics = topicQueryService.findByCriteria(depCriteria);
-	    var userIdFilter = new LongFilter();
-	    userIdFilter.setEquals(currentUserId);
-	    TopicRatingCriteria userCriteria = new TopicRatingCriteria();
+	    final var topics = this.topicQueryService
+		    .findByCriteria(depCriteria);
+	    final var userIdFilter = new LongFilter();
+	    userIdFilter.setEquals(currentUPDId);
+	    final TopicVoteCriteria userCriteria = new TopicVoteCriteria();
 	    userCriteria.setUserId(userIdFilter);
-	    var voted = topicRatingQueryService.findByCriteria(userCriteria);
+	    final var voted = this.topicVoteQueryService
+		    .findByCriteria(userCriteria);
 
 	    topics.stream().forEach(t -> {
-		boolean[] flag = new boolean[1];
+		final boolean[] flag = new boolean[1];
 		voted.forEach(tr -> {
-		    if (tr.getTopicId().equals(t.getId()))
+		    if (tr.getTopicId().equals(t.getId())) {
 			flag[0] = true;
+		    }
 		});
 		if (flag[0] == false) {
 		    topicsNotVotedYet.add(t.getId());
@@ -148,18 +145,20 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 	}
 
 	{
-	    MemorialCriteria mc = new MemorialCriteria();
-	    var writerIdFilter = new LongFilter();
-	    writerIdFilter.setEquals(currentUserId);
+	    final MemorialCriteria mc = new MemorialCriteria();
+	    final var writerIdFilter = new LongFilter();
+	    writerIdFilter.setEquals(currentUPDId);
 	    mc.setWriterId(writerIdFilter);
-	    var memorials = memorialQueryService.findByCriteria(mc);
-	    var allUsers = departmentService.getAllDepartmentUsers(depid);
-	    var userPerDepartmentNotWritedMemoryFor = new HashSet<Long>();
+	    final var memorials = this.memorialQueryService.findByCriteria(mc);
+	    final var allUsers = this.departmentService
+		    .getAllDepartmentUsers(depid);
+	    final var userPerDepartmentNotWritedMemoryFor = new HashSet<Long>();
 	    allUsers.forEach(upd -> {
-		boolean[] flag = new boolean[1];
+		final boolean[] flag = new boolean[1];
 		memorials.forEach(mem -> {
-		    if (mem.getRecipientId().equals(upd.getId()))
+		    if (mem.getRecipientId().equals(upd.getId())) {
 			flag[0] = true;
+		    }
 		});
 		if (flag[0] == false) {
 		    userPerDepartmentNotWritedMemoryFor.add(upd.getId());
@@ -174,6 +173,11 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
     }
 
     @Override
+    public Long getCurrentUserUserPerDepeartmentIdInDep(final Long depid) {
+	return this.getCurrentUserInDep(depid).getId();
+    }
+
+    @Override
     public UserPerDepartmentDTO save(
 	    final UserPerDepartmentDTO userPerDepartmentDTO) {
 	this.log.debug("Request to save UserPerDepartment : {}",
@@ -185,8 +189,9 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 	return this.userPerDepartmentMapper.toDto(userPerDepartment);
     }
 
-    @Override
-    public Long getCurrentUserUserPerDepeartmentIdInDep(Long depid) {
-	return this.getCurrentUserInDep(depid).getId();
+    @Autowired
+    public void setDepartmentService(
+	    final DepartmentService departmentService) {
+	this.departmentService = departmentService;
     }
 }

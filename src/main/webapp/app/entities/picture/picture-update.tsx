@@ -69,8 +69,8 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadmaanApp.picture.home.createOrEditLabel">
-            <Translate contentKey="yaadmaanApp.picture.home.createOrEditLabel">Create or edit a Picture</Translate>
+          <h2 id="yaadbuzzApp.picture.home.createOrEditLabel">
+            <Translate contentKey="yaadbuzzApp.picture.home.createOrEditLabel">Create or edit a Picture</Translate>
           </h2>
         </Col>
       </Row>
@@ -91,7 +91,7 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
               <AvGroup>
                 <AvGroup>
                   <Label id="imageLabel" for="image">
-                    <Translate contentKey="yaadmaanApp.picture.image">Image</Translate>
+                    <Translate contentKey="yaadbuzzApp.picture.image">Image</Translate>
                   </Label>
                   <br />
                   {image ? (
@@ -129,7 +129,7 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="picture-comment">
-                  <Translate contentKey="yaadmaanApp.picture.comment">Comment</Translate>
+                  <Translate contentKey="yaadbuzzApp.picture.comment">Comment</Translate>
                 </Label>
                 <AvInput id="picture-comment" type="select" className="form-control" name="commentId">
                   <option value="" key="0" />

@@ -28,7 +28,7 @@ public class TopicCriteria implements Serializable, Criteria {
 
     private StringFilter title;
 
-    private LongFilter ratingsId;
+    private LongFilter votesId;
 
     private LongFilter departmentId;
 
@@ -40,7 +40,7 @@ public class TopicCriteria implements Serializable, Criteria {
     public TopicCriteria(TopicCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.title = other.title == null ? null : other.title.copy();
-        this.ratingsId = other.ratingsId == null ? null : other.ratingsId.copy();
+        this.votesId = other.votesId == null ? null : other.votesId.copy();
         this.departmentId = other.departmentId == null ? null : other.departmentId.copy();
         this.votersId = other.votersId == null ? null : other.votersId.copy();
     }
@@ -66,12 +66,12 @@ public class TopicCriteria implements Serializable, Criteria {
         this.title = title;
     }
 
-    public LongFilter getRatingsId() {
-        return ratingsId;
+    public LongFilter getVotesId() {
+        return votesId;
     }
 
-    public void setRatingsId(LongFilter ratingsId) {
-        this.ratingsId = ratingsId;
+    public void setVotesId(LongFilter votesId) {
+        this.votesId = votesId;
     }
 
     public LongFilter getDepartmentId() {
@@ -103,7 +103,7 @@ public class TopicCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(title, that.title) &&
-            Objects.equals(ratingsId, that.ratingsId) &&
+            Objects.equals(votesId, that.votesId) &&
             Objects.equals(departmentId, that.departmentId) &&
             Objects.equals(votersId, that.votersId);
     }
@@ -113,7 +113,7 @@ public class TopicCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         title,
-        ratingsId,
+        votesId,
         departmentId,
         votersId
         );
@@ -125,7 +125,7 @@ public class TopicCriteria implements Serializable, Criteria {
         return "TopicCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (title != null ? "title=" + title + ", " : "") +
-                (ratingsId != null ? "ratingsId=" + ratingsId + ", " : "") +
+                (votesId != null ? "votesId=" + votesId + ", " : "") +
                 (departmentId != null ? "departmentId=" + departmentId + ", " : "") +
                 (votersId != null ? "votersId=" + votersId + ", " : "") +
             "}";

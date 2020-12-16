@@ -136,7 +136,7 @@ jhipster:
     name: 'yaadbuzzBackendApp'
   # By default CORS is disabled. Uncomment to enable.
   cors:
-       allowed-origins: "http://admin.yaadbuzz.ir,http://yaadbuzz.ir"
+       allowed-origins: "*"
        allowed-methods: "*"
        allowed-headers: "*"
        exposed-headers: "Authorization,Link,X-Total-Count"

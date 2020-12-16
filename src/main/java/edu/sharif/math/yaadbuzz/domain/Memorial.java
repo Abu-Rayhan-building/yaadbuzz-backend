@@ -42,6 +42,11 @@ public class Memorial implements Serializable {
     @JsonIgnoreProperties(value = "memorials", allowSetters = true)
     private UserPerDepartment recipient;
 
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = "memorials", allowSetters = true)
+    private Department department;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -101,6 +106,19 @@ public class Memorial implements Serializable {
 
     public void setRecipient(UserPerDepartment userPerDepartment) {
         this.recipient = userPerDepartment;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public Memorial department(Department department) {
+        this.department = department;
+        return this;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

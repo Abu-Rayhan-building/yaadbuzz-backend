@@ -4,19 +4,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TopicRatingMapperTest {
+public class TopicVoteMapperTest {
 
-    private TopicRatingMapper topicRatingMapper;
+    private TopicVoteMapper topicVoteMapper;
 
     @BeforeEach
     public void setUp() {
-        topicRatingMapper = new TopicRatingMapperImpl();
+        topicVoteMapper = new TopicVoteMapperImpl();
     }
 
     @Test
     public void testEntityFromId() {
         Long id = 1L;
-        assertThat(topicRatingMapper.fromId(id).getId()).isEqualTo(id);
-        assertThat(topicRatingMapper.fromId(null)).isNull();
+        assertThat(topicVoteMapper.fromId(id).getId()).isEqualTo(id);
+        assertThat(topicVoteMapper.fromId(null)).isNull();
     }
 }

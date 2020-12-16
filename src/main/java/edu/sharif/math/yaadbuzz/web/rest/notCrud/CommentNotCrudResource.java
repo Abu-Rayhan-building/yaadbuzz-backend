@@ -36,7 +36,7 @@ import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentCreateUDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentUpdateUDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentWithIdUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -199,7 +199,7 @@ public class CommentNotCrudResource {
      */
     @PutMapping("/comment")
     public ResponseEntity<CommentDTO> updateComment(
-	    @Valid @RequestBody final CommentUpdateUDTO commentUpdateReqDTO)
+	    @Valid @RequestBody final CommentWithIdUDTO commentUpdateReqDTO)
 	    throws URISyntaxException {
 	this.log.debug("REST request to update Comment : {}",
 		commentUpdateReqDTO);

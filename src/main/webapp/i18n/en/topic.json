@@ -1,5 +1,5 @@
 {
-  "yaadmaanApp": {
+  "yaadbuzzApp": {
     "topic": {
       "home": {
         "title": "Topics",
@@ -17,7 +17,7 @@
         "title": "Topic"
       },
       "title": "Title",
-      "ratings": "Ratings",
+      "votes": "votes",
       "department": "Department",
       "voters": "Voters"
     }

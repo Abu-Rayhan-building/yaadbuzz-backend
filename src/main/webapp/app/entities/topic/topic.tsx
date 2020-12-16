@@ -79,11 +79,11 @@ export const Topic = (props: ITopicProps) => {
   return (
     <div>
       <h2 id="topic-heading">
-        <Translate contentKey="yaadmaanApp.topic.home.title">Topics</Translate>
+        <Translate contentKey="yaadbuzzApp.topic.home.title">Topics</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
-          <Translate contentKey="yaadmaanApp.topic.home.createLabel">Create new Topic</Translate>
+          <Translate contentKey="yaadbuzzApp.topic.home.createLabel">Create new Topic</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -103,10 +103,10 @@ export const Topic = (props: ITopicProps) => {
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('title')}>
-                    <Translate contentKey="yaadmaanApp.topic.title">Title</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.topic.title">Title</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.topic.department">Department</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.topic.department">Department</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -150,7 +150,7 @@ export const Topic = (props: ITopicProps) => {
           ) : (
             !loading && (
               <div className="alert alert-warning">
-                <Translate contentKey="yaadmaanApp.topic.home.notFound">No Topics found</Translate>
+                <Translate contentKey="yaadbuzzApp.topic.home.notFound">No Topics found</Translate>
               </div>
             )
           )}

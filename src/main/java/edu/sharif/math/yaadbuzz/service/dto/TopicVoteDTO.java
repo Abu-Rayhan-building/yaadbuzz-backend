@@ -4,13 +4,14 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
- * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.TopicRating} entity.
+ * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.TopicVote} entity.
  */
-public class TopicRatingDTO implements Serializable {
+public class TopicVoteDTO implements Serializable {
     
     private Long id;
 
     private Integer repetitions;
+
 
     private Long topicId;
 
@@ -53,11 +54,11 @@ public class TopicRatingDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TopicRatingDTO)) {
+        if (!(o instanceof TopicVoteDTO)) {
             return false;
         }
 
-        return id != null && id.equals(((TopicRatingDTO) o).id);
+        return id != null && id.equals(((TopicVoteDTO) o).id);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class TopicRatingDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "TopicRatingDTO{" +
+        return "TopicVoteDTO{" +
             "id=" + getId() +
             ", repetitions=" + getRepetitions() +
             ", topicId=" + getTopicId() +

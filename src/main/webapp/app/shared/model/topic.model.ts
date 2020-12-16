@@ -1,10 +1,10 @@
-import { ITopicRating } from 'app/shared/model/topic-rating.model';
+import { ITopicVote } from 'app/shared/model/topic-vote.model';
 import { IUserPerDepartment } from 'app/shared/model/user-per-department.model';
 
 export interface ITopic {
   id?: number;
   title?: string;
-  ratings?: ITopicRating[];
+  votes?: ITopicVote[];
   departmentId?: number;
   voters?: IUserPerDepartment[];
 }

@@ -36,8 +36,8 @@ export const UserPerDepartmentDeleteDialog = (props: IUserPerDepartmentDeleteDia
       <ModalHeader toggle={handleClose}>
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="yaadmaanApp.userPerDepartment.delete.question">
-        <Translate contentKey="yaadmaanApp.userPerDepartment.delete.question" interpolate={{ id: userPerDepartmentEntity.id }}>
+      <ModalBody id="yaadbuzzApp.userPerDepartment.delete.question">
+        <Translate contentKey="yaadbuzzApp.userPerDepartment.delete.question" interpolate={{ id: userPerDepartmentEntity.id }}>
           Are you sure you want to delete this UserPerDepartment?
         </Translate>
       </ModalBody>

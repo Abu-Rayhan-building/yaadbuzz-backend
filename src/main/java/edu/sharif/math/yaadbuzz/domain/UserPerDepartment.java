@@ -37,7 +37,7 @@ public class UserPerDepartment implements Serializable {
 
     @OneToMany(mappedBy = "user")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<TopicRating> topicAssigneds = new HashSet<>();
+    private Set<TopicVote> topicAssigneds = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = "userPerDepartments", allowSetters = true)
@@ -99,29 +99,29 @@ public class UserPerDepartment implements Serializable {
         this.bio = bio;
     }
 
-    public Set<TopicRating> getTopicAssigneds() {
+    public Set<TopicVote> getTopicAssigneds() {
         return topicAssigneds;
     }
 
-    public UserPerDepartment topicAssigneds(Set<TopicRating> topicRatings) {
-        this.topicAssigneds = topicRatings;
+    public UserPerDepartment topicAssigneds(Set<TopicVote> topicVotes) {
+        this.topicAssigneds = topicVotes;
         return this;
     }
 
-    public UserPerDepartment addTopicAssigneds(TopicRating topicRating) {
+    public UserPerDepartment addTopicAssigneds(TopicVote topicRating) {
         this.topicAssigneds.add(topicRating);
         topicRating.setUser(this);
         return this;
     }
 
-    public UserPerDepartment removeTopicAssigneds(TopicRating topicRating) {
+    public UserPerDepartment removeTopicAssigneds(TopicVote topicRating) {
         this.topicAssigneds.remove(topicRating);
         topicRating.setUser(null);
         return this;
     }
 
-    public void setTopicAssigneds(Set<TopicRating> topicRatings) {
-        this.topicAssigneds = topicRatings;
+    public void setTopicAssigneds(Set<TopicVote> topicVotes) {
+        this.topicAssigneds = topicVotes;
     }
 
     public Picture getAvatar() {

@@ -64,8 +64,8 @@ export const TopicUpdate = (props: ITopicUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadmaanApp.topic.home.createOrEditLabel">
-            <Translate contentKey="yaadmaanApp.topic.home.createOrEditLabel">Create or edit a Topic</Translate>
+          <h2 id="yaadbuzzApp.topic.home.createOrEditLabel">
+            <Translate contentKey="yaadbuzzApp.topic.home.createOrEditLabel">Create or edit a Topic</Translate>
           </h2>
         </Col>
       </Row>
@@ -85,7 +85,7 @@ export const TopicUpdate = (props: ITopicUpdateProps) => {
               ) : null}
               <AvGroup>
                 <Label id="titleLabel" for="topic-title">
-                  <Translate contentKey="yaadmaanApp.topic.title">Title</Translate>
+                  <Translate contentKey="yaadbuzzApp.topic.title">Title</Translate>
                 </Label>
                 <AvField
                   id="topic-title"
@@ -98,7 +98,7 @@ export const TopicUpdate = (props: ITopicUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="topic-department">
-                  <Translate contentKey="yaadmaanApp.topic.department">Department</Translate>
+                  <Translate contentKey="yaadbuzzApp.topic.department">Department</Translate>
                 </Label>
                 <AvInput id="topic-department" type="select" className="form-control" name="departmentId" required>
                   {departments
@@ -115,7 +115,7 @@ export const TopicUpdate = (props: ITopicUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="topic-voters">
-                  <Translate contentKey="yaadmaanApp.topic.voters">Voters</Translate>
+                  <Translate contentKey="yaadbuzzApp.topic.voters">Voters</Translate>
                 </Label>
                 <AvInput
                   id="topic-voters"

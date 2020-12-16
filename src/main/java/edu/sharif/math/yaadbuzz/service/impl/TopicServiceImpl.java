@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.sharif.math.yaadbuzz.domain.Topic;
 import edu.sharif.math.yaadbuzz.repository.TopicRepository;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
-import edu.sharif.math.yaadbuzz.service.TopicRatingService;
 import edu.sharif.math.yaadbuzz.service.TopicService;
+import edu.sharif.math.yaadbuzz.service.TopicVoteService;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.TopicVoteUDTO;
@@ -35,7 +35,7 @@ public class TopicServiceImpl implements TopicService {
     private final TopicMapper topicMapper;
 
     private final DepartmentService departmentService;
-    private final TopicRatingService topicRatingService;
+    private final TopicVoteService topicVoteService;
 
     private final UserPerDepartmentService userPerDepartmentService;
 
@@ -43,11 +43,11 @@ public class TopicServiceImpl implements TopicService {
 	    final TopicMapper topicMapper,
 	    final DepartmentService departmentService,
 	    UserPerDepartmentService userPerDepartmentService,
-	    TopicRatingService topicRatingService) {
+	    TopicVoteService topicVoteService) {
 	this.topicRepository = topicRepository;
 	this.topicMapper = topicMapper;
 	this.departmentService = departmentService;
-	this.topicRatingService = topicRatingService;
+	this.topicVoteService = topicVoteService;
 	this.userPerDepartmentService = userPerDepartmentService;
     }
 
@@ -117,7 +117,7 @@ public class TopicServiceImpl implements TopicService {
 	topic.getVoters().add(upd);
 	this.save(topic);
 	for (Long ballot : topicVoteUDTO.getBallots()) {
-	    this.topicRatingService.addBallot(topic.getId(), ballot);
+	    this.topicVoteService.addBallot(topic.getId(), ballot);
 	}
 	return topic;
     }

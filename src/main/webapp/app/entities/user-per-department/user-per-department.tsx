@@ -79,11 +79,11 @@ export const UserPerDepartment = (props: IUserPerDepartmentProps) => {
   return (
     <div>
       <h2 id="user-per-department-heading">
-        <Translate contentKey="yaadmaanApp.userPerDepartment.home.title">User Per Departments</Translate>
+        <Translate contentKey="yaadbuzzApp.userPerDepartment.home.title">User Per Departments</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
-          <Translate contentKey="yaadmaanApp.userPerDepartment.home.createLabel">Create new User Per Department</Translate>
+          <Translate contentKey="yaadbuzzApp.userPerDepartment.home.createLabel">Create new User Per Department</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -103,19 +103,19 @@ export const UserPerDepartment = (props: IUserPerDepartmentProps) => {
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('nicName')}>
-                    <Translate contentKey="yaadmaanApp.userPerDepartment.nicName">Nic Name</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.userPerDepartment.nicName">Nic Name</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('bio')}>
-                    <Translate contentKey="yaadmaanApp.userPerDepartment.bio">Bio</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.userPerDepartment.bio">Bio</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.userPerDepartment.avatar">Avatar</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.userPerDepartment.avatar">Avatar</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.userPerDepartment.realUser">Real User</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.userPerDepartment.realUser">Real User</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.userPerDepartment.department">Department</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.userPerDepartment.department">Department</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -174,7 +174,7 @@ export const UserPerDepartment = (props: IUserPerDepartmentProps) => {
           ) : (
             !loading && (
               <div className="alert alert-warning">
-                <Translate contentKey="yaadmaanApp.userPerDepartment.home.notFound">No User Per Departments found</Translate>
+                <Translate contentKey="yaadbuzzApp.userPerDepartment.home.notFound">No User Per Departments found</Translate>
               </div>
             )
           )}

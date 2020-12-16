@@ -7,15 +7,15 @@ import { Translate, ICrudGetAllAction, getSortState, IPaginationBaseState } from
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities, reset } from './topic-rating.reducer';
-import { ITopicRating } from 'app/shared/model/topic-rating.model';
+import { getEntities, reset } from './topic-vote.reducer';
+import { ITopicVote } from 'app/shared/model/topic-vote.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 
-export interface ITopicRatingProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface ITopicVoteProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
-export const TopicRating = (props: ITopicRatingProps) => {
+export const TopicVote = (props: ITopicVoteProps) => {
   const [paginationState, setPaginationState] = useState(
     overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE), props.location.search)
   );
@@ -75,15 +75,15 @@ export const TopicRating = (props: ITopicRatingProps) => {
     setSorting(true);
   };
 
-  const { topicRatingList, match, loading } = props;
+  const { topicVoteList, match, loading } = props;
   return (
     <div>
-      <h2 id="topic-rating-heading">
-        <Translate contentKey="yaadmaanApp.topicRating.home.title">Topic Ratings</Translate>
+      <h2 id="topic-vote-heading">
+        <Translate contentKey="yaadbuzzApp.topicVote.home.title">Topic Votes</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
-          <Translate contentKey="yaadmaanApp.topicRating.home.createLabel">Create new Topic Rating</Translate>
+          <Translate contentKey="yaadbuzzApp.topicVote.home.createLabel">Create new Topic Vote</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -95,7 +95,7 @@ export const TopicRating = (props: ITopicRatingProps) => {
           threshold={0}
           initialLoad={false}
         >
-          {topicRatingList && topicRatingList.length > 0 ? (
+          {topicVoteList && topicVoteList.length > 0 ? (
             <Table responsive>
               <thead>
                 <tr>
@@ -103,43 +103,43 @@ export const TopicRating = (props: ITopicRatingProps) => {
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('repetitions')}>
-                    <Translate contentKey="yaadmaanApp.topicRating.repetitions">Repetitions</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.topicVote.repetitions">Repetitions</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.topicRating.topic">Topic</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.topicVote.topic">Topic</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.topicRating.user">User</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.topicVote.user">User</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
               </thead>
               <tbody>
-                {topicRatingList.map((topicRating, i) => (
+                {topicVoteList.map((topicVote, i) => (
                   <tr key={`entity-${i}`}>
                     <td>
-                      <Button tag={Link} to={`${match.url}/${topicRating.id}`} color="link" size="sm">
-                        {topicRating.id}
+                      <Button tag={Link} to={`${match.url}/${topicVote.id}`} color="link" size="sm">
+                        {topicVote.id}
                       </Button>
                     </td>
-                    <td>{topicRating.repetitions}</td>
-                    <td>{topicRating.topicId ? <Link to={`topic/${topicRating.topicId}`}>{topicRating.topicId}</Link> : ''}</td>
-                    <td>{topicRating.userId ? <Link to={`user-per-department/${topicRating.userId}`}>{topicRating.userId}</Link> : ''}</td>
+                    <td>{topicVote.repetitions}</td>
+                    <td>{topicVote.topicId ? <Link to={`topic/${topicVote.topicId}`}>{topicVote.topicId}</Link> : ''}</td>
+                    <td>{topicVote.userId ? <Link to={`user-per-department/${topicVote.userId}`}>{topicVote.userId}</Link> : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${topicRating.id}`} color="info" size="sm">
+                        <Button tag={Link} to={`${match.url}/${topicVote.id}`} color="info" size="sm">
                           <FontAwesomeIcon icon="eye" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.view">View</Translate>
                           </span>
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${topicRating.id}/edit`} color="primary" size="sm">
+                        <Button tag={Link} to={`${match.url}/${topicVote.id}/edit`} color="primary" size="sm">
                           <FontAwesomeIcon icon="pencil-alt" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.edit">Edit</Translate>
                           </span>
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${topicRating.id}/delete`} color="danger" size="sm">
+                        <Button tag={Link} to={`${match.url}/${topicVote.id}/delete`} color="danger" size="sm">
                           <FontAwesomeIcon icon="trash" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.delete">Delete</Translate>
@@ -154,7 +154,7 @@ export const TopicRating = (props: ITopicRatingProps) => {
           ) : (
             !loading && (
               <div className="alert alert-warning">
-                <Translate contentKey="yaadmaanApp.topicRating.home.notFound">No Topic Ratings found</Translate>
+                <Translate contentKey="yaadbuzzApp.topicVote.home.notFound">No Topic Votes found</Translate>
               </div>
             )
           )}
@@ -164,13 +164,13 @@ export const TopicRating = (props: ITopicRatingProps) => {
   );
 };
 
-const mapStateToProps = ({ topicRating }: IRootState) => ({
-  topicRatingList: topicRating.entities,
-  loading: topicRating.loading,
-  totalItems: topicRating.totalItems,
-  links: topicRating.links,
-  entity: topicRating.entity,
-  updateSuccess: topicRating.updateSuccess,
+const mapStateToProps = ({ topicVote }: IRootState) => ({
+  topicVoteList: topicVote.entities,
+  loading: topicVote.loading,
+  totalItems: topicVote.totalItems,
+  links: topicVote.links,
+  entity: topicVote.entity,
+  updateSuccess: topicVote.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -181,4 +181,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopicRating);
+export default connect(mapStateToProps, mapDispatchToProps)(TopicVote);

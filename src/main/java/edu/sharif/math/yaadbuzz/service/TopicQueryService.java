@@ -94,9 +94,9 @@ public class TopicQueryService extends QueryService<Topic> {
             if (criteria.getTitle() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTitle(), Topic_.title));
             }
-            if (criteria.getRatingsId() != null) {
-                specification = specification.and(buildSpecification(criteria.getRatingsId(),
-                    root -> root.join(Topic_.ratings, JoinType.LEFT).get(TopicRating_.id)));
+            if (criteria.getVotersId() != null) {
+                specification = specification.and(buildSpecification(criteria.getVotersId(),
+                    root -> root.join(Topic_.votes, JoinType.LEFT).get(TopicVote_.id)));
             }
             if (criteria.getDepartmentId() != null) {
                 specification = specification.and(buildSpecification(criteria.getDepartmentId(),
