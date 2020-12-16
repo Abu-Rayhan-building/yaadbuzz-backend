@@ -79,11 +79,11 @@ export const Department = (props: IDepartmentProps) => {
   return (
     <div>
       <h2 id="department-heading">
-        <Translate contentKey="yaadmaanApp.department.home.title">Departments</Translate>
+        <Translate contentKey="yaadbuzzApp.department.home.title">Departments</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
-          <Translate contentKey="yaadmaanApp.department.home.createLabel">Create new Department</Translate>
+          <Translate contentKey="yaadbuzzApp.department.home.createLabel">Create new Department</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -103,16 +103,16 @@ export const Department = (props: IDepartmentProps) => {
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('name')}>
-                    <Translate contentKey="yaadmaanApp.department.name">Name</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.department.name">Name</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('password')}>
-                    <Translate contentKey="yaadmaanApp.department.password">Password</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.department.password">Password</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.department.avatar">Avatar</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.department.avatar">Avatar</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.department.owner">Owner</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.department.owner">Owner</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -158,7 +158,7 @@ export const Department = (props: IDepartmentProps) => {
           ) : (
             !loading && (
               <div className="alert alert-warning">
-                <Translate contentKey="yaadmaanApp.department.home.notFound">No Departments found</Translate>
+                <Translate contentKey="yaadbuzzApp.department.home.notFound">No Departments found</Translate>
               </div>
             )
           )}

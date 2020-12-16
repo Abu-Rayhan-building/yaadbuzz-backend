@@ -38,5 +38,7 @@
     <include file="config/liquibase/changelog/20201206140440_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201206165631_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201207024823_changelog.xml" relativeToChangelogFile="false"/>
-    
+    <include file="config/liquibase/changelog/20201115101920_added_entity_TopicVote.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201115101920_added_entity_constraints_TopicVote.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201216140441_changelog.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

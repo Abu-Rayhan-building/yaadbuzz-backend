@@ -1,9 +1,14 @@
 package edu.sharif.math.yaadbuzz.service.impl;
 
+import edu.sharif.math.yaadbuzz.service.CommentService;
+import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.MemorialService;
+import edu.sharif.math.yaadbuzz.service.MemoryService;
+import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.domain.Memorial;
 import edu.sharif.math.yaadbuzz.repository.MemorialRepository;
 import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.MemorialUDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.MemorialMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 /**
  * Service Implementation for managing {@link Memorial}.
  */
@@ -22,58 +29,95 @@ import java.util.Optional;
 @Transactional
 public class MemorialServiceImpl implements MemorialService {
 
-    private final Logger log = LoggerFactory.getLogger(MemorialServiceImpl.class);
+    private final Logger log = LoggerFactory
+	    .getLogger(MemorialServiceImpl.class);
 
     private final MemorialRepository memorialRepository;
 
+    private final MemoryService memoryService;
+
+    private final CommentService commentService;
+
     private final MemorialMapper memorialMapper;
 
-    public MemorialServiceImpl(MemorialRepository memorialRepository, MemorialMapper memorialMapper) {
-        this.memorialRepository = memorialRepository;
-        this.memorialMapper = memorialMapper;
+    public MemorialServiceImpl(MemorialRepository memorialRepository,
+	    MemorialMapper memorialMapper,
+	    UserPerDepartmentService userPerDepartmentService,
+	    DepartmentService departmentService, MemoryService memoryService,
+	    CommentService commentService) {
+	this.memorialRepository = memorialRepository;
+	this.memoryService = memoryService;
+	this.commentService = commentService;
+	this.memorialMapper = memorialMapper;
+	this.userPerDepartmentService = userPerDepartmentService;
+	this.departmentService = departmentService;
     }
 
     @Override
     public MemorialDTO save(MemorialDTO memorialDTO) {
-        log.debug("Request to save Memorial : {}", memorialDTO);
-        Memorial memorial = memorialMapper.toEntity(memorialDTO);
-        memorial = memorialRepository.save(memorial);
-        return memorialMapper.toDto(memorial);
+	log.debug("Request to save Memorial : {}", memorialDTO);
+	Memorial memorial = memorialMapper.toEntity(memorialDTO);
+	memorial = memorialRepository.save(memorial);
+	return memorialMapper.toDto(memorial);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<MemorialDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Memorials");
-        return memorialRepository.findAll(pageable)
-            .map(memorialMapper::toDto);
+	log.debug("Request to get all Memorials");
+	return memorialRepository.findAll(pageable).map(memorialMapper::toDto);
     }
-
 
     @Override
     @Transactional(readOnly = true)
     public Optional<MemorialDTO> findOne(Long id) {
-        log.debug("Request to get Memorial : {}", id);
-        return memorialRepository.findById(id)
-            .map(memorialMapper::toDto);
+	log.debug("Request to get Memorial : {}", id);
+	return memorialRepository.findById(id).map(memorialMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Memorial : {}", id);
-        memorialRepository.deleteById(id);
+	log.debug("Request to delete Memorial : {}", id);
+	memorialRepository.deleteById(id);
     }
-    
-    // fuck
+
+    private final UserPerDepartmentService userPerDepartmentService;
+
+    private final DepartmentService departmentService;
+
     @Override
     public boolean currentuserHasUpdateAccess(Long id) {
-	// TODO Auto-generated method stub
-	return false;
+	final var memorial = this.memorialRepository.getOne(id);
+
+	final var currentUserId = this.userPerDepartmentService
+		.getCurrentUserInDep(memorial.getDepartment().getId());
+	return memorial.getWriter().getId().equals(currentUserId);
     }
 
     @Override
     public boolean currentuserHasGetAccess(Long id) {
-	// TODO Auto-generated method stub
-	return false;
+	final var memorial = this.memorialRepository.getOne(id);
+	return this.departmentService
+		.currentuserHasGetAccess(memorial.getDepartment().getId());
+    }
+
+    @Override
+    public MemorialDTO create(Long depId, @Valid MemorialUDTO memorialUDTO) {
+	var memeorialDTO = memorialUDTO.build();
+	if (memorialUDTO.getAnonymousComment() != null) {
+	    var an = this.commentService
+		    .save(memorialUDTO.getAnonymousComment().build());
+	    memeorialDTO.setAnonymousCommentId(an.getId());
+	}
+	if (memorialUDTO.getNotAnonymousComment() != null) {
+	    var notAn = this.commentService
+		    .save(memorialUDTO.getNotAnonymousComment().build());
+	    memeorialDTO.setNotAnonymousCommentId(notAn.getId());
+	}
+
+	memeorialDTO.setWriterId(this.userPerDepartmentService
+		.getCurrentUserUserPerDepeartmentIdInDep(depId));
+
+	return this.save(memeorialDTO);
     }
 }

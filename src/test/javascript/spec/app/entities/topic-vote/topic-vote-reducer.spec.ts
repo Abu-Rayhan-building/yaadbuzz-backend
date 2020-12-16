@@ -14,9 +14,9 @@ import reducer, {
   getEntity,
   updateEntity,
   reset,
-} from 'app/entities/topic-rating/topic-rating.reducer';
+} from 'app/entities/topic-vote/topic-vote.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { ITopicRating, defaultValue } from 'app/shared/model/topic-rating.model';
+import { ITopicVote, defaultValue } from 'app/shared/model/topic-vote.model';
 
 describe('Entities reducer tests', () => {
   function isEmpty(element): boolean {
@@ -30,7 +30,7 @@ describe('Entities reducer tests', () => {
   const initialState = {
     loading: false,
     errorMessage: null,
-    entities: [] as ReadonlyArray<ITopicRating>,
+    entities: [] as ReadonlyArray<ITopicVote>,
     entity: defaultValue,
     links: {
       next: 0,
@@ -65,7 +65,7 @@ describe('Entities reducer tests', () => {
 
   describe('Requests', () => {
     it('should set state to loading', () => {
-      testMultipleTypes([REQUEST(ACTION_TYPES.FETCH_TOPICRATING_LIST), REQUEST(ACTION_TYPES.FETCH_TOPICRATING)], {}, state => {
+      testMultipleTypes([REQUEST(ACTION_TYPES.FETCH_TOPICVOTE_LIST), REQUEST(ACTION_TYPES.FETCH_TOPICVOTE)], {}, state => {
         expect(state).toMatchObject({
           errorMessage: null,
           updateSuccess: false,
@@ -76,7 +76,7 @@ describe('Entities reducer tests', () => {
 
     it('should set state to updating', () => {
       testMultipleTypes(
-        [REQUEST(ACTION_TYPES.CREATE_TOPICRATING), REQUEST(ACTION_TYPES.UPDATE_TOPICRATING), REQUEST(ACTION_TYPES.DELETE_TOPICRATING)],
+        [REQUEST(ACTION_TYPES.CREATE_TOPICVOTE), REQUEST(ACTION_TYPES.UPDATE_TOPICVOTE), REQUEST(ACTION_TYPES.DELETE_TOPICVOTE)],
         {},
         state => {
           expect(state).toMatchObject({
@@ -106,11 +106,11 @@ describe('Entities reducer tests', () => {
     it('should set a message in errorMessage', () => {
       testMultipleTypes(
         [
-          FAILURE(ACTION_TYPES.FETCH_TOPICRATING_LIST),
-          FAILURE(ACTION_TYPES.FETCH_TOPICRATING),
-          FAILURE(ACTION_TYPES.CREATE_TOPICRATING),
-          FAILURE(ACTION_TYPES.UPDATE_TOPICRATING),
-          FAILURE(ACTION_TYPES.DELETE_TOPICRATING),
+          FAILURE(ACTION_TYPES.FETCH_TOPICVOTE_LIST),
+          FAILURE(ACTION_TYPES.FETCH_TOPICVOTE),
+          FAILURE(ACTION_TYPES.CREATE_TOPICVOTE),
+          FAILURE(ACTION_TYPES.UPDATE_TOPICVOTE),
+          FAILURE(ACTION_TYPES.DELETE_TOPICVOTE),
         ],
         'error message',
         state => {
@@ -130,7 +130,7 @@ describe('Entities reducer tests', () => {
       const links = parseHeaderForLinks(payload.headers.link);
       expect(
         reducer(undefined, {
-          type: SUCCESS(ACTION_TYPES.FETCH_TOPICRATING_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_TOPICVOTE_LIST),
           payload,
         })
       ).toEqual({
@@ -146,7 +146,7 @@ describe('Entities reducer tests', () => {
       const payload = { data: { 1: 'fake1' } };
       expect(
         reducer(undefined, {
-          type: SUCCESS(ACTION_TYPES.FETCH_TOPICRATING),
+          type: SUCCESS(ACTION_TYPES.FETCH_TOPICVOTE),
           payload,
         })
       ).toEqual({
@@ -160,7 +160,7 @@ describe('Entities reducer tests', () => {
       const payload = { data: 'fake payload' };
       expect(
         reducer(undefined, {
-          type: SUCCESS(ACTION_TYPES.CREATE_TOPICRATING),
+          type: SUCCESS(ACTION_TYPES.CREATE_TOPICVOTE),
           payload,
         })
       ).toEqual({
@@ -174,7 +174,7 @@ describe('Entities reducer tests', () => {
     it('should delete entity', () => {
       const payload = 'fake payload';
       const toTest = reducer(undefined, {
-        type: SUCCESS(ACTION_TYPES.DELETE_TOPICRATING),
+        type: SUCCESS(ACTION_TYPES.DELETE_TOPICVOTE),
         payload,
       });
       expect(toTest).toMatchObject({
@@ -197,65 +197,65 @@ describe('Entities reducer tests', () => {
       axios.delete = sinon.stub().returns(Promise.resolve(resolvedObject));
     });
 
-    it('dispatches ACTION_TYPES.FETCH_TOPICRATING_LIST actions', async () => {
+    it('dispatches ACTION_TYPES.FETCH_TOPICVOTE_LIST actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_TOPICRATING_LIST),
+          type: REQUEST(ACTION_TYPES.FETCH_TOPICVOTE_LIST),
         },
         {
-          type: SUCCESS(ACTION_TYPES.FETCH_TOPICRATING_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_TOPICVOTE_LIST),
           payload: resolvedObject,
         },
       ];
       await store.dispatch(getEntities()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
-    it('dispatches ACTION_TYPES.FETCH_TOPICRATING actions', async () => {
+    it('dispatches ACTION_TYPES.FETCH_TOPICVOTE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_TOPICRATING),
+          type: REQUEST(ACTION_TYPES.FETCH_TOPICVOTE),
         },
         {
-          type: SUCCESS(ACTION_TYPES.FETCH_TOPICRATING),
+          type: SUCCESS(ACTION_TYPES.FETCH_TOPICVOTE),
           payload: resolvedObject,
         },
       ];
       await store.dispatch(getEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
-    it('dispatches ACTION_TYPES.CREATE_TOPICRATING actions', async () => {
+    it('dispatches ACTION_TYPES.CREATE_TOPICVOTE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.CREATE_TOPICRATING),
+          type: REQUEST(ACTION_TYPES.CREATE_TOPICVOTE),
         },
         {
-          type: SUCCESS(ACTION_TYPES.CREATE_TOPICRATING),
+          type: SUCCESS(ACTION_TYPES.CREATE_TOPICVOTE),
           payload: resolvedObject,
         },
       ];
       await store.dispatch(createEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
-    it('dispatches ACTION_TYPES.UPDATE_TOPICRATING actions', async () => {
+    it('dispatches ACTION_TYPES.UPDATE_TOPICVOTE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.UPDATE_TOPICRATING),
+          type: REQUEST(ACTION_TYPES.UPDATE_TOPICVOTE),
         },
         {
-          type: SUCCESS(ACTION_TYPES.UPDATE_TOPICRATING),
+          type: SUCCESS(ACTION_TYPES.UPDATE_TOPICVOTE),
           payload: resolvedObject,
         },
       ];
       await store.dispatch(updateEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
-    it('dispatches ACTION_TYPES.DELETE_TOPICRATING actions', async () => {
+    it('dispatches ACTION_TYPES.DELETE_TOPICVOTE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.DELETE_TOPICRATING),
+          type: REQUEST(ACTION_TYPES.DELETE_TOPICVOTE),
         },
         {
-          type: SUCCESS(ACTION_TYPES.DELETE_TOPICRATING),
+          type: SUCCESS(ACTION_TYPES.DELETE_TOPICVOTE),
           payload: resolvedObject,
         },
       ];

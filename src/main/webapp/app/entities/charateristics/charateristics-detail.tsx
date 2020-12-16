@@ -22,23 +22,23 @@ export const CharateristicsDetail = (props: ICharateristicsDetailProps) => {
     <Row>
       <Col md="8">
         <h2>
-          <Translate contentKey="yaadmaanApp.charateristics.detail.title">Charateristics</Translate> [<b>{charateristicsEntity.id}</b>]
+          <Translate contentKey="yaadbuzzApp.charateristics.detail.title">Charateristics</Translate> [<b>{charateristicsEntity.id}</b>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
             <span id="title">
-              <Translate contentKey="yaadmaanApp.charateristics.title">Title</Translate>
+              <Translate contentKey="yaadbuzzApp.charateristics.title">Title</Translate>
             </span>
           </dt>
           <dd>{charateristicsEntity.title}</dd>
           <dt>
             <span id="repetation">
-              <Translate contentKey="yaadmaanApp.charateristics.repetation">Repetation</Translate>
+              <Translate contentKey="yaadbuzzApp.charateristics.repetation">Repetation</Translate>
             </span>
           </dt>
           <dd>{charateristicsEntity.repetation}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.charateristics.userPerDepartment">User Per Department</Translate>
+            <Translate contentKey="yaadbuzzApp.charateristics.userPerDepartment">User Per Department</Translate>
           </dt>
           <dd>{charateristicsEntity.userPerDepartmentId ? charateristicsEntity.userPerDepartmentId : ''}</dd>
         </dl>

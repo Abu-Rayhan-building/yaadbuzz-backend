@@ -1,5 +1,5 @@
 {
-  "name": "TopicRating",
+  "name": "TopicVote",
   "fields": [
     {
       "fieldName": "repetitions",
@@ -10,7 +10,7 @@
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "topic",
-      "otherEntityRelationshipName": "ratings",
+      "otherEntityRelationshipName": "votes",
       "relationshipValidateRules": "required",
       "relationshipName": "topic",
       "otherEntityField": "id"
@@ -25,7 +25,7 @@
     }
   ],
   "changelogDate": "20201115101920",
-  "entityTableName": "topic_rating",
+  "entityTableName": "topic_vote",
   "dto": "mapstruct",
   "pagination": "infinite-scroll",
   "service": "serviceImpl",

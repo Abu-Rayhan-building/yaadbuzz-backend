@@ -61,8 +61,8 @@ public class CacheConfiguration {
             createCache(cm, edu.sharif.math.yaadbuzz.domain.UserPerDepartment.class.getName() + ".topicAssigneds");
             createCache(cm, edu.sharif.math.yaadbuzz.domain.UserPerDepartment.class.getName() + ".charateristics");
             createCache(cm, edu.sharif.math.yaadbuzz.domain.Topic.class.getName());
-            createCache(cm, edu.sharif.math.yaadbuzz.domain.Topic.class.getName() + ".ratings");
-            createCache(cm, edu.sharif.math.yaadbuzz.domain.TopicRating.class.getName());
+            createCache(cm, edu.sharif.math.yaadbuzz.domain.Topic.class.getName() + ".votes");
+            createCache(cm, edu.sharif.math.yaadbuzz.domain.TopicVote.class.getName());
             createCache(cm, edu.sharif.math.yaadbuzz.domain.Charateristics.class.getName());
             createCache(cm, edu.sharif.math.yaadbuzz.domain.Department.class.getName() + ".memories");
             createCache(cm, edu.sharif.math.yaadbuzz.domain.UserPerDepartment.class.getName() + ".charateristicsRepetations");

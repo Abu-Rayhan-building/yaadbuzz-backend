@@ -22,21 +22,21 @@ export const TopicDetail = (props: ITopicDetailProps) => {
     <Row>
       <Col md="8">
         <h2>
-          <Translate contentKey="yaadmaanApp.topic.detail.title">Topic</Translate> [<b>{topicEntity.id}</b>]
+          <Translate contentKey="yaadbuzzApp.topic.detail.title">Topic</Translate> [<b>{topicEntity.id}</b>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
             <span id="title">
-              <Translate contentKey="yaadmaanApp.topic.title">Title</Translate>
+              <Translate contentKey="yaadbuzzApp.topic.title">Title</Translate>
             </span>
           </dt>
           <dd>{topicEntity.title}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.topic.department">Department</Translate>
+            <Translate contentKey="yaadbuzzApp.topic.department">Department</Translate>
           </dt>
           <dd>{topicEntity.departmentId ? topicEntity.departmentId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.topic.voters">Voters</Translate>
+            <Translate contentKey="yaadbuzzApp.topic.voters">Voters</Translate>
           </dt>
           <dd>
             {topicEntity.voters

@@ -36,8 +36,8 @@ export const CharateristicsDeleteDialog = (props: ICharateristicsDeleteDialogPro
       <ModalHeader toggle={handleClose}>
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="yaadmaanApp.charateristics.delete.question">
-        <Translate contentKey="yaadmaanApp.charateristics.delete.question" interpolate={{ id: charateristicsEntity.id }}>
+      <ModalBody id="yaadbuzzApp.charateristics.delete.question">
+        <Translate contentKey="yaadbuzzApp.charateristics.delete.question" interpolate={{ id: charateristicsEntity.id }}>
           Are you sure you want to delete this Charateristics?
         </Translate>
       </ModalBody>

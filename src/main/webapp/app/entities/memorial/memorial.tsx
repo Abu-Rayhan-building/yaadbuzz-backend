@@ -79,11 +79,11 @@ export const Memorial = (props: IMemorialProps) => {
   return (
     <div>
       <h2 id="memorial-heading">
-        <Translate contentKey="yaadmaanApp.memorial.home.title">Memorials</Translate>
+        <Translate contentKey="yaadbuzzApp.memorial.home.title">Memorials</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
-          <Translate contentKey="yaadmaanApp.memorial.home.createLabel">Create new Memorial</Translate>
+          <Translate contentKey="yaadbuzzApp.memorial.home.createLabel">Create new Memorial</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -103,18 +103,21 @@ export const Memorial = (props: IMemorialProps) => {
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.memorial.anonymousComment">Anonymous Comment</Translate>{' '}
+                    <Translate contentKey="yaadbuzzApp.memorial.anonymousComment">Anonymous Comment</Translate>{' '}
                     <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.memorial.notAnonymousComment">Not Anonymous Comment</Translate>{' '}
+                    <Translate contentKey="yaadbuzzApp.memorial.notAnonymousComment">Not Anonymous Comment</Translate>{' '}
                     <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.memorial.writer">Writer</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.memorial.writer">Writer</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.memorial.recipient">Recipient</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.memorial.recipient">Recipient</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th>
+                    <Translate contentKey="yaadbuzzApp.memorial.department">Department</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -145,6 +148,7 @@ export const Memorial = (props: IMemorialProps) => {
                     <td>
                       {memorial.recipientId ? <Link to={`user-per-department/${memorial.recipientId}`}>{memorial.recipientId}</Link> : ''}
                     </td>
+                    <td>{memorial.departmentId ? <Link to={`department/${memorial.departmentId}`}>{memorial.departmentId}</Link> : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button tag={Link} to={`${match.url}/${memorial.id}`} color="info" size="sm">
@@ -174,7 +178,7 @@ export const Memorial = (props: IMemorialProps) => {
           ) : (
             !loading && (
               <div className="alert alert-warning">
-                <Translate contentKey="yaadmaanApp.memorial.home.notFound">No Memorials found</Translate>
+                <Translate contentKey="yaadbuzzApp.memorial.home.notFound">No Memorials found</Translate>
               </div>
             )
           )}

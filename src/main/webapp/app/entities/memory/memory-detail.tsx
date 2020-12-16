@@ -22,31 +22,31 @@ export const MemoryDetail = (props: IMemoryDetailProps) => {
     <Row>
       <Col md="8">
         <h2>
-          <Translate contentKey="yaadmaanApp.memory.detail.title">Memory</Translate> [<b>{memoryEntity.id}</b>]
+          <Translate contentKey="yaadbuzzApp.memory.detail.title">Memory</Translate> [<b>{memoryEntity.id}</b>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
             <span id="title">
-              <Translate contentKey="yaadmaanApp.memory.title">Title</Translate>
+              <Translate contentKey="yaadbuzzApp.memory.title">Title</Translate>
             </span>
           </dt>
           <dd>{memoryEntity.title}</dd>
           <dt>
             <span id="isPrivate">
-              <Translate contentKey="yaadmaanApp.memory.isPrivate">Is Private</Translate>
+              <Translate contentKey="yaadbuzzApp.memory.isPrivate">Is Private</Translate>
             </span>
           </dt>
           <dd>{memoryEntity.isPrivate ? 'true' : 'false'}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.memory.text">Text</Translate>
+            <Translate contentKey="yaadbuzzApp.memory.text">Text</Translate>
           </dt>
           <dd>{memoryEntity.textId ? memoryEntity.textId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.memory.writer">Writer</Translate>
+            <Translate contentKey="yaadbuzzApp.memory.writer">Writer</Translate>
           </dt>
           <dd>{memoryEntity.writerId ? memoryEntity.writerId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.memory.taged">Taged</Translate>
+            <Translate contentKey="yaadbuzzApp.memory.taged">Taged</Translate>
           </dt>
           <dd>
             {memoryEntity.tageds
@@ -59,7 +59,7 @@ export const MemoryDetail = (props: IMemoryDetailProps) => {
               : null}
           </dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.memory.department">Department</Translate>
+            <Translate contentKey="yaadbuzzApp.memory.department">Department</Translate>
           </dt>
           <dd>{memoryEntity.departmentId ? memoryEntity.departmentId : ''}</dd>
         </dl>

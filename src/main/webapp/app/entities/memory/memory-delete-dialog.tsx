@@ -36,8 +36,8 @@ export const MemoryDeleteDialog = (props: IMemoryDeleteDialogProps) => {
       <ModalHeader toggle={handleClose}>
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="yaadmaanApp.memory.delete.question">
-        <Translate contentKey="yaadmaanApp.memory.delete.question" interpolate={{ id: memoryEntity.id }}>
+      <ModalBody id="yaadbuzzApp.memory.delete.question">
+        <Translate contentKey="yaadbuzzApp.memory.delete.question" interpolate={{ id: memoryEntity.id }}>
           Are you sure you want to delete this Memory?
         </Translate>
       </ModalBody>

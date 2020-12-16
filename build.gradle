@@ -15,6 +15,7 @@ plugins {
     id "maven-publish"
     id "idea"
     id "jacoco"
+    id "eclipse"
     id "org.springframework.boot"
     id "com.google.cloud.tools.jib"
     id "com.gorylenko.gradle-git-properties"

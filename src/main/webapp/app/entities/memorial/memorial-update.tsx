@@ -11,6 +11,8 @@ import { IComment } from 'app/shared/model/comment.model';
 import { getEntities as getComments } from 'app/entities/comment/comment.reducer';
 import { IUserPerDepartment } from 'app/shared/model/user-per-department.model';
 import { getEntities as getUserPerDepartments } from 'app/entities/user-per-department/user-per-department.reducer';
+import { IDepartment } from 'app/shared/model/department.model';
+import { getEntities as getDepartments } from 'app/entities/department/department.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './memorial.reducer';
 import { IMemorial } from 'app/shared/model/memorial.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -23,9 +25,10 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
   const [notAnonymousCommentId, setNotAnonymousCommentId] = useState('0');
   const [writerId, setWriterId] = useState('0');
   const [recipientId, setRecipientId] = useState('0');
+  const [departmentId, setDepartmentId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { memorialEntity, comments, userPerDepartments, loading, updating } = props;
+  const { memorialEntity, comments, userPerDepartments, departments, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/memorial');
@@ -38,6 +41,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
 
     props.getComments();
     props.getUserPerDepartments();
+    props.getDepartments();
   }, []);
 
   useEffect(() => {
@@ -65,8 +69,8 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadmaanApp.memorial.home.createOrEditLabel">
-            <Translate contentKey="yaadmaanApp.memorial.home.createOrEditLabel">Create or edit a Memorial</Translate>
+          <h2 id="yaadbuzzApp.memorial.home.createOrEditLabel">
+            <Translate contentKey="yaadbuzzApp.memorial.home.createOrEditLabel">Create or edit a Memorial</Translate>
           </h2>
         </Col>
       </Row>
@@ -86,7 +90,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
               ) : null}
               <AvGroup>
                 <Label for="memorial-anonymousComment">
-                  <Translate contentKey="yaadmaanApp.memorial.anonymousComment">Anonymous Comment</Translate>
+                  <Translate contentKey="yaadbuzzApp.memorial.anonymousComment">Anonymous Comment</Translate>
                 </Label>
                 <AvInput id="memorial-anonymousComment" type="select" className="form-control" name="anonymousCommentId">
                   <option value="" key="0" />
@@ -101,7 +105,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="memorial-notAnonymousComment">
-                  <Translate contentKey="yaadmaanApp.memorial.notAnonymousComment">Not Anonymous Comment</Translate>
+                  <Translate contentKey="yaadbuzzApp.memorial.notAnonymousComment">Not Anonymous Comment</Translate>
                 </Label>
                 <AvInput id="memorial-notAnonymousComment" type="select" className="form-control" name="notAnonymousCommentId">
                   <option value="" key="0" />
@@ -116,7 +120,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="memorial-writer">
-                  <Translate contentKey="yaadmaanApp.memorial.writer">Writer</Translate>
+                  <Translate contentKey="yaadbuzzApp.memorial.writer">Writer</Translate>
                 </Label>
                 <AvInput id="memorial-writer" type="select" className="form-control" name="writerId" required>
                   {userPerDepartments
@@ -133,11 +137,28 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="memorial-recipient">
-                  <Translate contentKey="yaadmaanApp.memorial.recipient">Recipient</Translate>
+                  <Translate contentKey="yaadbuzzApp.memorial.recipient">Recipient</Translate>
                 </Label>
                 <AvInput id="memorial-recipient" type="select" className="form-control" name="recipientId" required>
                   {userPerDepartments
                     ? userPerDepartments.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+                <AvFeedback>
+                  <Translate contentKey="entity.validation.required">This field is required.</Translate>
+                </AvFeedback>
+              </AvGroup>
+              <AvGroup>
+                <Label for="memorial-department">
+                  <Translate contentKey="yaadbuzzApp.memorial.department">Department</Translate>
+                </Label>
+                <AvInput id="memorial-department" type="select" className="form-control" name="departmentId" required>
+                  {departments
+                    ? departments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
                           {otherEntity.id}
                         </option>
@@ -172,6 +193,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
 const mapStateToProps = (storeState: IRootState) => ({
   comments: storeState.comment.entities,
   userPerDepartments: storeState.userPerDepartment.entities,
+  departments: storeState.department.entities,
   memorialEntity: storeState.memorial.entity,
   loading: storeState.memorial.loading,
   updating: storeState.memorial.updating,
@@ -181,6 +203,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 const mapDispatchToProps = {
   getComments,
   getUserPerDepartments,
+  getDepartments,
   getEntity,
   updateEntity,
   createEntity,

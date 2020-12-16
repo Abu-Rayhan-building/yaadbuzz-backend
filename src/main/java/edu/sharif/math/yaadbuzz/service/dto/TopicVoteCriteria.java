@@ -12,15 +12,15 @@ import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
 
 /**
- * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.TopicRating} entity. This class is used
- * in {@link edu.sharif.math.yaadbuzz.web.rest.TopicRatingResource} to receive all the possible filtering options from
+ * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.TopicVote} entity. This class is used
+ * in {@link edu.sharif.math.yaadbuzz.web.rest.TopicVoteResource} to receive all the possible filtering options from
  * the Http GET request parameters.
  * For example the following could be a valid request:
- * {@code /topic-ratings?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
+ * {@code /topic-votes?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
  * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
  * fix type specific filters.
  */
-public class TopicRatingCriteria implements Serializable, Criteria {
+public class TopicVoteCriteria implements Serializable, Criteria {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,10 +32,10 @@ public class TopicRatingCriteria implements Serializable, Criteria {
 
     private LongFilter userId;
 
-    public TopicRatingCriteria() {
+    public TopicVoteCriteria() {
     }
 
-    public TopicRatingCriteria(TopicRatingCriteria other) {
+    public TopicVoteCriteria(TopicVoteCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.repetitions = other.repetitions == null ? null : other.repetitions.copy();
         this.topicId = other.topicId == null ? null : other.topicId.copy();
@@ -43,8 +43,8 @@ public class TopicRatingCriteria implements Serializable, Criteria {
     }
 
     @Override
-    public TopicRatingCriteria copy() {
-        return new TopicRatingCriteria(this);
+    public TopicVoteCriteria copy() {
+        return new TopicVoteCriteria(this);
     }
 
     public LongFilter getId() {
@@ -88,7 +88,7 @@ public class TopicRatingCriteria implements Serializable, Criteria {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final TopicRatingCriteria that = (TopicRatingCriteria) o;
+        final TopicVoteCriteria that = (TopicVoteCriteria) o;
         return
             Objects.equals(id, that.id) &&
             Objects.equals(repetitions, that.repetitions) &&
@@ -109,7 +109,7 @@ public class TopicRatingCriteria implements Serializable, Criteria {
     // prettier-ignore
     @Override
     public String toString() {
-        return "TopicRatingCriteria{" +
+        return "TopicVoteCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (repetitions != null ? "repetitions=" + repetitions + ", " : "") +
                 (topicId != null ? "topicId=" + topicId + ", " : "") +

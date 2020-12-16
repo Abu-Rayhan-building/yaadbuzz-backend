@@ -14,27 +14,25 @@ public class MemorialUDTO implements Serializable, UserInputDTO<MemorialDTO> {
      */
     private static final long serialVersionUID = 1L;
 
-    private Long anonymousCommentId;
+    private CommentCreateUDTO anonymousComment;
 
-    private Long notAnonymousCommentId;
+    private CommentCreateUDTO notAnonymousComment;
 
     private Long recipientId;
 
     @Override
     public MemorialDTO build() {
 	final MemorialDTO res = new MemorialDTO();
-	res.setAnonymousCommentId(this.getAnonymousCommentId());
-	res.setNotAnonymousCommentId(this.notAnonymousCommentId);
 	res.setRecipientId(this.recipientId);
 	return res;
     }
 
-    public Long getAnonymousCommentId() {
-	return this.anonymousCommentId;
+    public CommentCreateUDTO getAnonymousComment() {
+	return this.anonymousComment;
     }
 
-    public Long getNotAnonymousCommentId() {
-	return this.notAnonymousCommentId;
+    public CommentCreateUDTO getNotAnonymousComment() {
+	return this.notAnonymousComment;
     }
 
     public Long getRecipientId() {
@@ -46,12 +44,13 @@ public class MemorialUDTO implements Serializable, UserInputDTO<MemorialDTO> {
 	return 31;
     }
 
-    public void setAnonymousCommentId(final Long commentId) {
-	this.anonymousCommentId = commentId;
+    public void setAnonymousComment(final CommentCreateUDTO anonymousComment) {
+	this.anonymousComment = anonymousComment;
     }
 
-    public void setNotAnonymousCommentId(final Long commentId) {
-	this.notAnonymousCommentId = commentId;
+    public void setNotAnonymousComment(
+	    final CommentCreateUDTO notAnonymousComment) {
+	this.notAnonymousComment = notAnonymousComment;
     }
 
     public void setRecipientId(final Long userPerDepartmentId) {
@@ -61,9 +60,8 @@ public class MemorialUDTO implements Serializable, UserInputDTO<MemorialDTO> {
     // prettier-ignore
     @Override
     public String toString() {
-	return "MemorialDTO{" + ", anonymousCommentId="
-		+ this.getAnonymousCommentId() + ", notAnonymousCommentId="
-		+ this.getNotAnonymousCommentId() + ", recipientId="
-		+ this.getRecipientId() + "}";
+	return "MemorialDTO{" + ", anonymousCommentId=" + this.getRecipientId()
+		+ "}";
     }
+
 }

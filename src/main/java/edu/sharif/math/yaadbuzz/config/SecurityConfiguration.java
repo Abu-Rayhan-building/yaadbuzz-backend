@@ -62,10 +62,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.exceptionHandling().authenticationEntryPoint(problemSupport)
 		.accessDeniedHandler(problemSupport).and().headers()
 		.contentSecurityPolicy(
-			"default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:")
+			"default-src 'self' *;"
+			+ " frame-src 'self' data:;"
+			+ " script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com;"
+			+ " style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;"
+			+ " img-src 'self' data:;"
+			+ " font-src 'self' data:")
 		.and()
 		.referrerPolicy(
-			ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+			ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)
 		.and()
 		.featurePolicy(
 			"geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")

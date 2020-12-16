@@ -11,21 +11,21 @@ import {
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
-import { ITopicRating, defaultValue } from 'app/shared/model/topic-rating.model';
+import { ITopicVote, defaultValue } from 'app/shared/model/topic-vote.model';
 
 export const ACTION_TYPES = {
-  FETCH_TOPICRATING_LIST: 'topicRating/FETCH_TOPICRATING_LIST',
-  FETCH_TOPICRATING: 'topicRating/FETCH_TOPICRATING',
-  CREATE_TOPICRATING: 'topicRating/CREATE_TOPICRATING',
-  UPDATE_TOPICRATING: 'topicRating/UPDATE_TOPICRATING',
-  DELETE_TOPICRATING: 'topicRating/DELETE_TOPICRATING',
-  RESET: 'topicRating/RESET',
+  FETCH_TOPICVOTE_LIST: 'topicVote/FETCH_TOPICVOTE_LIST',
+  FETCH_TOPICVOTE: 'topicVote/FETCH_TOPICVOTE',
+  CREATE_TOPICVOTE: 'topicVote/CREATE_TOPICVOTE',
+  UPDATE_TOPICVOTE: 'topicVote/UPDATE_TOPICVOTE',
+  DELETE_TOPICVOTE: 'topicVote/DELETE_TOPICVOTE',
+  RESET: 'topicVote/RESET',
 };
 
 const initialState = {
   loading: false,
   errorMessage: null,
-  entities: [] as ReadonlyArray<ITopicRating>,
+  entities: [] as ReadonlyArray<ITopicVote>,
   entity: defaultValue,
   links: { next: 0 },
   updating: false,
@@ -33,34 +33,34 @@ const initialState = {
   updateSuccess: false,
 };
 
-export type TopicRatingState = Readonly<typeof initialState>;
+export type TopicVoteState = Readonly<typeof initialState>;
 
 // Reducer
 
-export default (state: TopicRatingState = initialState, action): TopicRatingState => {
+export default (state: TopicVoteState = initialState, action): TopicVoteState => {
   switch (action.type) {
-    case REQUEST(ACTION_TYPES.FETCH_TOPICRATING_LIST):
-    case REQUEST(ACTION_TYPES.FETCH_TOPICRATING):
+    case REQUEST(ACTION_TYPES.FETCH_TOPICVOTE_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_TOPICVOTE):
       return {
         ...state,
         errorMessage: null,
         updateSuccess: false,
         loading: true,
       };
-    case REQUEST(ACTION_TYPES.CREATE_TOPICRATING):
-    case REQUEST(ACTION_TYPES.UPDATE_TOPICRATING):
-    case REQUEST(ACTION_TYPES.DELETE_TOPICRATING):
+    case REQUEST(ACTION_TYPES.CREATE_TOPICVOTE):
+    case REQUEST(ACTION_TYPES.UPDATE_TOPICVOTE):
+    case REQUEST(ACTION_TYPES.DELETE_TOPICVOTE):
       return {
         ...state,
         errorMessage: null,
         updateSuccess: false,
         updating: true,
       };
-    case FAILURE(ACTION_TYPES.FETCH_TOPICRATING_LIST):
-    case FAILURE(ACTION_TYPES.FETCH_TOPICRATING):
-    case FAILURE(ACTION_TYPES.CREATE_TOPICRATING):
-    case FAILURE(ACTION_TYPES.UPDATE_TOPICRATING):
-    case FAILURE(ACTION_TYPES.DELETE_TOPICRATING):
+    case FAILURE(ACTION_TYPES.FETCH_TOPICVOTE_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_TOPICVOTE):
+    case FAILURE(ACTION_TYPES.CREATE_TOPICVOTE):
+    case FAILURE(ACTION_TYPES.UPDATE_TOPICVOTE):
+    case FAILURE(ACTION_TYPES.DELETE_TOPICVOTE):
       return {
         ...state,
         loading: false,
@@ -68,7 +68,7 @@ export default (state: TopicRatingState = initialState, action): TopicRatingStat
         updateSuccess: false,
         errorMessage: action.payload,
       };
-    case SUCCESS(ACTION_TYPES.FETCH_TOPICRATING_LIST): {
+    case SUCCESS(ACTION_TYPES.FETCH_TOPICVOTE_LIST): {
       const links = parseHeaderForLinks(action.payload.headers.link);
 
       return {
@@ -79,21 +79,21 @@ export default (state: TopicRatingState = initialState, action): TopicRatingStat
         totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     }
-    case SUCCESS(ACTION_TYPES.FETCH_TOPICRATING):
+    case SUCCESS(ACTION_TYPES.FETCH_TOPICVOTE):
       return {
         ...state,
         loading: false,
         entity: action.payload.data,
       };
-    case SUCCESS(ACTION_TYPES.CREATE_TOPICRATING):
-    case SUCCESS(ACTION_TYPES.UPDATE_TOPICRATING):
+    case SUCCESS(ACTION_TYPES.CREATE_TOPICVOTE):
+    case SUCCESS(ACTION_TYPES.UPDATE_TOPICVOTE):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
         entity: action.payload.data,
       };
-    case SUCCESS(ACTION_TYPES.DELETE_TOPICRATING):
+    case SUCCESS(ACTION_TYPES.DELETE_TOPICVOTE):
       return {
         ...state,
         updating: false,
@@ -109,46 +109,46 @@ export default (state: TopicRatingState = initialState, action): TopicRatingStat
   }
 };
 
-const apiUrl = 'api/topic-ratings';
+const apiUrl = 'api/topic-votes';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<ITopicRating> = (page, size, sort) => {
+export const getEntities: ICrudGetAllAction<ITopicVote> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
-    type: ACTION_TYPES.FETCH_TOPICRATING_LIST,
-    payload: axios.get<ITopicRating>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
+    type: ACTION_TYPES.FETCH_TOPICVOTE_LIST,
+    payload: axios.get<ITopicVote>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 
-export const getEntity: ICrudGetAction<ITopicRating> = id => {
+export const getEntity: ICrudGetAction<ITopicVote> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
-    type: ACTION_TYPES.FETCH_TOPICRATING,
-    payload: axios.get<ITopicRating>(requestUrl),
+    type: ACTION_TYPES.FETCH_TOPICVOTE,
+    payload: axios.get<ITopicVote>(requestUrl),
   };
 };
 
-export const createEntity: ICrudPutAction<ITopicRating> = entity => async dispatch => {
+export const createEntity: ICrudPutAction<ITopicVote> = entity => async dispatch => {
   const result = await dispatch({
-    type: ACTION_TYPES.CREATE_TOPICRATING,
+    type: ACTION_TYPES.CREATE_TOPICVOTE,
     payload: axios.post(apiUrl, cleanEntity(entity)),
   });
   return result;
 };
 
-export const updateEntity: ICrudPutAction<ITopicRating> = entity => async dispatch => {
+export const updateEntity: ICrudPutAction<ITopicVote> = entity => async dispatch => {
   const result = await dispatch({
-    type: ACTION_TYPES.UPDATE_TOPICRATING,
+    type: ACTION_TYPES.UPDATE_TOPICVOTE,
     payload: axios.put(apiUrl, cleanEntity(entity)),
   });
   return result;
 };
 
-export const deleteEntity: ICrudDeleteAction<ITopicRating> = id => async dispatch => {
+export const deleteEntity: ICrudDeleteAction<ITopicVote> = id => async dispatch => {
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
-    type: ACTION_TYPES.DELETE_TOPICRATING,
+    type: ACTION_TYPES.DELETE_TOPICVOTE,
     payload: axios.delete(requestUrl),
   });
   return result;

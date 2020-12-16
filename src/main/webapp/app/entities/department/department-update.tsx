@@ -63,8 +63,8 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadmaanApp.department.home.createOrEditLabel">
-            <Translate contentKey="yaadmaanApp.department.home.createOrEditLabel">Create or edit a Department</Translate>
+          <h2 id="yaadbuzzApp.department.home.createOrEditLabel">
+            <Translate contentKey="yaadbuzzApp.department.home.createOrEditLabel">Create or edit a Department</Translate>
           </h2>
         </Col>
       </Row>
@@ -84,7 +84,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
               ) : null}
               <AvGroup>
                 <Label id="nameLabel" for="department-name">
-                  <Translate contentKey="yaadmaanApp.department.name">Name</Translate>
+                  <Translate contentKey="yaadbuzzApp.department.name">Name</Translate>
                 </Label>
                 <AvField
                   id="department-name"
@@ -97,7 +97,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label id="passwordLabel" for="department-password">
-                  <Translate contentKey="yaadmaanApp.department.password">Password</Translate>
+                  <Translate contentKey="yaadbuzzApp.department.password">Password</Translate>
                 </Label>
                 <AvField
                   id="department-password"
@@ -110,7 +110,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="department-avatar">
-                  <Translate contentKey="yaadmaanApp.department.avatar">Avatar</Translate>
+                  <Translate contentKey="yaadbuzzApp.department.avatar">Avatar</Translate>
                 </Label>
                 <AvInput id="department-avatar" type="select" className="form-control" name="avatarId">
                   <option value="" key="0" />
@@ -125,7 +125,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="department-owner">
-                  <Translate contentKey="yaadmaanApp.department.owner">Owner</Translate>
+                  <Translate contentKey="yaadbuzzApp.department.owner">Owner</Translate>
                 </Label>
                 <AvInput id="department-owner" type="select" className="form-control" name="ownerId" required>
                   {users

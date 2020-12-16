@@ -4,6 +4,7 @@ export interface IMemorial {
   notAnonymousCommentId?: number;
   writerId?: number;
   recipientId?: number;
+  departmentId?: number;
 }
 
 export const defaultValue: Readonly<IMemorial> = {};

@@ -10,12 +10,12 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
- * A TopicRating.
+ * A TopicVote.
  */
 @Entity
-@Table(name = "topic_rating")
+@Table(name = "topic_vote")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class TopicRating implements Serializable {
+public class TopicVote implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public class TopicRating implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "ratings", allowSetters = true)
+    @JsonIgnoreProperties(value = "votes", allowSetters = true)
     private Topic topic;
 
     @ManyToOne(optional = false)
@@ -50,7 +50,7 @@ public class TopicRating implements Serializable {
         return repetitions;
     }
 
-    public TopicRating repetitions(Integer repetitions) {
+    public TopicVote repetitions(Integer repetitions) {
         this.repetitions = repetitions;
         return this;
     }
@@ -63,7 +63,7 @@ public class TopicRating implements Serializable {
         return topic;
     }
 
-    public TopicRating topic(Topic topic) {
+    public TopicVote topic(Topic topic) {
         this.topic = topic;
         return this;
     }
@@ -76,7 +76,7 @@ public class TopicRating implements Serializable {
         return user;
     }
 
-    public TopicRating user(UserPerDepartment userPerDepartment) {
+    public TopicVote user(UserPerDepartment userPerDepartment) {
         this.user = userPerDepartment;
         return this;
     }
@@ -91,10 +91,10 @@ public class TopicRating implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TopicRating)) {
+        if (!(o instanceof TopicVote)) {
             return false;
         }
-        return id != null && id.equals(((TopicRating) o).id);
+        return id != null && id.equals(((TopicVote) o).id);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class TopicRating implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "TopicRating{" +
+        return "TopicVote{" +
             "id=" + getId() +
             ", repetitions=" + getRepetitions() +
             "}";

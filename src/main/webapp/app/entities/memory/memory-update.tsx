@@ -70,8 +70,8 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadmaanApp.memory.home.createOrEditLabel">
-            <Translate contentKey="yaadmaanApp.memory.home.createOrEditLabel">Create or edit a Memory</Translate>
+          <h2 id="yaadbuzzApp.memory.home.createOrEditLabel">
+            <Translate contentKey="yaadbuzzApp.memory.home.createOrEditLabel">Create or edit a Memory</Translate>
           </h2>
         </Col>
       </Row>
@@ -91,19 +91,19 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
               ) : null}
               <AvGroup>
                 <Label id="titleLabel" for="memory-title">
-                  <Translate contentKey="yaadmaanApp.memory.title">Title</Translate>
+                  <Translate contentKey="yaadbuzzApp.memory.title">Title</Translate>
                 </Label>
                 <AvField id="memory-title" type="text" name="title" />
               </AvGroup>
               <AvGroup check>
                 <Label id="isPrivateLabel">
                   <AvInput id="memory-isPrivate" type="checkbox" className="form-check-input" name="isPrivate" />
-                  <Translate contentKey="yaadmaanApp.memory.isPrivate">Is Private</Translate>
+                  <Translate contentKey="yaadbuzzApp.memory.isPrivate">Is Private</Translate>
                 </Label>
               </AvGroup>
               <AvGroup>
                 <Label for="memory-text">
-                  <Translate contentKey="yaadmaanApp.memory.text">Text</Translate>
+                  <Translate contentKey="yaadbuzzApp.memory.text">Text</Translate>
                 </Label>
                 <AvInput id="memory-text" type="select" className="form-control" name="textId" required>
                   {comments
@@ -120,7 +120,7 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="memory-writer">
-                  <Translate contentKey="yaadmaanApp.memory.writer">Writer</Translate>
+                  <Translate contentKey="yaadbuzzApp.memory.writer">Writer</Translate>
                 </Label>
                 <AvInput id="memory-writer" type="select" className="form-control" name="writerId" required>
                   {userPerDepartments
@@ -137,7 +137,7 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="memory-taged">
-                  <Translate contentKey="yaadmaanApp.memory.taged">Taged</Translate>
+                  <Translate contentKey="yaadbuzzApp.memory.taged">Taged</Translate>
                 </Label>
                 <AvInput
                   id="memory-taged"
@@ -159,7 +159,7 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="memory-department">
-                  <Translate contentKey="yaadmaanApp.memory.department">Department</Translate>
+                  <Translate contentKey="yaadbuzzApp.memory.department">Department</Translate>
                 </Label>
                 <AvInput id="memory-department" type="select" className="form-control" name="departmentId" required>
                   {departments

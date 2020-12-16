@@ -22,32 +22,32 @@ export const UserPerDepartmentDetail = (props: IUserPerDepartmentDetailProps) =>
     <Row>
       <Col md="8">
         <h2>
-          <Translate contentKey="yaadmaanApp.userPerDepartment.detail.title">UserPerDepartment</Translate> [
+          <Translate contentKey="yaadbuzzApp.userPerDepartment.detail.title">UserPerDepartment</Translate> [
           <b>{userPerDepartmentEntity.id}</b>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
             <span id="nicName">
-              <Translate contentKey="yaadmaanApp.userPerDepartment.nicName">Nic Name</Translate>
+              <Translate contentKey="yaadbuzzApp.userPerDepartment.nicName">Nic Name</Translate>
             </span>
           </dt>
           <dd>{userPerDepartmentEntity.nicName}</dd>
           <dt>
             <span id="bio">
-              <Translate contentKey="yaadmaanApp.userPerDepartment.bio">Bio</Translate>
+              <Translate contentKey="yaadbuzzApp.userPerDepartment.bio">Bio</Translate>
             </span>
           </dt>
           <dd>{userPerDepartmentEntity.bio}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.userPerDepartment.avatar">Avatar</Translate>
+            <Translate contentKey="yaadbuzzApp.userPerDepartment.avatar">Avatar</Translate>
           </dt>
           <dd>{userPerDepartmentEntity.avatarId ? userPerDepartmentEntity.avatarId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.userPerDepartment.realUser">Real User</Translate>
+            <Translate contentKey="yaadbuzzApp.userPerDepartment.realUser">Real User</Translate>
           </dt>
           <dd>{userPerDepartmentEntity.realUserId ? userPerDepartmentEntity.realUserId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.userPerDepartment.department">Department</Translate>
+            <Translate contentKey="yaadbuzzApp.userPerDepartment.department">Department</Translate>
           </dt>
           <dd>{userPerDepartmentEntity.departmentId ? userPerDepartmentEntity.departmentId : ''}</dd>
         </dl>

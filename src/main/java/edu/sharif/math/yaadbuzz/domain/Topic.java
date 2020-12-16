@@ -32,7 +32,7 @@ public class Topic implements Serializable {
 
     @OneToMany(mappedBy = "topic")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<TopicRating> ratings = new HashSet<>();
+    private Set<TopicVote> votes = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
@@ -68,29 +68,29 @@ public class Topic implements Serializable {
         this.title = title;
     }
 
-    public Set<TopicRating> getRatings() {
-        return ratings;
+    public Set<TopicVote> getVotes() {
+        return votes;
     }
 
-    public Topic ratings(Set<TopicRating> topicRatings) {
-        this.ratings = topicRatings;
+    public Topic votes(Set<TopicVote> topicVotes) {
+        this.votes = topicVotes;
         return this;
     }
 
-    public Topic addRatings(TopicRating topicRating) {
-        this.ratings.add(topicRating);
+    public Topic addVotes(TopicVote topicRating) {
+        this.votes.add(topicRating);
         topicRating.setTopic(this);
         return this;
     }
 
-    public Topic removeRatings(TopicRating topicRating) {
-        this.ratings.remove(topicRating);
+    public Topic removeVotes(TopicVote topicRating) {
+        this.votes.remove(topicRating);
         topicRating.setTopic(null);
         return this;
     }
 
-    public void setRatings(Set<TopicRating> topicRatings) {
-        this.ratings = topicRatings;
+    public void setVotes(Set<TopicVote> topicVotes) {
+        this.votes = topicVotes;
     }
 
     public Department getDepartment() {

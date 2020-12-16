@@ -79,11 +79,11 @@ export const Memory = (props: IMemoryProps) => {
   return (
     <div>
       <h2 id="memory-heading">
-        <Translate contentKey="yaadmaanApp.memory.home.title">Memories</Translate>
+        <Translate contentKey="yaadbuzzApp.memory.home.title">Memories</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
-          <Translate contentKey="yaadmaanApp.memory.home.createLabel">Create new Memory</Translate>
+          <Translate contentKey="yaadbuzzApp.memory.home.createLabel">Create new Memory</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -103,19 +103,19 @@ export const Memory = (props: IMemoryProps) => {
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('title')}>
-                    <Translate contentKey="yaadmaanApp.memory.title">Title</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.memory.title">Title</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('isPrivate')}>
-                    <Translate contentKey="yaadmaanApp.memory.isPrivate">Is Private</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.memory.isPrivate">Is Private</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.memory.text">Text</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.memory.text">Text</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.memory.writer">Writer</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.memory.writer">Writer</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.memory.department">Department</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.memory.department">Department</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -162,7 +162,7 @@ export const Memory = (props: IMemoryProps) => {
           ) : (
             !loading && (
               <div className="alert alert-warning">
-                <Translate contentKey="yaadmaanApp.memory.home.notFound">No Memories found</Translate>
+                <Translate contentKey="yaadbuzzApp.memory.home.notFound">No Memories found</Translate>
               </div>
             )
           )}

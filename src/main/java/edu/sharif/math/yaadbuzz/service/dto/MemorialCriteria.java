@@ -34,6 +34,8 @@ public class MemorialCriteria implements Serializable, Criteria {
 
     private LongFilter recipientId;
 
+    private LongFilter departmentId;
+
     public MemorialCriteria() {
     }
 
@@ -43,6 +45,7 @@ public class MemorialCriteria implements Serializable, Criteria {
         this.notAnonymousCommentId = other.notAnonymousCommentId == null ? null : other.notAnonymousCommentId.copy();
         this.writerId = other.writerId == null ? null : other.writerId.copy();
         this.recipientId = other.recipientId == null ? null : other.recipientId.copy();
+        this.departmentId = other.departmentId == null ? null : other.departmentId.copy();
     }
 
     @Override
@@ -90,6 +93,14 @@ public class MemorialCriteria implements Serializable, Criteria {
         this.recipientId = recipientId;
     }
 
+    public LongFilter getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(LongFilter departmentId) {
+        this.departmentId = departmentId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -105,7 +116,8 @@ public class MemorialCriteria implements Serializable, Criteria {
             Objects.equals(anonymousCommentId, that.anonymousCommentId) &&
             Objects.equals(notAnonymousCommentId, that.notAnonymousCommentId) &&
             Objects.equals(writerId, that.writerId) &&
-            Objects.equals(recipientId, that.recipientId);
+            Objects.equals(recipientId, that.recipientId) &&
+            Objects.equals(departmentId, that.departmentId);
     }
 
     @Override
@@ -115,7 +127,8 @@ public class MemorialCriteria implements Serializable, Criteria {
         anonymousCommentId,
         notAnonymousCommentId,
         writerId,
-        recipientId
+        recipientId,
+        departmentId
         );
     }
 
@@ -128,6 +141,7 @@ public class MemorialCriteria implements Serializable, Criteria {
                 (notAnonymousCommentId != null ? "notAnonymousCommentId=" + notAnonymousCommentId + ", " : "") +
                 (writerId != null ? "writerId=" + writerId + ", " : "") +
                 (recipientId != null ? "recipientId=" + recipientId + ", " : "") +
+                (departmentId != null ? "departmentId=" + departmentId + ", " : "") +
             "}";
     }
 

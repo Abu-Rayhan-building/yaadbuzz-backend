@@ -22,27 +22,27 @@ export const DepartmentDetail = (props: IDepartmentDetailProps) => {
     <Row>
       <Col md="8">
         <h2>
-          <Translate contentKey="yaadmaanApp.department.detail.title">Department</Translate> [<b>{departmentEntity.id}</b>]
+          <Translate contentKey="yaadbuzzApp.department.detail.title">Department</Translate> [<b>{departmentEntity.id}</b>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
             <span id="name">
-              <Translate contentKey="yaadmaanApp.department.name">Name</Translate>
+              <Translate contentKey="yaadbuzzApp.department.name">Name</Translate>
             </span>
           </dt>
           <dd>{departmentEntity.name}</dd>
           <dt>
             <span id="password">
-              <Translate contentKey="yaadmaanApp.department.password">Password</Translate>
+              <Translate contentKey="yaadbuzzApp.department.password">Password</Translate>
             </span>
           </dt>
           <dd>{departmentEntity.password}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.department.avatar">Avatar</Translate>
+            <Translate contentKey="yaadbuzzApp.department.avatar">Avatar</Translate>
           </dt>
           <dd>{departmentEntity.avatarId ? departmentEntity.avatarId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.department.owner">Owner</Translate>
+            <Translate contentKey="yaadbuzzApp.department.owner">Owner</Translate>
           </dt>
           <dd>{departmentEntity.ownerId ? departmentEntity.ownerId : ''}</dd>
         </dl>

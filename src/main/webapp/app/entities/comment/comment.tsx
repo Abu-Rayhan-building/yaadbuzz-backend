@@ -79,11 +79,11 @@ export const Comment = (props: ICommentProps) => {
   return (
     <div>
       <h2 id="comment-heading">
-        <Translate contentKey="yaadmaanApp.comment.home.title">Comments</Translate>
+        <Translate contentKey="yaadbuzzApp.comment.home.title">Comments</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
-          <Translate contentKey="yaadmaanApp.comment.home.createLabel">Create new Comment</Translate>
+          <Translate contentKey="yaadbuzzApp.comment.home.createLabel">Create new Comment</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -103,13 +103,13 @@ export const Comment = (props: ICommentProps) => {
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('text')}>
-                    <Translate contentKey="yaadmaanApp.comment.text">Text</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.comment.text">Text</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.comment.writer">Writer</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.comment.writer">Writer</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="yaadmaanApp.comment.memory">Memory</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="yaadbuzzApp.comment.memory">Memory</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -154,7 +154,7 @@ export const Comment = (props: ICommentProps) => {
           ) : (
             !loading && (
               <div className="alert alert-warning">
-                <Translate contentKey="yaadmaanApp.comment.home.notFound">No Comments found</Translate>
+                <Translate contentKey="yaadbuzzApp.comment.home.notFound">No Comments found</Translate>
               </div>
             )
           )}

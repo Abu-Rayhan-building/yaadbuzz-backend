@@ -22,21 +22,21 @@ export const CommentDetail = (props: ICommentDetailProps) => {
     <Row>
       <Col md="8">
         <h2>
-          <Translate contentKey="yaadmaanApp.comment.detail.title">Comment</Translate> [<b>{commentEntity.id}</b>]
+          <Translate contentKey="yaadbuzzApp.comment.detail.title">Comment</Translate> [<b>{commentEntity.id}</b>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
             <span id="text">
-              <Translate contentKey="yaadmaanApp.comment.text">Text</Translate>
+              <Translate contentKey="yaadbuzzApp.comment.text">Text</Translate>
             </span>
           </dt>
           <dd>{commentEntity.text}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.comment.writer">Writer</Translate>
+            <Translate contentKey="yaadbuzzApp.comment.writer">Writer</Translate>
           </dt>
           <dd>{commentEntity.writerId ? commentEntity.writerId : ''}</dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.comment.memory">Memory</Translate>
+            <Translate contentKey="yaadbuzzApp.comment.memory">Memory</Translate>
           </dt>
           <dd>{commentEntity.memoryId ? commentEntity.memoryId : ''}</dd>
         </dl>

@@ -36,8 +36,8 @@ export const PictureDeleteDialog = (props: IPictureDeleteDialogProps) => {
       <ModalHeader toggle={handleClose}>
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="yaadmaanApp.picture.delete.question">
-        <Translate contentKey="yaadmaanApp.picture.delete.question" interpolate={{ id: pictureEntity.id }}>
+      <ModalBody id="yaadbuzzApp.picture.delete.question">
+        <Translate contentKey="yaadbuzzApp.picture.delete.question" interpolate={{ id: pictureEntity.id }}>
           Are you sure you want to delete this Picture?
         </Translate>
       </ModalBody>

@@ -1,11 +1,14 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.MemorialUDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 /**
  * Service Interface for managing
@@ -43,4 +46,6 @@ public interface MemorialService extends ServiceWithCurrentUserCrudAccess {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    MemorialDTO create(Long depId, @Valid MemorialUDTO memorialUDTO);
 }

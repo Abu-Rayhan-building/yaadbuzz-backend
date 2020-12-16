@@ -1,0 +1,24 @@
+{
+  "yaadbuzzApp": {
+    "topicVote": {
+      "home": {
+        "title": "Topic Votes",
+        "createLabel": "Create a new Topic Vote",
+        "createOrEditLabel": "Create or edit a Topic Vote",
+        "notFound": "No Topic Votes found"
+      },
+      "created": "A new Topic Vote is created with identifier {{ param }}",
+      "updated": "A Topic Vote is updated with identifier {{ param }}",
+      "deleted": "A Topic Vote is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Topic Vote {{ id }}?"
+      },
+      "detail": {
+        "title": "Topic Vote"
+      },
+      "repetitions": "Repetitions",
+      "topic": "Topic",
+      "user": "User"
+    }
+  }
+}

@@ -22,12 +22,12 @@ export const PictureDetail = (props: IPictureDetailProps) => {
     <Row>
       <Col md="8">
         <h2>
-          <Translate contentKey="yaadmaanApp.picture.detail.title">Picture</Translate> [<b>{pictureEntity.id}</b>]
+          <Translate contentKey="yaadbuzzApp.picture.detail.title">Picture</Translate> [<b>{pictureEntity.id}</b>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
             <span id="image">
-              <Translate contentKey="yaadmaanApp.picture.image">Image</Translate>
+              <Translate contentKey="yaadbuzzApp.picture.image">Image</Translate>
             </span>
           </dt>
           <dd>
@@ -45,7 +45,7 @@ export const PictureDetail = (props: IPictureDetailProps) => {
             ) : null}
           </dd>
           <dt>
-            <Translate contentKey="yaadmaanApp.picture.comment">Comment</Translate>
+            <Translate contentKey="yaadbuzzApp.picture.comment">Comment</Translate>
           </dt>
           <dd>{pictureEntity.commentId ? pictureEntity.commentId : ''}</dd>
         </dl>

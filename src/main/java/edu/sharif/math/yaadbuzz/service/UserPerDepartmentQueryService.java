@@ -99,7 +99,7 @@ public class UserPerDepartmentQueryService extends QueryService<UserPerDepartmen
             }
             if (criteria.getTopicAssignedsId() != null) {
                 specification = specification.and(buildSpecification(criteria.getTopicAssignedsId(),
-                    root -> root.join(UserPerDepartment_.topicAssigneds, JoinType.LEFT).get(TopicRating_.id)));
+                    root -> root.join(UserPerDepartment_.topicAssigneds, JoinType.LEFT).get(TopicVote_.id)));
             }
             if (criteria.getAvatarId() != null) {
                 specification = specification.and(buildSpecification(criteria.getAvatarId(),

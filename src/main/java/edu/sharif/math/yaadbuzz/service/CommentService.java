@@ -1,7 +1,7 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentUpdateUDTO;
+import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentWithIdUDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,7 +49,7 @@ public interface CommentService extends ServiceWithCurrentUserCrudAccess{
 
     Page<CommentDTO> findAllForMemory(Long memid, Pageable pageable);
 
-    CommentDTO save(CommentUpdateUDTO commentUpdateReqDTO);
+    CommentDTO save(CommentWithIdUDTO commentUpdateReqDTO);
 
 
 
