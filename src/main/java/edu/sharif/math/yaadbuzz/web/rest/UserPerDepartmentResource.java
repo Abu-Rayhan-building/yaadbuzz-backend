@@ -6,9 +6,9 @@ import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentCriteria;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentQueryService;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

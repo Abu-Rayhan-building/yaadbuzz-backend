@@ -22,7 +22,7 @@ management:
         include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump']
   endpoint:
     health:
-      show-details: WHEN_AUTHORIZED
+      show-details: when_authorized
       roles: 'ROLE_ADMIN'
     jhimetrics:
       enabled: true
@@ -30,8 +30,15 @@ management:
     git:
       mode: full
   health:
+    group:
+      liveness:
+        include: livenessState
+      readiness:
+        include: readinessState,datasource
+    probes:
+      enabled: true
     mail:
-      enabled: true # When using the MailService, configure an SMTP server and set this to true
+      enabled: false # When using the MailService, configure an SMTP server and set this to true
   metrics:
     export:
       # Prometheus is the default metrics backend
@@ -65,8 +72,6 @@ spring:
     # Otherwise, it will be filled in by gradle when building the JAR file
     # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
     active: #spring.profiles.active#
-    include:
-      - swagger
   jmx:
     enabled: false
   data:
@@ -133,7 +138,7 @@ info:
 
 jhipster:
   clientApp:
-    name: 'yaadbuzzBackendApp'
+    name: 'yaadbuzzApp'
   # By default CORS is disabled. Uncomment to enable.
   cors:
        allowed-origins: "*"
@@ -144,7 +149,7 @@ jhipster:
        max-age: 1800
   mail:
     from: yaadbuzz@localhost
-  swagger:
+  api-docs:
     default-include-pattern: /api/.*
     title: yaadbuzz API
     description: yaadbuzz API documentation

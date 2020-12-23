@@ -25,7 +25,7 @@ import edu.sharif.math.yaadbuzz.service.dto.TopicVoteCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.UserPerDepartmentMapper;
-import io.github.jhipster.service.filter.LongFilter;
+import tech.jhipster.service.filter.LongFilter;
 
 /**
  * Service Implementation for managing {@link UserPerDepartment}.

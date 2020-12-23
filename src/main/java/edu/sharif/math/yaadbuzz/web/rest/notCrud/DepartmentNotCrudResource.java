@@ -39,8 +39,8 @@ import edu.sharif.math.yaadbuzz.service.dto.helpers.DepartmentWithUserPerDepartm
 import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.UserPerDepartmentUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing users.

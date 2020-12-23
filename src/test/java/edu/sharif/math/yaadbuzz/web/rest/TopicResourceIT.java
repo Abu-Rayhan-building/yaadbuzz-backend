@@ -1,6 +1,6 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.YaadbuzzBackendApp;
+import edu.sharif.math.yaadbuzz.YaadbuzzApp;
 import edu.sharif.math.yaadbuzz.domain.Topic;
 import edu.sharif.math.yaadbuzz.domain.TopicVote;
 import edu.sharif.math.yaadbuzz.domain.Department;
@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link TopicResource} REST controller.
  */
-@SpringBootTest(classes = YaadbuzzBackendApp.class)
+@SpringBootTest(classes = YaadbuzzApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser

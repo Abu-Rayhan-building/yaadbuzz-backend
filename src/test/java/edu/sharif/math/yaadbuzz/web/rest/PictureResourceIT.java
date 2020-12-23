@@ -1,6 +1,6 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.YaadbuzzBackendApp;
+import edu.sharif.math.yaadbuzz.YaadbuzzApp;
 import edu.sharif.math.yaadbuzz.domain.Picture;
 import edu.sharif.math.yaadbuzz.repository.PictureRepository;
 import edu.sharif.math.yaadbuzz.service.PictureService;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link PictureResource} REST controller.
  */
-@SpringBootTest(classes = YaadbuzzBackendApp.class)
+@SpringBootTest(classes = YaadbuzzApp.class)
 @AutoConfigureMockMvc
 @WithMockUser
 public class PictureResourceIT {

@@ -3,7 +3,7 @@
 // Import Bootstrap source files from node_modules
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import '~bootswatch/dist/flatly/bootswatch';
-@import 'rtl.scss';
+@import '../content/scss/rtl.scss';
 body {
   margin: 0;
 }

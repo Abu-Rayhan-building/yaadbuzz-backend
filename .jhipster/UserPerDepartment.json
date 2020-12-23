@@ -14,7 +14,7 @@
   "relationships": [
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "topicVote",
+      "otherEntityName": "topicRating",
       "otherEntityRelationshipName": "user",
       "relationshipName": "topicAssigneds"
     },

@@ -1,6 +1,6 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.YaadbuzzBackendApp;
+import edu.sharif.math.yaadbuzz.YaadbuzzApp;
 import edu.sharif.math.yaadbuzz.domain.Charateristics;
 import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
 import edu.sharif.math.yaadbuzz.repository.CharateristicsRepository;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link CharateristicsResource} REST controller.
  */
-@SpringBootTest(classes = YaadbuzzBackendApp.class)
+@SpringBootTest(classes = YaadbuzzApp.class)
 @AutoConfigureMockMvc
 @WithMockUser
 public class CharateristicsResourceIT {

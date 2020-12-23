@@ -23,7 +23,7 @@ import edu.sharif.math.yaadbuzz.service.CharateristicsService;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.CharateristicsVoteDTO;
-import io.github.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.HeaderUtil;
 
 /**
  * REST controller for managing

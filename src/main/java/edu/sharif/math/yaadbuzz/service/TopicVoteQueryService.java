@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.jhipster.service.QueryService;
+import tech.jhipster.service.QueryService;
 
 import edu.sharif.math.yaadbuzz.domain.TopicVote;
 import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels

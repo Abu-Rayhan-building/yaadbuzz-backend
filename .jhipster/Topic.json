@@ -10,9 +10,9 @@
   "relationships": [
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "topicVote",
-      "otherEntityRelationshipName": "topic",
-      "relationshipName": "votes"
+      "otherEntityName": "topicRating",
+      "otherEntityRelationshipName": "rating",
+      "relationshipName": "ratings"
     },
     {
       "relationshipType": "many-to-one",
