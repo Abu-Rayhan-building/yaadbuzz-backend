@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -21,7 +21,7 @@ export interface IDepartmentUpdateProps extends StateProps, DispatchProps, Route
 export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
   const [avatarId, setAvatarId] = useState('0');
   const [ownerId, setOwnerId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { departmentEntity, pictures, users, loading, updating } = props;
 
@@ -63,7 +63,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadbuzzApp.department.home.createOrEditLabel">
+          <h2 id="yaadbuzzApp.department.home.createOrEditLabel" data-cy="DepartmentCreateUpdateHeading">
             <Translate contentKey="yaadbuzzApp.department.home.createOrEditLabel">Create or edit a Department</Translate>
           </h2>
         </Col>
@@ -88,6 +88,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
                 </Label>
                 <AvField
                   id="department-name"
+                  data-cy="name"
                   type="text"
                   name="name"
                   validate={{
@@ -101,6 +102,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
                 </Label>
                 <AvField
                   id="department-password"
+                  data-cy="password"
                   type="text"
                   name="password"
                   validate={{
@@ -112,7 +114,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
                 <Label for="department-avatar">
                   <Translate contentKey="yaadbuzzApp.department.avatar">Avatar</Translate>
                 </Label>
-                <AvInput id="department-avatar" type="select" className="form-control" name="avatarId">
+                <AvInput id="department-avatar" data-cy="avatar" type="select" className="form-control" name="avatar.id">
                   <option value="" key="0" />
                   {pictures
                     ? pictures.map(otherEntity => (
@@ -127,7 +129,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
                 <Label for="department-owner">
                   <Translate contentKey="yaadbuzzApp.department.owner">Owner</Translate>
                 </Label>
-                <AvInput id="department-owner" type="select" className="form-control" name="ownerId" required>
+                <AvInput id="department-owner" data-cy="owner" type="select" className="form-control" name="ownerId" required>
                   {users
                     ? users.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -148,7 +150,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

@@ -34,8 +34,7 @@ public class CommentCriteria implements Serializable, Criteria {
 
     private LongFilter memoryId;
 
-    public CommentCriteria() {
-    }
+    public CommentCriteria() {}
 
     public CommentCriteria(CommentCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -90,7 +89,6 @@ public class CommentCriteria implements Serializable, Criteria {
         this.memoryId = memoryId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -100,23 +98,18 @@ public class CommentCriteria implements Serializable, Criteria {
             return false;
         }
         final CommentCriteria that = (CommentCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(text, that.text) &&
             Objects.equals(picturesId, that.picturesId) &&
             Objects.equals(writerId, that.writerId) &&
-            Objects.equals(memoryId, that.memoryId);
+            Objects.equals(memoryId, that.memoryId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        text,
-        picturesId,
-        writerId,
-        memoryId
-        );
+        return Objects.hash(id, text, picturesId, writerId, memoryId);
     }
 
     // prettier-ignore
@@ -130,5 +123,4 @@ public class CommentCriteria implements Serializable, Criteria {
                 (memoryId != null ? "memoryId=" + memoryId + ", " : "") +
             "}";
     }
-
 }

@@ -1,26 +1,26 @@
 package edu.sharif.math.yaadbuzz.service.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Memorial} entity.
  */
 public class MemorialDTO implements Serializable {
-    
+
     private Long id;
 
+    private CommentDTO anonymousComment;
 
-    private Long anonymousCommentId;
+    private CommentDTO notAnonymousComment;
 
-    private Long notAnonymousCommentId;
+    private UserPerDepartmentDTO writer;
 
-    private Long writerId;
+    private UserPerDepartmentDTO recipient;
 
-    private Long recipientId;
+    private DepartmentDTO department;
 
-    private Long departmentId;
-    
     public Long getId() {
         return id;
     }
@@ -29,44 +29,44 @@ public class MemorialDTO implements Serializable {
         this.id = id;
     }
 
-    public Long getAnonymousCommentId() {
-        return anonymousCommentId;
+    public CommentDTO getAnonymousComment() {
+        return anonymousComment;
     }
 
-    public void setAnonymousCommentId(Long commentId) {
-        this.anonymousCommentId = commentId;
+    public void setAnonymousComment(CommentDTO anonymousComment) {
+        this.anonymousComment = anonymousComment;
     }
 
-    public Long getNotAnonymousCommentId() {
-        return notAnonymousCommentId;
+    public CommentDTO getNotAnonymousComment() {
+        return notAnonymousComment;
     }
 
-    public void setNotAnonymousCommentId(Long commentId) {
-        this.notAnonymousCommentId = commentId;
+    public void setNotAnonymousComment(CommentDTO notAnonymousComment) {
+        this.notAnonymousComment = notAnonymousComment;
     }
 
-    public Long getWriterId() {
-        return writerId;
+    public UserPerDepartmentDTO getWriter() {
+        return writer;
     }
 
-    public void setWriterId(Long userPerDepartmentId) {
-        this.writerId = userPerDepartmentId;
+    public void setWriter(UserPerDepartmentDTO writer) {
+        this.writer = writer;
     }
 
-    public Long getRecipientId() {
-        return recipientId;
+    public UserPerDepartmentDTO getRecipient() {
+        return recipient;
     }
 
-    public void setRecipientId(Long userPerDepartmentId) {
-        this.recipientId = userPerDepartmentId;
+    public void setRecipient(UserPerDepartmentDTO recipient) {
+        this.recipient = recipient;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public DepartmentDTO getDepartment() {
+        return department;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartment(DepartmentDTO department) {
+        this.department = department;
     }
 
     @Override
@@ -78,12 +78,16 @@ public class MemorialDTO implements Serializable {
             return false;
         }
 
-        return id != null && id.equals(((MemorialDTO) o).id);
+        MemorialDTO memorialDTO = (MemorialDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, memorialDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore
@@ -91,11 +95,11 @@ public class MemorialDTO implements Serializable {
     public String toString() {
         return "MemorialDTO{" +
             "id=" + getId() +
-            ", anonymousCommentId=" + getAnonymousCommentId() +
-            ", notAnonymousCommentId=" + getNotAnonymousCommentId() +
-            ", writerId=" + getWriterId() +
-            ", recipientId=" + getRecipientId() +
-            ", departmentId=" + getDepartmentId() +
+            ", anonymousComment=" + getAnonymousComment() +
+            ", notAnonymousComment=" + getNotAnonymousComment() +
+            ", writer=" + getWriter() +
+            ", recipient=" + getRecipient() +
+            ", department=" + getDepartment() +
             "}";
     }
 }

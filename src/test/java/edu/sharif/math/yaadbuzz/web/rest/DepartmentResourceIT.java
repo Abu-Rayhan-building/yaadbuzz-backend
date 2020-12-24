@@ -1,42 +1,39 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.YaadbuzzApp;
-import edu.sharif.math.yaadbuzz.domain.Department;
-import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
-import edu.sharif.math.yaadbuzz.domain.Memory;
-import edu.sharif.math.yaadbuzz.domain.Picture;
-import edu.sharif.math.yaadbuzz.domain.User;
-import edu.sharif.math.yaadbuzz.repository.DepartmentRepository;
-import edu.sharif.math.yaadbuzz.service.DepartmentService;
-import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.DepartmentMapper;
-import edu.sharif.math.yaadbuzz.service.dto.DepartmentCriteria;
-import edu.sharif.math.yaadbuzz.service.DepartmentQueryService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import edu.sharif.math.yaadbuzz.IntegrationTest;
+import edu.sharif.math.yaadbuzz.domain.Department;
+import edu.sharif.math.yaadbuzz.domain.Memory;
+import edu.sharif.math.yaadbuzz.domain.Picture;
+import edu.sharif.math.yaadbuzz.domain.User;
+import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
+import edu.sharif.math.yaadbuzz.repository.DepartmentRepository;
+import edu.sharif.math.yaadbuzz.service.DepartmentQueryService;
+import edu.sharif.math.yaadbuzz.service.dto.DepartmentCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.DepartmentMapper;
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Integration tests for the {@link DepartmentResource} REST controller.
  */
-@SpringBootTest(classes = YaadbuzzApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class DepartmentResourceIT {
+class DepartmentResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -49,9 +46,6 @@ public class DepartmentResourceIT {
 
     @Autowired
     private DepartmentMapper departmentMapper;
-
-    @Autowired
-    private DepartmentService departmentService;
 
     @Autowired
     private DepartmentQueryService departmentQueryService;
@@ -71,9 +65,7 @@ public class DepartmentResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Department createEntity(EntityManager em) {
-        Department department = new Department()
-            .name(DEFAULT_NAME)
-            .password(DEFAULT_PASSWORD);
+        Department department = new Department().name(DEFAULT_NAME).password(DEFAULT_PASSWORD);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -81,6 +73,7 @@ public class DepartmentResourceIT {
         department.setOwner(user);
         return department;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -88,9 +81,7 @@ public class DepartmentResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Department createUpdatedEntity(EntityManager em) {
-        Department department = new Department()
-            .name(UPDATED_NAME)
-            .password(UPDATED_PASSWORD);
+        Department department = new Department().name(UPDATED_NAME).password(UPDATED_PASSWORD);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -106,13 +97,14 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void createDepartment() throws Exception {
+    void createDepartment() throws Exception {
         int databaseSizeBeforeCreate = departmentRepository.findAll().size();
         // Create the Department
         DepartmentDTO departmentDTO = departmentMapper.toDto(department);
-        restDepartmentMockMvc.perform(post("/api/departments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(departmentDTO)))
+        restDepartmentMockMvc
+            .perform(
+                post("/api/departments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(departmentDTO))
+            )
             .andExpect(status().isCreated());
 
         // Validate the Department in the database
@@ -125,17 +117,18 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void createDepartmentWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = departmentRepository.findAll().size();
-
+    void createDepartmentWithExistingId() throws Exception {
         // Create the Department with an existing ID
         department.setId(1L);
         DepartmentDTO departmentDTO = departmentMapper.toDto(department);
 
+        int databaseSizeBeforeCreate = departmentRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restDepartmentMockMvc.perform(post("/api/departments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(departmentDTO)))
+        restDepartmentMockMvc
+            .perform(
+                post("/api/departments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(departmentDTO))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Department in the database
@@ -143,10 +136,9 @@ public class DepartmentResourceIT {
         assertThat(departmentList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkNameIsRequired() throws Exception {
+    void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = departmentRepository.findAll().size();
         // set the field null
         department.setName(null);
@@ -154,10 +146,10 @@ public class DepartmentResourceIT {
         // Create the Department, which fails.
         DepartmentDTO departmentDTO = departmentMapper.toDto(department);
 
-
-        restDepartmentMockMvc.perform(post("/api/departments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(departmentDTO)))
+        restDepartmentMockMvc
+            .perform(
+                post("/api/departments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(departmentDTO))
+            )
             .andExpect(status().isBadRequest());
 
         List<Department> departmentList = departmentRepository.findAll();
@@ -166,7 +158,7 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void checkPasswordIsRequired() throws Exception {
+    void checkPasswordIsRequired() throws Exception {
         int databaseSizeBeforeTest = departmentRepository.findAll().size();
         // set the field null
         department.setPassword(null);
@@ -174,10 +166,10 @@ public class DepartmentResourceIT {
         // Create the Department, which fails.
         DepartmentDTO departmentDTO = departmentMapper.toDto(department);
 
-
-        restDepartmentMockMvc.perform(post("/api/departments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(departmentDTO)))
+        restDepartmentMockMvc
+            .perform(
+                post("/api/departments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(departmentDTO))
+            )
             .andExpect(status().isBadRequest());
 
         List<Department> departmentList = departmentRepository.findAll();
@@ -186,27 +178,29 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void getAllDepartments() throws Exception {
+    void getAllDepartments() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
         // Get all the departmentList
-        restDepartmentMockMvc.perform(get("/api/departments?sort=id,desc"))
+        restDepartmentMockMvc
+            .perform(get("/api/departments?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(department.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)));
     }
-    
+
     @Test
     @Transactional
-    public void getDepartment() throws Exception {
+    void getDepartment() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
         // Get the department
-        restDepartmentMockMvc.perform(get("/api/departments/{id}", department.getId()))
+        restDepartmentMockMvc
+            .perform(get("/api/departments/{id}", department.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(department.getId().intValue()))
@@ -214,10 +208,9 @@ public class DepartmentResourceIT {
             .andExpect(jsonPath("$.password").value(DEFAULT_PASSWORD));
     }
 
-
     @Test
     @Transactional
-    public void getDepartmentsByIdFiltering() throws Exception {
+    void getDepartmentsByIdFiltering() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -233,10 +226,9 @@ public class DepartmentResourceIT {
         defaultDepartmentShouldNotBeFound("id.lessThan=" + id);
     }
 
-
     @Test
     @Transactional
-    public void getAllDepartmentsByNameIsEqualToSomething() throws Exception {
+    void getAllDepartmentsByNameIsEqualToSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -249,7 +241,7 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void getAllDepartmentsByNameIsNotEqualToSomething() throws Exception {
+    void getAllDepartmentsByNameIsNotEqualToSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -262,7 +254,7 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void getAllDepartmentsByNameIsInShouldWork() throws Exception {
+    void getAllDepartmentsByNameIsInShouldWork() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -275,7 +267,7 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void getAllDepartmentsByNameIsNullOrNotNull() throws Exception {
+    void getAllDepartmentsByNameIsNullOrNotNull() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -285,9 +277,10 @@ public class DepartmentResourceIT {
         // Get all the departmentList where name is null
         defaultDepartmentShouldNotBeFound("name.specified=false");
     }
-                @Test
+
+    @Test
     @Transactional
-    public void getAllDepartmentsByNameContainsSomething() throws Exception {
+    void getAllDepartmentsByNameContainsSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -300,7 +293,7 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void getAllDepartmentsByNameNotContainsSomething() throws Exception {
+    void getAllDepartmentsByNameNotContainsSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -311,10 +304,9 @@ public class DepartmentResourceIT {
         defaultDepartmentShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
     }
 
-
     @Test
     @Transactional
-    public void getAllDepartmentsByPasswordIsEqualToSomething() throws Exception {
+    void getAllDepartmentsByPasswordIsEqualToSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -327,7 +319,7 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void getAllDepartmentsByPasswordIsNotEqualToSomething() throws Exception {
+    void getAllDepartmentsByPasswordIsNotEqualToSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -340,7 +332,7 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void getAllDepartmentsByPasswordIsInShouldWork() throws Exception {
+    void getAllDepartmentsByPasswordIsInShouldWork() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -353,7 +345,7 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void getAllDepartmentsByPasswordIsNullOrNotNull() throws Exception {
+    void getAllDepartmentsByPasswordIsNullOrNotNull() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -363,9 +355,10 @@ public class DepartmentResourceIT {
         // Get all the departmentList where password is null
         defaultDepartmentShouldNotBeFound("password.specified=false");
     }
-                @Test
+
+    @Test
     @Transactional
-    public void getAllDepartmentsByPasswordContainsSomething() throws Exception {
+    void getAllDepartmentsByPasswordContainsSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -378,7 +371,7 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void getAllDepartmentsByPasswordNotContainsSomething() throws Exception {
+    void getAllDepartmentsByPasswordNotContainsSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -389,10 +382,9 @@ public class DepartmentResourceIT {
         defaultDepartmentShouldBeFound("password.doesNotContain=" + UPDATED_PASSWORD);
     }
 
-
     @Test
     @Transactional
-    public void getAllDepartmentsByUserPerDepartmentIsEqualToSomething() throws Exception {
+    void getAllDepartmentsByUserPerDepartmentIsEqualToSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
         UserPerDepartment userPerDepartment = UserPerDepartmentResourceIT.createEntity(em);
@@ -409,10 +401,9 @@ public class DepartmentResourceIT {
         defaultDepartmentShouldNotBeFound("userPerDepartmentId.equals=" + (userPerDepartmentId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllDepartmentsByMemoryIsEqualToSomething() throws Exception {
+    void getAllDepartmentsByMemoryIsEqualToSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
         Memory memory = MemoryResourceIT.createEntity(em);
@@ -429,10 +420,9 @@ public class DepartmentResourceIT {
         defaultDepartmentShouldNotBeFound("memoryId.equals=" + (memoryId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllDepartmentsByAvatarIsEqualToSomething() throws Exception {
+    void getAllDepartmentsByAvatarIsEqualToSomething() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
         Picture avatar = PictureResourceIT.createEntity(em);
@@ -449,12 +439,15 @@ public class DepartmentResourceIT {
         defaultDepartmentShouldNotBeFound("avatarId.equals=" + (avatarId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllDepartmentsByOwnerIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        User owner = department.getOwner();
+    void getAllDepartmentsByOwnerIsEqualToSomething() throws Exception {
+        // Initialize the database
+        departmentRepository.saveAndFlush(department);
+        User owner = UserResourceIT.createEntity(em);
+        em.persist(owner);
+        em.flush();
+        department.setOwner(owner);
         departmentRepository.saveAndFlush(department);
         Long ownerId = owner.getId();
 
@@ -469,7 +462,8 @@ public class DepartmentResourceIT {
      * Executes the search, and checks that the default entity is returned.
      */
     private void defaultDepartmentShouldBeFound(String filter) throws Exception {
-        restDepartmentMockMvc.perform(get("/api/departments?sort=id,desc&" + filter))
+        restDepartmentMockMvc
+            .perform(get("/api/departments?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(department.getId().intValue())))
@@ -477,7 +471,8 @@ public class DepartmentResourceIT {
             .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)));
 
         // Check, that the count call also returns 1
-        restDepartmentMockMvc.perform(get("/api/departments/count?sort=id,desc&" + filter))
+        restDepartmentMockMvc
+            .perform(get("/api/departments/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("1"));
@@ -487,14 +482,16 @@ public class DepartmentResourceIT {
      * Executes the search, and checks that the default entity is not returned.
      */
     private void defaultDepartmentShouldNotBeFound(String filter) throws Exception {
-        restDepartmentMockMvc.perform(get("/api/departments?sort=id,desc&" + filter))
+        restDepartmentMockMvc
+            .perform(get("/api/departments?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$").isEmpty());
 
         // Check, that the count call also returns 0
-        restDepartmentMockMvc.perform(get("/api/departments/count?sort=id,desc&" + filter))
+        restDepartmentMockMvc
+            .perform(get("/api/departments/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("0"));
@@ -502,15 +499,14 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingDepartment() throws Exception {
+    void getNonExistingDepartment() throws Exception {
         // Get the department
-        restDepartmentMockMvc.perform(get("/api/departments/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restDepartmentMockMvc.perform(get("/api/departments/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateDepartment() throws Exception {
+    void updateDepartment() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
@@ -520,14 +516,13 @@ public class DepartmentResourceIT {
         Department updatedDepartment = departmentRepository.findById(department.getId()).get();
         // Disconnect from session so that the updates on updatedDepartment are not directly saved in db
         em.detach(updatedDepartment);
-        updatedDepartment
-            .name(UPDATED_NAME)
-            .password(UPDATED_PASSWORD);
+        updatedDepartment.name(UPDATED_NAME).password(UPDATED_PASSWORD);
         DepartmentDTO departmentDTO = departmentMapper.toDto(updatedDepartment);
 
-        restDepartmentMockMvc.perform(put("/api/departments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(departmentDTO)))
+        restDepartmentMockMvc
+            .perform(
+                put("/api/departments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(departmentDTO))
+            )
             .andExpect(status().isOk());
 
         // Validate the Department in the database
@@ -540,16 +535,17 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingDepartment() throws Exception {
+    void updateNonExistingDepartment() throws Exception {
         int databaseSizeBeforeUpdate = departmentRepository.findAll().size();
 
         // Create the Department
         DepartmentDTO departmentDTO = departmentMapper.toDto(department);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restDepartmentMockMvc.perform(put("/api/departments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(departmentDTO)))
+        restDepartmentMockMvc
+            .perform(
+                put("/api/departments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(departmentDTO))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Department in the database
@@ -559,15 +555,88 @@ public class DepartmentResourceIT {
 
     @Test
     @Transactional
-    public void deleteDepartment() throws Exception {
+    void partialUpdateDepartmentWithPatch() throws Exception {
+        // Initialize the database
+        departmentRepository.saveAndFlush(department);
+
+        int databaseSizeBeforeUpdate = departmentRepository.findAll().size();
+
+        // Update the department using partial update
+        Department partialUpdatedDepartment = new Department();
+        partialUpdatedDepartment.setId(department.getId());
+
+        restDepartmentMockMvc
+            .perform(
+                patch("/api/departments")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDepartment))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Department in the database
+        List<Department> departmentList = departmentRepository.findAll();
+        assertThat(departmentList).hasSize(databaseSizeBeforeUpdate);
+        Department testDepartment = departmentList.get(departmentList.size() - 1);
+        assertThat(testDepartment.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testDepartment.getPassword()).isEqualTo(DEFAULT_PASSWORD);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateDepartmentWithPatch() throws Exception {
+        // Initialize the database
+        departmentRepository.saveAndFlush(department);
+
+        int databaseSizeBeforeUpdate = departmentRepository.findAll().size();
+
+        // Update the department using partial update
+        Department partialUpdatedDepartment = new Department();
+        partialUpdatedDepartment.setId(department.getId());
+
+        partialUpdatedDepartment.name(UPDATED_NAME).password(UPDATED_PASSWORD);
+
+        restDepartmentMockMvc
+            .perform(
+                patch("/api/departments")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDepartment))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Department in the database
+        List<Department> departmentList = departmentRepository.findAll();
+        assertThat(departmentList).hasSize(databaseSizeBeforeUpdate);
+        Department testDepartment = departmentList.get(departmentList.size() - 1);
+        assertThat(testDepartment.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDepartment.getPassword()).isEqualTo(UPDATED_PASSWORD);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateDepartmentShouldThrown() throws Exception {
+        // Update the department without id should throw
+        Department partialUpdatedDepartment = new Department();
+
+        restDepartmentMockMvc
+            .perform(
+                patch("/api/departments")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDepartment))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    void deleteDepartment() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
 
         int databaseSizeBeforeDelete = departmentRepository.findAll().size();
 
         // Delete the department
-        restDepartmentMockMvc.perform(delete("/api/departments/{id}", department.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restDepartmentMockMvc
+            .perform(delete("/api/departments/{id}", department.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

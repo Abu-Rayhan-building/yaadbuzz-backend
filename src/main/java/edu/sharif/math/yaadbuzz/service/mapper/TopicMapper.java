@@ -1,32 +1,24 @@
 package edu.sharif.math.yaadbuzz.service.mapper;
 
-
-import org.mapstruct.*;
-
 import edu.sharif.math.yaadbuzz.domain.*;
 import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
+import java.util.Set;
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link Topic} and its DTO {@link TopicDTO}.
  */
-@Mapper(componentModel = "spring", uses = {DepartmentMapper.class, UserPerDepartmentMapper.class})
+@Mapper(componentModel = "spring", uses = { DepartmentMapper.class, UserPerDepartmentMapper.class })
 public interface TopicMapper extends EntityMapper<TopicDTO, Topic> {
-
-    @Mapping(source = "department.id", target = "departmentId")
+    @Mapping(target = "department", source = "department", qualifiedByName = "id")
+    @Mapping(target = "voters", source = "voters", qualifiedByName = "idSet")
     TopicDTO toDto(Topic topic);
 
-    @Mapping(target = "votes", ignore = true)
-    @Mapping(target = "removeVotes", ignore = true)
-    @Mapping(source = "departmentId", target = "department")
+    @Named("id")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    TopicDTO toDtoId(Topic topic);
+
     @Mapping(target = "removeVoters", ignore = true)
     Topic toEntity(TopicDTO topicDTO);
-
-    default Topic fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Topic topic = new Topic();
-        topic.setId(id);
-        return topic;
-    }
 }

@@ -3,6 +3,7 @@
     "charateristics": {
       "home": {
         "title": "Charateristics",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Charateristics",
         "createOrEditLabel": "Create or edit a Charateristics",
         "notFound": "No Charateristics found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Charateristics"
       },
+      "id": "ID",
       "title": "Title",
       "repetation": "Repetation",
       "userPerDepartment": "User Per Department"

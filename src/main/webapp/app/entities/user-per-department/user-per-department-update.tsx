@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -30,7 +30,7 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
   const [departmentId, setDepartmentId] = useState('0');
   const [topicsVotedId, setTopicsVotedId] = useState('0');
   const [tagedInMemoeriesId, setTagedInMemoeriesId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { userPerDepartmentEntity, pictures, users, departments, topics, memories, loading, updating } = props;
 
@@ -75,7 +75,7 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadbuzzApp.userPerDepartment.home.createOrEditLabel">
+          <h2 id="yaadbuzzApp.userPerDepartment.home.createOrEditLabel" data-cy="UserPerDepartmentCreateUpdateHeading">
             <Translate contentKey="yaadbuzzApp.userPerDepartment.home.createOrEditLabel">Create or edit a UserPerDepartment</Translate>
           </h2>
         </Col>
@@ -98,19 +98,19 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
                 <Label id="nicNameLabel" for="user-per-department-nicName">
                   <Translate contentKey="yaadbuzzApp.userPerDepartment.nicName">Nic Name</Translate>
                 </Label>
-                <AvField id="user-per-department-nicName" type="text" name="nicName" validate={{}} />
+                <AvField id="user-per-department-nicName" data-cy="nicName" type="text" name="nicName" validate={{}} />
               </AvGroup>
               <AvGroup>
                 <Label id="bioLabel" for="user-per-department-bio">
                   <Translate contentKey="yaadbuzzApp.userPerDepartment.bio">Bio</Translate>
                 </Label>
-                <AvField id="user-per-department-bio" type="text" name="bio" />
+                <AvField id="user-per-department-bio" data-cy="bio" type="text" name="bio" />
               </AvGroup>
               <AvGroup>
                 <Label for="user-per-department-avatar">
                   <Translate contentKey="yaadbuzzApp.userPerDepartment.avatar">Avatar</Translate>
                 </Label>
-                <AvInput id="user-per-department-avatar" type="select" className="form-control" name="avatarId">
+                <AvInput id="user-per-department-avatar" data-cy="avatar" type="select" className="form-control" name="avatar.id">
                   <option value="" key="0" />
                   {pictures
                     ? pictures.map(otherEntity => (
@@ -125,7 +125,14 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
                 <Label for="user-per-department-realUser">
                   <Translate contentKey="yaadbuzzApp.userPerDepartment.realUser">Real User</Translate>
                 </Label>
-                <AvInput id="user-per-department-realUser" type="select" className="form-control" name="realUserId" required>
+                <AvInput
+                  id="user-per-department-realUser"
+                  data-cy="realUser"
+                  type="select"
+                  className="form-control"
+                  name="realUserId"
+                  required
+                >
                   {users
                     ? users.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -142,7 +149,14 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
                 <Label for="user-per-department-department">
                   <Translate contentKey="yaadbuzzApp.userPerDepartment.department">Department</Translate>
                 </Label>
-                <AvInput id="user-per-department-department" type="select" className="form-control" name="departmentId" required>
+                <AvInput
+                  id="user-per-department-department"
+                  data-cy="department"
+                  type="select"
+                  className="form-control"
+                  name="departmentId"
+                  required
+                >
                   {departments
                     ? departments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -163,7 +177,7 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

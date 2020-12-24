@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <!--
         Added the constraints for entity UserPerDepartment.
     -->
@@ -10,19 +10,19 @@
         
         <addForeignKeyConstraint baseColumnNames="avatar_id"
                                  baseTableName="user_per_department"
-                                 constraintName="fk_user_per_department_avatar_id"
+                                 constraintName="fk_user_per_department__avatar_id"
                                  referencedColumnNames="id"
                                  referencedTableName="picture"/>
 
         <addForeignKeyConstraint baseColumnNames="real_user_id"
                                  baseTableName="user_per_department"
-                                 constraintName="fk_user_per_department_real_user_id"
+                                 constraintName="fk_user_per_department__real_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
         <addForeignKeyConstraint baseColumnNames="department_id"
                                  baseTableName="user_per_department"
-                                 constraintName="fk_user_per_department_department_id"
+                                 constraintName="fk_user_per_department__department_id"
                                  referencedColumnNames="id"
                                  referencedTableName="department"/>
 

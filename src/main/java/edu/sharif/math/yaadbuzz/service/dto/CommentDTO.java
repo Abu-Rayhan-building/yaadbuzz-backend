@@ -2,33 +2,69 @@ package edu.sharif.math.yaadbuzz.service.dto;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Comment} entity.
  */
 public class CommentDTO implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
     private Long id;
 
     @NotNull
     private String text;
 
-    private Long writerId;
+    private UserPerDepartmentDTO writer;
 
     private Set<PictureDTO> pictures = new HashSet<>();
 
-    private Long memoryId;
+    private MemoryDTO memory;
+
+    public Long getId() {
+	return id;
+    }
+
+    public Set<PictureDTO> getPictures() {
+	return this.pictures;
+    }
+
+    public void setId(Long id) {
+	this.id = id;
+    }
+
+    public String getText() {
+	return text;
+    }
+
+    public void setText(String text) {
+	this.text = text;
+    }
+
+    public UserPerDepartmentDTO getWriter() {
+	return writer;
+    }
+
+    public void setWriter(UserPerDepartmentDTO writer) {
+	this.writer = writer;
+    }
+
+    public MemoryDTO getMemory() {
+	return memory;
+    }
+
+    public void setPictures(final Set<PictureDTO> pictures) {
+	this.pictures = pictures;
+    }
+
+    public void setMemory(MemoryDTO memory) {
+	this.memory = memory;
+    }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
 	if (this == o) {
 	    return true;
 	}
@@ -36,60 +72,22 @@ public class CommentDTO implements Serializable {
 	    return false;
 	}
 
-	return this.id != null && this.id.equals(((CommentDTO) o).id);
-    }
-
-    public Long getId() {
-	return this.id;
-    }
-
-    public Long getMemoryId() {
-	return this.memoryId;
-    }
-
-    public Set<PictureDTO> getPictures() {
-	return this.pictures;
-    }
-
-    public String getText() {
-	return this.text;
-    }
-
-    public Long getWriterId() {
-	return this.writerId;
+	CommentDTO commentDTO = (CommentDTO) o;
+	if (this.id == null) {
+	    return false;
+	}
+	return Objects.equals(this.id, commentDTO.id);
     }
 
     @Override
     public int hashCode() {
-	return 31;
-    }
-
-    public void setId(final Long id) {
-	this.id = id;
-    }
-
-    public void setMemoryId(final Long memoryId) {
-	this.memoryId = memoryId;
-    }
-
-    public void setPictures(final Set<PictureDTO> pictures) {
-	this.pictures = pictures;
-    }
-
-    public void setText(final String text) {
-	this.text = text;
-    }
-
-    public void setWriterId(final Long userPerDepartmentId) {
-	this.writerId = userPerDepartmentId;
+	return Objects.hash(this.id);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
-	return "CommentDTO{" + "id=" + this.getId() + ", text='"
-		+ this.getText() + "'" + ", writerId=" + this.getWriterId()
-		+ ", memoryId=" + this.getMemoryId() + ", pictures="
-		+ this.getPictures() + "}";
+	return "CommentDTO{" + "id=" + getId() + ", text='" + getText() + "'"
+		+ ", writer=" + getWriter() + ", memory=" + getMemory() + "}";
     }
 }

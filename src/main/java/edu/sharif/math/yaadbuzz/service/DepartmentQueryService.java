@@ -1,9 +1,13 @@
 package edu.sharif.math.yaadbuzz.service;
 
+import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
+import edu.sharif.math.yaadbuzz.domain.Department;
+import edu.sharif.math.yaadbuzz.repository.DepartmentRepository;
+import edu.sharif.math.yaadbuzz.service.dto.DepartmentCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.DepartmentMapper;
 import java.util.List;
-
 import javax.persistence.criteria.JoinType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,15 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import tech.jhipster.service.QueryService;
-
-import edu.sharif.math.yaadbuzz.domain.Department;
-import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
-import edu.sharif.math.yaadbuzz.repository.DepartmentRepository;
-import edu.sharif.math.yaadbuzz.service.dto.DepartmentCriteria;
-import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.DepartmentMapper;
 
 /**
  * Service for executing complex queries for {@link Department} entities in the database.
@@ -64,8 +60,7 @@ public class DepartmentQueryService extends QueryService<Department> {
     public Page<DepartmentDTO> findByCriteria(DepartmentCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<Department> specification = createSpecification(criteria);
-        return departmentRepository.findAll(specification, page)
-            .map(departmentMapper::toDto);
+        return departmentRepository.findAll(specification, page).map(departmentMapper::toDto);
     }
 
     /**
@@ -98,20 +93,31 @@ public class DepartmentQueryService extends QueryService<Department> {
                 specification = specification.and(buildStringSpecification(criteria.getPassword(), Department_.password));
             }
             if (criteria.getUserPerDepartmentId() != null) {
-                specification = specification.and(buildSpecification(criteria.getUserPerDepartmentId(),
-                    root -> root.join(Department_.userPerDepartments, JoinType.LEFT).get(UserPerDepartment_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getUserPerDepartmentId(),
+                            root -> root.join(Department_.userPerDepartments, JoinType.LEFT).get(UserPerDepartment_.id)
+                        )
+                    );
             }
             if (criteria.getMemoryId() != null) {
-                specification = specification.and(buildSpecification(criteria.getMemoryId(),
-                    root -> root.join(Department_.memories, JoinType.LEFT).get(Memory_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getMemoryId(), root -> root.join(Department_.memories, JoinType.LEFT).get(Memory_.id))
+                    );
             }
             if (criteria.getAvatarId() != null) {
-                specification = specification.and(buildSpecification(criteria.getAvatarId(),
-                    root -> root.join(Department_.avatar, JoinType.LEFT).get(Picture_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getAvatarId(), root -> root.join(Department_.avatar, JoinType.LEFT).get(Picture_.id))
+                    );
             }
             if (criteria.getOwnerId() != null) {
-                specification = specification.and(buildSpecification(criteria.getOwnerId(),
-                    root -> root.join(Department_.owner, JoinType.LEFT).get(User_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getOwnerId(), root -> root.join(Department_.owner, JoinType.LEFT).get(User_.id))
+                    );
             }
         }
         return specification;

@@ -3,7 +3,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate, ICrudGetAllAction, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { Translate, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -75,16 +75,26 @@ export const Memorial = (props: IMemorialProps) => {
     setSorting(true);
   };
 
+  const handleSyncList = () => {
+    resetAll();
+  };
+
   const { memorialList, match, loading } = props;
   return (
     <div>
-      <h2 id="memorial-heading">
+      <h2 id="memorial-heading" data-cy="MemorialHeading">
         <Translate contentKey="yaadbuzzApp.memorial.home.title">Memorials</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="yaadbuzzApp.memorial.home.createLabel">Create new Memorial</Translate>
-        </Link>
+        <div className="d-flex justify-content-end">
+          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
+            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
+            <Translate contentKey="yaadbuzzApp.memorial.home.refreshListLabel">Refresh List</Translate>
+          </Button>
+          <Link to={`${match.url}/new`} className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+            <FontAwesomeIcon icon="plus" />
+            &nbsp;
+            <Translate contentKey="yaadbuzzApp.memorial.home.createLabel">Create new Memorial</Translate>
+          </Link>
+        </div>
       </h2>
       <div className="table-responsive">
         <InfiniteScroll
@@ -124,46 +134,46 @@ export const Memorial = (props: IMemorialProps) => {
               </thead>
               <tbody>
                 {memorialList.map((memorial, i) => (
-                  <tr key={`entity-${i}`}>
+                  <tr key={`entity-${i}`} data-cy="entityTable">
                     <td>
                       <Button tag={Link} to={`${match.url}/${memorial.id}`} color="link" size="sm">
                         {memorial.id}
                       </Button>
                     </td>
                     <td>
-                      {memorial.anonymousCommentId ? (
-                        <Link to={`comment/${memorial.anonymousCommentId}`}>{memorial.anonymousCommentId}</Link>
+                      {memorial.anonymousComment ? (
+                        <Link to={`comment/${memorial.anonymousComment.id}`}>{memorial.anonymousComment.id}</Link>
                       ) : (
                         ''
                       )}
                     </td>
                     <td>
-                      {memorial.notAnonymousCommentId ? (
-                        <Link to={`comment/${memorial.notAnonymousCommentId}`}>{memorial.notAnonymousCommentId}</Link>
+                      {memorial.notAnonymousComment ? (
+                        <Link to={`comment/${memorial.notAnonymousComment.id}`}>{memorial.notAnonymousComment.id}</Link>
                       ) : (
                         ''
                       )}
                     </td>
-                    <td>{memorial.writerId ? <Link to={`user-per-department/${memorial.writerId}`}>{memorial.writerId}</Link> : ''}</td>
+                    <td>{memorial.writer ? <Link to={`user-per-department/${memorial.writer.id}`}>{memorial.writer.id}</Link> : ''}</td>
                     <td>
-                      {memorial.recipientId ? <Link to={`user-per-department/${memorial.recipientId}`}>{memorial.recipientId}</Link> : ''}
+                      {memorial.recipient ? <Link to={`user-per-department/${memorial.recipient.id}`}>{memorial.recipient.id}</Link> : ''}
                     </td>
-                    <td>{memorial.departmentId ? <Link to={`department/${memorial.departmentId}`}>{memorial.departmentId}</Link> : ''}</td>
+                    <td>{memorial.department ? <Link to={`department/${memorial.department.id}`}>{memorial.department.id}</Link> : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${memorial.id}`} color="info" size="sm">
+                        <Button tag={Link} to={`${match.url}/${memorial.id}`} color="info" size="sm" data-cy="entityDetailsButton">
                           <FontAwesomeIcon icon="eye" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.view">View</Translate>
                           </span>
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${memorial.id}/edit`} color="primary" size="sm">
+                        <Button tag={Link} to={`${match.url}/${memorial.id}/edit`} color="primary" size="sm" data-cy="entityEditButton">
                           <FontAwesomeIcon icon="pencil-alt" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.edit">Edit</Translate>
                           </span>
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${memorial.id}/delete`} color="danger" size="sm">
+                        <Button tag={Link} to={`${match.url}/${memorial.id}/delete`} color="danger" size="sm" data-cy="entityDeleteButton">
                           <FontAwesomeIcon icon="trash" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.delete">Delete</Translate>

@@ -3,7 +3,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { openFile, byteSize, Translate, ICrudGetAllAction, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { openFile, byteSize, Translate, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -75,16 +75,26 @@ export const Picture = (props: IPictureProps) => {
     setSorting(true);
   };
 
+  const handleSyncList = () => {
+    resetAll();
+  };
+
   const { pictureList, match, loading } = props;
   return (
     <div>
-      <h2 id="picture-heading">
+      <h2 id="picture-heading" data-cy="PictureHeading">
         <Translate contentKey="yaadbuzzApp.picture.home.title">Pictures</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="yaadbuzzApp.picture.home.createLabel">Create new Picture</Translate>
-        </Link>
+        <div className="d-flex justify-content-end">
+          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
+            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
+            <Translate contentKey="yaadbuzzApp.picture.home.refreshListLabel">Refresh List</Translate>
+          </Button>
+          <Link to={`${match.url}/new`} className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+            <FontAwesomeIcon icon="plus" />
+            &nbsp;
+            <Translate contentKey="yaadbuzzApp.picture.home.createLabel">Create new Picture</Translate>
+          </Link>
+        </div>
       </h2>
       <div className="table-responsive">
         <InfiniteScroll
@@ -113,7 +123,7 @@ export const Picture = (props: IPictureProps) => {
               </thead>
               <tbody>
                 {pictureList.map((picture, i) => (
-                  <tr key={`entity-${i}`}>
+                  <tr key={`entity-${i}`} data-cy="entityTable">
                     <td>
                       <Button tag={Link} to={`${match.url}/${picture.id}`} color="link" size="sm">
                         {picture.id}
@@ -134,22 +144,21 @@ export const Picture = (props: IPictureProps) => {
                         </div>
                       ) : null}
                     </td>
-                    <td>{picture.commentId ? <Link to={`comment/${picture.commentId}`}>{picture.commentId}</Link> : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${picture.id}`} color="info" size="sm">
+                        <Button tag={Link} to={`${match.url}/${picture.id}`} color="info" size="sm" data-cy="entityDetailsButton">
                           <FontAwesomeIcon icon="eye" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.view">View</Translate>
                           </span>
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${picture.id}/edit`} color="primary" size="sm">
+                        <Button tag={Link} to={`${match.url}/${picture.id}/edit`} color="primary" size="sm" data-cy="entityEditButton">
                           <FontAwesomeIcon icon="pencil-alt" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.edit">Edit</Translate>
                           </span>
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${picture.id}/delete`} color="danger" size="sm">
+                        <Button tag={Link} to={`${match.url}/${picture.id}/delete`} color="danger" size="sm" data-cy="entityDeleteButton">
                           <FontAwesomeIcon icon="trash" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.delete">Delete</Translate>

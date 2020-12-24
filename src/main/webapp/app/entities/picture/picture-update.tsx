@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, setFileData, openFile, byteSize, ICrudPutAction } from 'react-jhipster';
+import { setFileData, openFile, byteSize, Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -18,7 +18,7 @@ export interface IPictureUpdateProps extends StateProps, DispatchProps, RouteCom
 
 export const PictureUpdate = (props: IPictureUpdateProps) => {
   const [commentId, setCommentId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { pictureEntity, comments, loading, updating } = props;
 
@@ -69,7 +69,7 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadbuzzApp.picture.home.createOrEditLabel">
+          <h2 id="yaadbuzzApp.picture.home.createOrEditLabel" data-cy="PictureCreateUpdateHeading">
             <Translate contentKey="yaadbuzzApp.picture.home.createOrEditLabel">Create or edit a Picture</Translate>
           </h2>
         </Col>
@@ -116,7 +116,7 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
                       </Row>
                     </div>
                   ) : null}
-                  <input id="file_image" type="file" onChange={onBlobChange(true, 'image')} accept="image/*" />
+                  <input id="file_image" data-cy="image" type="file" onChange={onBlobChange(true, 'image')} accept="image/*" />
                   <AvInput
                     type="hidden"
                     name="image"
@@ -131,7 +131,7 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
                 <Label for="picture-comment">
                   <Translate contentKey="yaadbuzzApp.picture.comment">Comment</Translate>
                 </Label>
-                <AvInput id="picture-comment" type="select" className="form-control" name="commentId">
+                <AvInput id="picture-comment" data-cy="comment" type="select" className="form-control" name="comment.id">
                   <option value="" key="0" />
                   {comments
                     ? comments.map(otherEntity => (
@@ -150,7 +150,7 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

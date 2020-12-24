@@ -3,10 +3,9 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    
     <!--
         Added the entity UserPerDepartment.
     -->
@@ -16,7 +15,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="nic_name" type="varchar(255)">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_user_per_department_nic_name" />
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_user_per_department__nic_name" />
             </column>
             <column name="bio" type="varchar(255)">
                 <constraints nullable="true" />
@@ -34,9 +33,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="20201114203602-1-relations" author="jhipster">
-
-    </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
@@ -60,5 +56,4 @@
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
-
 </databaseChangeLog>

@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <!--
         Added the constraints for entity Comment.
     -->
@@ -10,13 +10,13 @@
         
         <addForeignKeyConstraint baseColumnNames="writer_id"
                                  baseTableName="comment"
-                                 constraintName="fk_comment_writer_id"
+                                 constraintName="fk_comment__writer_id"
                                  referencedColumnNames="id"
                                  referencedTableName="user_per_department"/>
 
         <addForeignKeyConstraint baseColumnNames="memory_id"
                                  baseTableName="comment"
-                                 constraintName="fk_comment_memory_id"
+                                 constraintName="fk_comment__memory_id"
                                  referencedColumnNames="id"
                                  referencedTableName="memory"/>
 

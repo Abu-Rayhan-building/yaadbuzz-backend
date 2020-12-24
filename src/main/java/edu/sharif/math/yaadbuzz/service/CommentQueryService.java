@@ -1,9 +1,13 @@
 package edu.sharif.math.yaadbuzz.service;
 
+import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
+import edu.sharif.math.yaadbuzz.domain.Comment;
+import edu.sharif.math.yaadbuzz.repository.CommentRepository;
+import edu.sharif.math.yaadbuzz.service.dto.CommentCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.CommentMapper;
 import java.util.List;
-
 import javax.persistence.criteria.JoinType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,15 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import tech.jhipster.service.QueryService;
-
-import edu.sharif.math.yaadbuzz.domain.Comment;
-import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
-import edu.sharif.math.yaadbuzz.repository.CommentRepository;
-import edu.sharif.math.yaadbuzz.service.dto.CommentCriteria;
-import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.CommentMapper;
 
 /**
  * Service for executing complex queries for {@link Comment} entities in the database.
@@ -64,8 +60,7 @@ public class CommentQueryService extends QueryService<Comment> {
     public Page<CommentDTO> findByCriteria(CommentCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<Comment> specification = createSpecification(criteria);
-        return commentRepository.findAll(specification, page)
-            .map(commentMapper::toDto);
+        return commentRepository.findAll(specification, page).map(commentMapper::toDto);
     }
 
     /**
@@ -95,16 +90,25 @@ public class CommentQueryService extends QueryService<Comment> {
                 specification = specification.and(buildStringSpecification(criteria.getText(), Comment_.text));
             }
             if (criteria.getPicturesId() != null) {
-                specification = specification.and(buildSpecification(criteria.getPicturesId(),
-                    root -> root.join(Comment_.pictures, JoinType.LEFT).get(Picture_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getPicturesId(), root -> root.join(Comment_.pictures, JoinType.LEFT).get(Picture_.id))
+                    );
             }
             if (criteria.getWriterId() != null) {
-                specification = specification.and(buildSpecification(criteria.getWriterId(),
-                    root -> root.join(Comment_.writer, JoinType.LEFT).get(UserPerDepartment_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getWriterId(),
+                            root -> root.join(Comment_.writer, JoinType.LEFT).get(UserPerDepartment_.id)
+                        )
+                    );
             }
             if (criteria.getMemoryId() != null) {
-                specification = specification.and(buildSpecification(criteria.getMemoryId(),
-                    root -> root.join(Comment_.memory, JoinType.LEFT).get(Memory_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getMemoryId(), root -> root.join(Comment_.memory, JoinType.LEFT).get(Memory_.id))
+                    );
             }
         }
         return specification;

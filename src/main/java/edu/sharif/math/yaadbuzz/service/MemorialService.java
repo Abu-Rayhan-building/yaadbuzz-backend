@@ -8,11 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 /**
- * Service Interface for managing
- * {@link edu.sharif.math.yaadbuzz.domain.Memorial}.
+ * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.Memorial}.
  */
 public interface MemorialService extends ServiceWithCurrentUserCrudAccess {
 
@@ -23,6 +20,14 @@ public interface MemorialService extends ServiceWithCurrentUserCrudAccess {
      * @return the persisted entity.
      */
     MemorialDTO save(MemorialDTO memorialDTO);
+
+    /**
+     * Partially updates a memorial.
+     *
+     * @param memorialDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<MemorialDTO> partialUpdate(MemorialDTO memorialDTO);
 
     /**
      * Get all the memorials.
@@ -47,5 +52,5 @@ public interface MemorialService extends ServiceWithCurrentUserCrudAccess {
      */
     void delete(Long id);
 
-    MemorialDTO create(Long depId, @Valid MemorialUDTO memorialUDTO);
+    MemorialDTO create(Long depId,  MemorialUDTO memorialUDTO);
 }

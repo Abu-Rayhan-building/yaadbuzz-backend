@@ -1,9 +1,13 @@
 package edu.sharif.math.yaadbuzz.service;
 
+import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
+import edu.sharif.math.yaadbuzz.domain.Charateristics;
+import edu.sharif.math.yaadbuzz.repository.CharateristicsRepository;
+import edu.sharif.math.yaadbuzz.service.dto.CharateristicsCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.CharateristicsMapper;
 import java.util.List;
-
 import javax.persistence.criteria.JoinType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,15 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import tech.jhipster.service.QueryService;
-
-import edu.sharif.math.yaadbuzz.domain.Charateristics;
-import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
-import edu.sharif.math.yaadbuzz.repository.CharateristicsRepository;
-import edu.sharif.math.yaadbuzz.service.dto.CharateristicsCriteria;
-import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.CharateristicsMapper;
 
 /**
  * Service for executing complex queries for {@link Charateristics} entities in the database.
@@ -64,8 +60,7 @@ public class CharateristicsQueryService extends QueryService<Charateristics> {
     public Page<CharateristicsDTO> findByCriteria(CharateristicsCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<Charateristics> specification = createSpecification(criteria);
-        return charateristicsRepository.findAll(specification, page)
-            .map(charateristicsMapper::toDto);
+        return charateristicsRepository.findAll(specification, page).map(charateristicsMapper::toDto);
     }
 
     /**
@@ -98,8 +93,13 @@ public class CharateristicsQueryService extends QueryService<Charateristics> {
                 specification = specification.and(buildRangeSpecification(criteria.getRepetation(), Charateristics_.repetation));
             }
             if (criteria.getUserPerDepartmentId() != null) {
-                specification = specification.and(buildSpecification(criteria.getUserPerDepartmentId(),
-                    root -> root.join(Charateristics_.userPerDepartment, JoinType.LEFT).get(UserPerDepartment_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getUserPerDepartmentId(),
+                            root -> root.join(Charateristics_.userPerDepartment, JoinType.LEFT).get(UserPerDepartment_.id)
+                        )
+                    );
             }
         }
         return specification;

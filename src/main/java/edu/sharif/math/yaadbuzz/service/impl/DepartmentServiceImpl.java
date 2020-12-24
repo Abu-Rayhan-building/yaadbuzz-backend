@@ -1,5 +1,11 @@
 package edu.sharif.math.yaadbuzz.service.impl;
 
+import edu.sharif.math.yaadbuzz.domain.Department;
+import edu.sharif.math.yaadbuzz.repository.DepartmentRepository;
+import edu.sharif.math.yaadbuzz.service.DepartmentService;
+import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.DepartmentMapper;
+
 import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Optional;
@@ -87,25 +93,45 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void delete(final Long id) {
-	this.log.debug("Request to delete Department : {}", id);
-	this.departmentRepository.deleteById(id);
+    public DepartmentDTO save(DepartmentDTO departmentDTO) {
+	log.debug("Request to save Department : {}", departmentDTO);
+	Department department = departmentMapper.toEntity(departmentDTO);
+	department = departmentRepository.save(department);
+	return departmentMapper.toDto(department);
+    }
+
+    @Override
+    public Optional<DepartmentDTO> partialUpdate(DepartmentDTO departmentDTO) {
+	log.debug("Request to partially update Department : {}", departmentDTO);
+
+	return departmentRepository.findById(departmentDTO.getId())
+		.map(existingDepartment -> {
+		    if (departmentDTO.getName() != null) {
+			existingDepartment.setName(departmentDTO.getName());
+		    }
+
+		    if (departmentDTO.getPassword() != null) {
+			existingDepartment
+				.setPassword(departmentDTO.getPassword());
+		    }
+
+		    return existingDepartment;
+		}).map(departmentRepository::save).map(departmentMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<DepartmentDTO> findAll(final Pageable pageable) {
-	this.log.debug("Request to get all Departments");
-	return this.departmentRepository.findAll(pageable)
-		.map(this.departmentMapper::toDto);
+    public Page<DepartmentDTO> findAll(Pageable pageable) {
+	log.debug("Request to get all Departments");
+	return departmentRepository.findAll(pageable)
+		.map(departmentMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<DepartmentDTO> findOne(final Long id) {
-	this.log.debug("Request to get Department : {}", id);
-	return this.departmentRepository.findById(id)
-		.map(this.departmentMapper::toDto);
+    public Optional<DepartmentDTO> findOne(Long id) {
+	log.debug("Request to get Department : {}", id);
+	return departmentRepository.findById(id).map(departmentMapper::toDto);
     }
 
     @Override
@@ -138,24 +164,21 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DepartmentDTO save(final DepartmentDTO departmentDTO) {
-	this.log.debug("Request to save Department : {}", departmentDTO);
-	Department department = this.departmentMapper.toEntity(departmentDTO);
-	department = this.departmentRepository.save(department);
-	return this.departmentMapper.toDto(department);
+    public void delete(Long id) {
+	log.debug("Request to delete Department : {}", id);
+	departmentRepository.deleteById(id);
     }
 
     @Override
     public MyUserPerDepartmentStatsDTO getMyStatsInDep(Long depId) {
-	return userPerDepartmentService
-			.getCurrentUserStatsInDep(depId);
-		
+	return userPerDepartmentService.getCurrentUserStatsInDep(depId);
+
     }
 
     @Override
     public List<UserPerDepartmentDTO> getAllDepartmentUsers(Long depid) {
-	return this.userPerDepartmentRepository.findByDepatment(depid)
-		.stream().map(this.userPerDepartmentMapper::toDto).collect(Collectors.toList());
+	return this.userPerDepartmentRepository.findByDepatment(depid).stream()
+		.map(this.userPerDepartmentMapper::toDto)
+		.collect(Collectors.toList());
     }
-
 }

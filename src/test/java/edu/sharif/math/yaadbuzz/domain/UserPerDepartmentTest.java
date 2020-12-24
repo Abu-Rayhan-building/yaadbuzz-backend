@@ -1,13 +1,14 @@
 package edu.sharif.math.yaadbuzz.domain;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import edu.sharif.math.yaadbuzz.web.rest.TestUtil;
 
-public class UserPerDepartmentTest {
+import edu.sharif.math.yaadbuzz.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class UserPerDepartmentTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(UserPerDepartment.class);
         UserPerDepartment userPerDepartment1 = new UserPerDepartment();
         userPerDepartment1.setId(1L);

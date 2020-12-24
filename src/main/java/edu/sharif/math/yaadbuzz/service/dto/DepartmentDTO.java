@@ -1,13 +1,14 @@
 package edu.sharif.math.yaadbuzz.service.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Department} entity.
  */
 public class DepartmentDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -16,10 +17,10 @@ public class DepartmentDTO implements Serializable {
     @NotNull
     private String password;
 
-    private Long avatarId;
+    private PictureDTO avatar;
 
-    private Long ownerId;
-    
+    private UserDTO owner;
+
     public Long getId() {
         return id;
     }
@@ -44,20 +45,20 @@ public class DepartmentDTO implements Serializable {
         this.password = password;
     }
 
-    public Long getAvatarId() {
-        return avatarId;
+    public PictureDTO getAvatar() {
+        return avatar;
     }
 
-    public void setAvatarId(Long pictureId) {
-        this.avatarId = pictureId;
+    public void setAvatar(PictureDTO avatar) {
+        this.avatar = avatar;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public UserDTO getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long userId) {
-        this.ownerId = userId;
+    public void setOwner(UserDTO owner) {
+        this.owner = owner;
     }
 
     @Override
@@ -69,12 +70,16 @@ public class DepartmentDTO implements Serializable {
             return false;
         }
 
-        return id != null && id.equals(((DepartmentDTO) o).id);
+        DepartmentDTO departmentDTO = (DepartmentDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, departmentDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore
@@ -84,8 +89,8 @@ public class DepartmentDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", password='" + getPassword() + "'" +
-            ", avatarId=" + getAvatarId() +
-            ", ownerId=" + getOwnerId() +
+            ", avatar=" + getAvatar() +
+            ", owner=" + getOwner() +
             "}";
     }
 }

@@ -1,7 +1,12 @@
 package edu.sharif.math.yaadbuzz.service.impl;
 
+import edu.sharif.math.yaadbuzz.domain.Charateristics;
+import edu.sharif.math.yaadbuzz.repository.CharateristicsRepository;
+import edu.sharif.math.yaadbuzz.service.CharateristicsService;
+import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
+import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.CharateristicsMapper;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -61,8 +66,11 @@ public class CharateristicsServiceImpl implements CharateristicsService {
 	    characteristic = new CharateristicsDTO();
 	    characteristic.setRepetation(1);
 	    characteristic.setTitle(charateristicsDTO.getTitle());
-	    characteristic.setUserPerDepartmentId(
-		    charateristicsDTO.getUserPerDepartmentId());
+	    {
+		var upd = new UserPerDepartmentDTO();
+		upd.setId(charateristicsDTO.getUserPerDepartmentId());
+		characteristic.setUserPerDepartment(upd);
+	    }
 	} else {
 	    characteristic = this.charateristicsMapper.toDto(c);
 	    characteristic.setRepetation(characteristic.getRepetation() + 1);
@@ -93,17 +101,34 @@ public class CharateristicsServiceImpl implements CharateristicsService {
     }
 
     @Override
-    public void delete(final Long id) {
-	this.log.debug("Request to delete Charateristics : {}", id);
-	this.charateristicsRepository.deleteById(id);
+    public Optional<CharateristicsDTO> partialUpdate(
+	    CharateristicsDTO charateristicsDTO) {
+	log.debug("Request to partially update Charateristics : {}",
+		charateristicsDTO);
+
+	return charateristicsRepository.findById(charateristicsDTO.getId())
+		.map(existingCharateristics -> {
+		    if (charateristicsDTO.getTitle() != null) {
+			existingCharateristics
+				.setTitle(charateristicsDTO.getTitle());
+		    }
+
+		    if (charateristicsDTO.getRepetation() != null) {
+			existingCharateristics.setRepetation(
+				charateristicsDTO.getRepetation());
+		    }
+
+		    return existingCharateristics;
+		}).map(charateristicsRepository::save)
+		.map(charateristicsMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CharateristicsDTO> findAll(final Pageable pageable) {
-	this.log.debug("Request to get all Charateristics");
-	return this.charateristicsRepository.findAll(pageable)
-		.map(this.charateristicsMapper::toDto);
+    public Page<CharateristicsDTO> findAll(Pageable pageable) {
+	log.debug("Request to get all Charateristics");
+	return charateristicsRepository.findAll(pageable)
+		.map(charateristicsMapper::toDto);
     }
 
     @Override
@@ -116,16 +141,22 @@ public class CharateristicsServiceImpl implements CharateristicsService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<CharateristicsDTO> findOne(final Long id) {
-	this.log.debug("Request to get Charateristics : {}", id);
-	return this.charateristicsRepository.findById(id)
-		.map(this.charateristicsMapper::toDto);
+    public Optional<CharateristicsDTO> findOne(Long id) {
+	log.debug("Request to get Charateristics : {}", id);
+	return charateristicsRepository.findById(id)
+		.map(charateristicsMapper::toDto);
     }
 
     private Optional<Charateristics> findOne(final Long userPerDepartmentId,
 	    final String title) {
 	return this.charateristicsRepository.findOne(userPerDepartmentId,
 		title);
+    }
+
+    @Override
+    public void delete(Long id) {
+	log.debug("Request to delete Charateristics : {}", id);
+	charateristicsRepository.deleteById(id);
     }
 
     @Override
@@ -137,12 +168,11 @@ public class CharateristicsServiceImpl implements CharateristicsService {
     }
 
     @Override
-    public CharateristicsDTO save(final CharateristicsDTO charateristicsDTO) {
-	this.log.debug("Request to save Charateristics : {}",
-		charateristicsDTO);
-	Charateristics charateristics = this.charateristicsMapper
+    public CharateristicsDTO save(CharateristicsDTO charateristicsDTO) {
+	log.debug("Request to save Charateristics : {}", charateristicsDTO);
+	Charateristics charateristics = charateristicsMapper
 		.toEntity(charateristicsDTO);
-	charateristics = this.charateristicsRepository.save(charateristics);
-	return this.charateristicsMapper.toDto(charateristics);
+	charateristics = charateristicsRepository.save(charateristics);
+	return charateristicsMapper.toDto(charateristics);
     }
 }

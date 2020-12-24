@@ -3,6 +3,7 @@ package edu.sharif.math.yaadbuzz.service.dto.helpers;
 import java.io.Serializable;
 
 import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
+import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Memorial} entity.
@@ -23,7 +24,11 @@ public class MemorialUDTO implements Serializable, UserInputDTO<MemorialDTO> {
     @Override
     public MemorialDTO build() {
 	final MemorialDTO res = new MemorialDTO();
-	res.setRecipientId(this.recipientId);
+	{
+	    var rece = new UserPerDepartmentDTO();
+	    rece.setId(this.recipientId);
+	    res.setRecipient(rece);
+	}
 	return res;
     }
 

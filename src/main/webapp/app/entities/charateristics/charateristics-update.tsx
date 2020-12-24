@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -18,7 +18,7 @@ export interface ICharateristicsUpdateProps extends StateProps, DispatchProps, R
 
 export const CharateristicsUpdate = (props: ICharateristicsUpdateProps) => {
   const [userPerDepartmentId, setUserPerDepartmentId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { charateristicsEntity, userPerDepartments, loading, updating } = props;
 
@@ -59,7 +59,7 @@ export const CharateristicsUpdate = (props: ICharateristicsUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadbuzzApp.charateristics.home.createOrEditLabel">
+          <h2 id="yaadbuzzApp.charateristics.home.createOrEditLabel" data-cy="CharateristicsCreateUpdateHeading">
             <Translate contentKey="yaadbuzzApp.charateristics.home.createOrEditLabel">Create or edit a Charateristics</Translate>
           </h2>
         </Col>
@@ -84,6 +84,7 @@ export const CharateristicsUpdate = (props: ICharateristicsUpdateProps) => {
                 </Label>
                 <AvField
                   id="charateristics-title"
+                  data-cy="title"
                   type="text"
                   name="title"
                   validate={{
@@ -95,13 +96,20 @@ export const CharateristicsUpdate = (props: ICharateristicsUpdateProps) => {
                 <Label id="repetationLabel" for="charateristics-repetation">
                   <Translate contentKey="yaadbuzzApp.charateristics.repetation">Repetation</Translate>
                 </Label>
-                <AvField id="charateristics-repetation" type="string" className="form-control" name="repetation" />
+                <AvField id="charateristics-repetation" data-cy="repetation" type="string" className="form-control" name="repetation" />
               </AvGroup>
               <AvGroup>
                 <Label for="charateristics-userPerDepartment">
                   <Translate contentKey="yaadbuzzApp.charateristics.userPerDepartment">User Per Department</Translate>
                 </Label>
-                <AvInput id="charateristics-userPerDepartment" type="select" className="form-control" name="userPerDepartmentId" required>
+                <AvInput
+                  id="charateristics-userPerDepartment"
+                  data-cy="userPerDepartment"
+                  type="select"
+                  className="form-control"
+                  name="userPerDepartmentId"
+                  required
+                >
                   {userPerDepartments
                     ? userPerDepartments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -122,7 +130,7 @@ export const CharateristicsUpdate = (props: ICharateristicsUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

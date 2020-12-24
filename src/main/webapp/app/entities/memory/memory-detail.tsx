@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './memory.reducer';
-import { IMemory } from 'app/shared/model/memory.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IMemoryDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,8 +20,8 @@ export const MemoryDetail = (props: IMemoryDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          <Translate contentKey="yaadbuzzApp.memory.detail.title">Memory</Translate> [<b>{memoryEntity.id}</b>]
+        <h2 data-cy="memoryDetailsHeading">
+          <Translate contentKey="yaadbuzzApp.memory.detail.title">Memory</Translate> [<strong>{memoryEntity.id}</strong>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
@@ -38,13 +37,13 @@ export const MemoryDetail = (props: IMemoryDetailProps) => {
           </dt>
           <dd>{memoryEntity.isPrivate ? 'true' : 'false'}</dd>
           <dt>
-            <Translate contentKey="yaadbuzzApp.memory.text">Text</Translate>
+            <Translate contentKey="yaadbuzzApp.memory.baseComment">Base Comment</Translate>
           </dt>
-          <dd>{memoryEntity.textId ? memoryEntity.textId : ''}</dd>
+          <dd>{memoryEntity.baseComment ? memoryEntity.baseComment.id : ''}</dd>
           <dt>
             <Translate contentKey="yaadbuzzApp.memory.writer">Writer</Translate>
           </dt>
-          <dd>{memoryEntity.writerId ? memoryEntity.writerId : ''}</dd>
+          <dd>{memoryEntity.writer ? memoryEntity.writer.id : ''}</dd>
           <dt>
             <Translate contentKey="yaadbuzzApp.memory.taged">Taged</Translate>
           </dt>
@@ -61,9 +60,9 @@ export const MemoryDetail = (props: IMemoryDetailProps) => {
           <dt>
             <Translate contentKey="yaadbuzzApp.memory.department">Department</Translate>
           </dt>
-          <dd>{memoryEntity.departmentId ? memoryEntity.departmentId : ''}</dd>
+          <dd>{memoryEntity.department ? memoryEntity.department.id : ''}</dd>
         </dl>
-        <Button tag={Link} to="/memory" replace color="info">
+        <Button tag={Link} to="/memory" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

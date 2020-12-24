@@ -22,13 +22,20 @@ public interface UserPerDepartmentService extends ServiceWithCurrentUserCrudAcce
     UserPerDepartmentDTO save(UserPerDepartmentDTO userPerDepartmentDTO);
 
     /**
+     * Partially updates a userPerDepartment.
+     *
+     * @param userPerDepartmentDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<UserPerDepartmentDTO> partialUpdate(UserPerDepartmentDTO userPerDepartmentDTO);
+
+    /**
      * Get all the userPerDepartments.
      *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
     Page<UserPerDepartmentDTO> findAll(Pageable pageable);
-
 
     /**
      * Get the "id" userPerDepartment.
@@ -50,4 +57,6 @@ public interface UserPerDepartmentService extends ServiceWithCurrentUserCrudAcce
     Long getCurrentUserUserPerDepeartmentIdInDep(Long depId) ;
     
     MyUserPerDepartmentStatsDTO getCurrentUserStatsInDep(Long depId);
+
+    UserPerDepartmentDTO getCurrentUserUserPerDepeartmentInDep(Long depId);
 }

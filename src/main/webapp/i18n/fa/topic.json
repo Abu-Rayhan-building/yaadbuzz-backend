@@ -3,6 +3,7 @@
     "topic": {
       "home": {
         "title": "Topics",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Topic",
         "createOrEditLabel": "Create or edit a Topic",
         "notFound": "No Topics found"
@@ -16,8 +17,9 @@
       "detail": {
         "title": "Topic"
       },
+      "id": "ID",
       "title": "Title",
-      "votes": "votes",
+      "votes": "Votes",
       "department": "Department",
       "voters": "Voters"
     }

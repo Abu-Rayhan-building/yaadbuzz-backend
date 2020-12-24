@@ -1,7 +1,11 @@
 package edu.sharif.math.yaadbuzz.service.impl;
 
+import edu.sharif.math.yaadbuzz.domain.Comment;
+import edu.sharif.math.yaadbuzz.repository.CommentRepository;
+import edu.sharif.math.yaadbuzz.service.CommentService;
+import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.CommentMapper;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,8 +31,7 @@ import edu.sharif.math.yaadbuzz.service.mapper.CommentMapper;
 @Transactional
 public class CommentServiceImpl implements CommentService {
 
-    private final Logger log = LoggerFactory
-	    .getLogger(CommentServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(CommentServiceImpl.class);
 
     private final CommentRepository commentRepository;
     private final MemoryService memoryService;
@@ -70,17 +73,29 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void delete(final Long id) {
-	this.log.debug("Request to delete Comment : {}", id);
-	this.commentRepository.deleteById(id);
+    public Optional<CommentDTO> partialUpdate(CommentDTO commentDTO) {
+        log.debug("Request to partially update Comment : {}", commentDTO);
+
+        return commentRepository
+            .findById(commentDTO.getId())
+            .map(
+                existingComment -> {
+                    if (commentDTO.getText() != null) {
+                        existingComment.setText(commentDTO.getText());
+                    }
+
+                    return existingComment;
+                }
+            )
+            .map(commentRepository::save)
+            .map(commentMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CommentDTO> findAll(final Pageable pageable) {
-	this.log.debug("Request to get all Comments");
-	return this.commentRepository.findAll(pageable)
-		.map(this.commentMapper::toDto);
+    public Page<CommentDTO> findAll(Pageable pageable) {
+        log.debug("Request to get all Comments");
+        return commentRepository.findAll(pageable).map(commentMapper::toDto);
     }
 
     @Override
@@ -93,10 +108,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<CommentDTO> findOne(final Long id) {
-	this.log.debug("Request to get Comment : {}", id);
-	return this.commentRepository.findById(id)
-		.map(this.commentMapper::toDto);
+    public Optional<CommentDTO> findOne(Long id) {
+        log.debug("Request to get Comment : {}", id);
+        return commentRepository.findById(id).map(commentMapper::toDto);
     }
 
     @Override
@@ -104,10 +118,10 @@ public class CommentServiceImpl implements CommentService {
 	this.log.debug("Request to save Comment : {}", commentDTO);
 	if (commentDTO.getId() != null) {
 	    final var com = this.findOne(commentDTO.getId());
-	    if (!com.get().getMemoryId().equals(commentDTO.getMemoryId())) {
+	    if (!com.get().getMemory().equals(commentDTO.getMemory())) {
 		throw new RuntimeException("bad req in CommentDTO save");
 	    }
-	    if (!com.get().getWriterId().equals(commentDTO.getWriterId())) {
+	    if (!com.get().getWriter().equals(commentDTO.getWriter())) {
 		throw new RuntimeException("bad req in CommentDTO save");
 	    }
 	}
@@ -125,5 +139,11 @@ public class CommentServiceImpl implements CommentService {
 	Comment comment = this.commentMapper.toEntity(com);
 	comment = this.commentRepository.save(comment);
 	return this.commentMapper.toDto(comment);
+    }
+    
+    @Override
+    public void delete(Long id) {
+        log.debug("Request to delete Comment : {}", id);
+        commentRepository.deleteById(id);
     }
 }

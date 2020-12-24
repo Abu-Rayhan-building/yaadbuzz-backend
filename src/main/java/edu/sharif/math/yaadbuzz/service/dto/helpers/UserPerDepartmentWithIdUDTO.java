@@ -2,6 +2,7 @@ package edu.sharif.math.yaadbuzz.service.dto.helpers;
 
 import java.io.Serializable;
 
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 
 /**
@@ -13,7 +14,11 @@ public class UserPerDepartmentWithIdUDTO
 
     public UserPerDepartmentDTO build() {
 	var res = new UserPerDepartmentDTO();
-	res.setAvatarId(this.getAvatarId());
+	{
+	    var ava = new PictureDTO();
+	    ava.setId(getAvatarId());
+	    res.setAvatar(ava);
+	}
 	res.setBio(this.getBio());
 	res.setNicName(this.getNicName());
 	res.setId(id);
@@ -21,13 +26,13 @@ public class UserPerDepartmentWithIdUDTO
     }
 
     private Long id;
-    
+
     public Long getId() {
-        return id;
+	return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+	this.id = id;
     }
 
     private String nicName;

@@ -32,8 +32,7 @@ public class TopicVoteCriteria implements Serializable, Criteria {
 
     private LongFilter userId;
 
-    public TopicVoteCriteria() {
-    }
+    public TopicVoteCriteria() {}
 
     public TopicVoteCriteria(TopicVoteCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -79,7 +78,6 @@ public class TopicVoteCriteria implements Serializable, Criteria {
         this.userId = userId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -89,21 +87,17 @@ public class TopicVoteCriteria implements Serializable, Criteria {
             return false;
         }
         final TopicVoteCriteria that = (TopicVoteCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(repetitions, that.repetitions) &&
             Objects.equals(topicId, that.topicId) &&
-            Objects.equals(userId, that.userId);
+            Objects.equals(userId, that.userId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        repetitions,
-        topicId,
-        userId
-        );
+        return Objects.hash(id, repetitions, topicId, userId);
     }
 
     // prettier-ignore
@@ -116,5 +110,4 @@ public class TopicVoteCriteria implements Serializable, Criteria {
                 (userId != null ? "userId=" + userId + ", " : "") +
             "}";
     }
-
 }

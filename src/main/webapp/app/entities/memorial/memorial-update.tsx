@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -26,7 +26,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
   const [writerId, setWriterId] = useState('0');
   const [recipientId, setRecipientId] = useState('0');
   const [departmentId, setDepartmentId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { memorialEntity, comments, userPerDepartments, departments, loading, updating } = props;
 
@@ -69,7 +69,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadbuzzApp.memorial.home.createOrEditLabel">
+          <h2 id="yaadbuzzApp.memorial.home.createOrEditLabel" data-cy="MemorialCreateUpdateHeading">
             <Translate contentKey="yaadbuzzApp.memorial.home.createOrEditLabel">Create or edit a Memorial</Translate>
           </h2>
         </Col>
@@ -92,7 +92,13 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
                 <Label for="memorial-anonymousComment">
                   <Translate contentKey="yaadbuzzApp.memorial.anonymousComment">Anonymous Comment</Translate>
                 </Label>
-                <AvInput id="memorial-anonymousComment" type="select" className="form-control" name="anonymousCommentId">
+                <AvInput
+                  id="memorial-anonymousComment"
+                  data-cy="anonymousComment"
+                  type="select"
+                  className="form-control"
+                  name="anonymousComment.id"
+                >
                   <option value="" key="0" />
                   {comments
                     ? comments.map(otherEntity => (
@@ -107,7 +113,13 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
                 <Label for="memorial-notAnonymousComment">
                   <Translate contentKey="yaadbuzzApp.memorial.notAnonymousComment">Not Anonymous Comment</Translate>
                 </Label>
-                <AvInput id="memorial-notAnonymousComment" type="select" className="form-control" name="notAnonymousCommentId">
+                <AvInput
+                  id="memorial-notAnonymousComment"
+                  data-cy="notAnonymousComment"
+                  type="select"
+                  className="form-control"
+                  name="notAnonymousComment.id"
+                >
                   <option value="" key="0" />
                   {comments
                     ? comments.map(otherEntity => (
@@ -122,7 +134,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
                 <Label for="memorial-writer">
                   <Translate contentKey="yaadbuzzApp.memorial.writer">Writer</Translate>
                 </Label>
-                <AvInput id="memorial-writer" type="select" className="form-control" name="writerId" required>
+                <AvInput id="memorial-writer" data-cy="writer" type="select" className="form-control" name="writerId" required>
                   {userPerDepartments
                     ? userPerDepartments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -139,7 +151,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
                 <Label for="memorial-recipient">
                   <Translate contentKey="yaadbuzzApp.memorial.recipient">Recipient</Translate>
                 </Label>
-                <AvInput id="memorial-recipient" type="select" className="form-control" name="recipientId" required>
+                <AvInput id="memorial-recipient" data-cy="recipient" type="select" className="form-control" name="recipientId" required>
                   {userPerDepartments
                     ? userPerDepartments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -156,7 +168,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
                 <Label for="memorial-department">
                   <Translate contentKey="yaadbuzzApp.memorial.department">Department</Translate>
                 </Label>
-                <AvInput id="memorial-department" type="select" className="form-control" name="departmentId" required>
+                <AvInput id="memorial-department" data-cy="department" type="select" className="form-control" name="departmentId" required>
                   {departments
                     ? departments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -177,7 +189,7 @@ export const MemorialUpdate = (props: IMemorialUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

@@ -1,41 +1,38 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.YaadbuzzApp;
-import edu.sharif.math.yaadbuzz.domain.Comment;
-import edu.sharif.math.yaadbuzz.domain.Picture;
-import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
-import edu.sharif.math.yaadbuzz.domain.Memory;
-import edu.sharif.math.yaadbuzz.repository.CommentRepository;
-import edu.sharif.math.yaadbuzz.service.CommentService;
-import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.CommentMapper;
-import edu.sharif.math.yaadbuzz.service.dto.CommentCriteria;
-import edu.sharif.math.yaadbuzz.service.CommentQueryService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import edu.sharif.math.yaadbuzz.IntegrationTest;
+import edu.sharif.math.yaadbuzz.domain.Comment;
+import edu.sharif.math.yaadbuzz.domain.Memory;
+import edu.sharif.math.yaadbuzz.domain.Picture;
+import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
+import edu.sharif.math.yaadbuzz.repository.CommentRepository;
+import edu.sharif.math.yaadbuzz.service.CommentQueryService;
+import edu.sharif.math.yaadbuzz.service.dto.CommentCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.CommentMapper;
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Integration tests for the {@link CommentResource} REST controller.
  */
-@SpringBootTest(classes = YaadbuzzApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class CommentResourceIT {
+class CommentResourceIT {
 
     private static final String DEFAULT_TEXT = "AAAAAAAAAA";
     private static final String UPDATED_TEXT = "BBBBBBBBBB";
@@ -45,9 +42,6 @@ public class CommentResourceIT {
 
     @Autowired
     private CommentMapper commentMapper;
-
-    @Autowired
-    private CommentService commentService;
 
     @Autowired
     private CommentQueryService commentQueryService;
@@ -67,8 +61,7 @@ public class CommentResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Comment createEntity(EntityManager em) {
-        Comment comment = new Comment()
-            .text(DEFAULT_TEXT);
+        Comment comment = new Comment().text(DEFAULT_TEXT);
         // Add required entity
         Picture picture;
         if (TestUtil.findAll(em, Picture.class).isEmpty()) {
@@ -101,6 +94,7 @@ public class CommentResourceIT {
         comment.setMemory(memory);
         return comment;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -108,8 +102,7 @@ public class CommentResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Comment createUpdatedEntity(EntityManager em) {
-        Comment comment = new Comment()
-            .text(UPDATED_TEXT);
+        Comment comment = new Comment().text(UPDATED_TEXT);
         // Add required entity
         Picture picture;
         if (TestUtil.findAll(em, Picture.class).isEmpty()) {
@@ -150,13 +143,12 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void createComment() throws Exception {
+    void createComment() throws Exception {
         int databaseSizeBeforeCreate = commentRepository.findAll().size();
         // Create the Comment
         CommentDTO commentDTO = commentMapper.toDto(comment);
-        restCommentMockMvc.perform(post("/api/comments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(commentDTO)))
+        restCommentMockMvc
+            .perform(post("/api/comments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(commentDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Comment in the database
@@ -168,17 +160,16 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void createCommentWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = commentRepository.findAll().size();
-
+    void createCommentWithExistingId() throws Exception {
         // Create the Comment with an existing ID
         comment.setId(1L);
         CommentDTO commentDTO = commentMapper.toDto(comment);
 
+        int databaseSizeBeforeCreate = commentRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCommentMockMvc.perform(post("/api/comments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(commentDTO)))
+        restCommentMockMvc
+            .perform(post("/api/comments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(commentDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Comment in the database
@@ -186,10 +177,9 @@ public class CommentResourceIT {
         assertThat(commentList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkTextIsRequired() throws Exception {
+    void checkTextIsRequired() throws Exception {
         int databaseSizeBeforeTest = commentRepository.findAll().size();
         // set the field null
         comment.setText(null);
@@ -197,10 +187,8 @@ public class CommentResourceIT {
         // Create the Comment, which fails.
         CommentDTO commentDTO = commentMapper.toDto(comment);
 
-
-        restCommentMockMvc.perform(post("/api/comments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(commentDTO)))
+        restCommentMockMvc
+            .perform(post("/api/comments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(commentDTO)))
             .andExpect(status().isBadRequest());
 
         List<Comment> commentList = commentRepository.findAll();
@@ -209,36 +197,37 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void getAllComments() throws Exception {
+    void getAllComments() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
         // Get all the commentList
-        restCommentMockMvc.perform(get("/api/comments?sort=id,desc"))
+        restCommentMockMvc
+            .perform(get("/api/comments?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(comment.getId().intValue())))
             .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT)));
     }
-    
+
     @Test
     @Transactional
-    public void getComment() throws Exception {
+    void getComment() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
         // Get the comment
-        restCommentMockMvc.perform(get("/api/comments/{id}", comment.getId()))
+        restCommentMockMvc
+            .perform(get("/api/comments/{id}", comment.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(comment.getId().intValue()))
             .andExpect(jsonPath("$.text").value(DEFAULT_TEXT));
     }
 
-
     @Test
     @Transactional
-    public void getCommentsByIdFiltering() throws Exception {
+    void getCommentsByIdFiltering() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
@@ -254,10 +243,9 @@ public class CommentResourceIT {
         defaultCommentShouldNotBeFound("id.lessThan=" + id);
     }
 
-
     @Test
     @Transactional
-    public void getAllCommentsByTextIsEqualToSomething() throws Exception {
+    void getAllCommentsByTextIsEqualToSomething() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
@@ -270,7 +258,7 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void getAllCommentsByTextIsNotEqualToSomething() throws Exception {
+    void getAllCommentsByTextIsNotEqualToSomething() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
@@ -283,7 +271,7 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void getAllCommentsByTextIsInShouldWork() throws Exception {
+    void getAllCommentsByTextIsInShouldWork() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
@@ -296,7 +284,7 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void getAllCommentsByTextIsNullOrNotNull() throws Exception {
+    void getAllCommentsByTextIsNullOrNotNull() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
@@ -306,9 +294,10 @@ public class CommentResourceIT {
         // Get all the commentList where text is null
         defaultCommentShouldNotBeFound("text.specified=false");
     }
-                @Test
+
+    @Test
     @Transactional
-    public void getAllCommentsByTextContainsSomething() throws Exception {
+    void getAllCommentsByTextContainsSomething() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
@@ -321,7 +310,7 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void getAllCommentsByTextNotContainsSomething() throws Exception {
+    void getAllCommentsByTextNotContainsSomething() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
@@ -332,15 +321,34 @@ public class CommentResourceIT {
         defaultCommentShouldBeFound("text.doesNotContain=" + UPDATED_TEXT);
     }
 
+    @Test
+    @Transactional
+    void getAllCommentsByPicturesIsEqualToSomething() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+        Picture pictures = PictureResourceIT.createEntity(em);
+        em.persist(pictures);
+        em.flush();
+        comment.addPictures(pictures);
+        commentRepository.saveAndFlush(comment);
+        Long picturesId = pictures.getId();
 
+        // Get all the commentList where pictures equals to picturesId
+        defaultCommentShouldBeFound("picturesId.equals=" + picturesId);
 
-
+        // Get all the commentList where pictures equals to picturesId + 1
+        defaultCommentShouldNotBeFound("picturesId.equals=" + (picturesId + 1));
+    }
 
     @Test
     @Transactional
-    public void getAllCommentsByWriterIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        UserPerDepartment writer = comment.getWriter();
+    void getAllCommentsByWriterIsEqualToSomething() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+        UserPerDepartment writer = UserPerDepartmentResourceIT.createEntity(em);
+        em.persist(writer);
+        em.flush();
+        comment.setWriter(writer);
         commentRepository.saveAndFlush(comment);
         Long writerId = writer.getId();
 
@@ -351,12 +359,15 @@ public class CommentResourceIT {
         defaultCommentShouldNotBeFound("writerId.equals=" + (writerId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllCommentsByMemoryIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        Memory memory = comment.getMemory();
+    void getAllCommentsByMemoryIsEqualToSomething() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+        Memory memory = MemoryResourceIT.createEntity(em);
+        em.persist(memory);
+        em.flush();
+        comment.setMemory(memory);
         commentRepository.saveAndFlush(comment);
         Long memoryId = memory.getId();
 
@@ -371,14 +382,16 @@ public class CommentResourceIT {
      * Executes the search, and checks that the default entity is returned.
      */
     private void defaultCommentShouldBeFound(String filter) throws Exception {
-        restCommentMockMvc.perform(get("/api/comments?sort=id,desc&" + filter))
+        restCommentMockMvc
+            .perform(get("/api/comments?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(comment.getId().intValue())))
             .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT)));
 
         // Check, that the count call also returns 1
-        restCommentMockMvc.perform(get("/api/comments/count?sort=id,desc&" + filter))
+        restCommentMockMvc
+            .perform(get("/api/comments/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("1"));
@@ -388,14 +401,16 @@ public class CommentResourceIT {
      * Executes the search, and checks that the default entity is not returned.
      */
     private void defaultCommentShouldNotBeFound(String filter) throws Exception {
-        restCommentMockMvc.perform(get("/api/comments?sort=id,desc&" + filter))
+        restCommentMockMvc
+            .perform(get("/api/comments?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$").isEmpty());
 
         // Check, that the count call also returns 0
-        restCommentMockMvc.perform(get("/api/comments/count?sort=id,desc&" + filter))
+        restCommentMockMvc
+            .perform(get("/api/comments/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("0"));
@@ -403,15 +418,14 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingComment() throws Exception {
+    void getNonExistingComment() throws Exception {
         // Get the comment
-        restCommentMockMvc.perform(get("/api/comments/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restCommentMockMvc.perform(get("/api/comments/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateComment() throws Exception {
+    void updateComment() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
@@ -421,13 +435,11 @@ public class CommentResourceIT {
         Comment updatedComment = commentRepository.findById(comment.getId()).get();
         // Disconnect from session so that the updates on updatedComment are not directly saved in db
         em.detach(updatedComment);
-        updatedComment
-            .text(UPDATED_TEXT);
+        updatedComment.text(UPDATED_TEXT);
         CommentDTO commentDTO = commentMapper.toDto(updatedComment);
 
-        restCommentMockMvc.perform(put("/api/comments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(commentDTO)))
+        restCommentMockMvc
+            .perform(put("/api/comments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(commentDTO)))
             .andExpect(status().isOk());
 
         // Validate the Comment in the database
@@ -439,16 +451,15 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingComment() throws Exception {
+    void updateNonExistingComment() throws Exception {
         int databaseSizeBeforeUpdate = commentRepository.findAll().size();
 
         // Create the Comment
         CommentDTO commentDTO = commentMapper.toDto(comment);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restCommentMockMvc.perform(put("/api/comments")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(commentDTO)))
+        restCommentMockMvc
+            .perform(put("/api/comments").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(commentDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Comment in the database
@@ -458,15 +469,88 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void deleteComment() throws Exception {
+    void partialUpdateCommentWithPatch() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+
+        int databaseSizeBeforeUpdate = commentRepository.findAll().size();
+
+        // Update the comment using partial update
+        Comment partialUpdatedComment = new Comment();
+        partialUpdatedComment.setId(comment.getId());
+
+        partialUpdatedComment.text(UPDATED_TEXT);
+
+        restCommentMockMvc
+            .perform(
+                patch("/api/comments")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedComment))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Comment in the database
+        List<Comment> commentList = commentRepository.findAll();
+        assertThat(commentList).hasSize(databaseSizeBeforeUpdate);
+        Comment testComment = commentList.get(commentList.size() - 1);
+        assertThat(testComment.getText()).isEqualTo(UPDATED_TEXT);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateCommentWithPatch() throws Exception {
+        // Initialize the database
+        commentRepository.saveAndFlush(comment);
+
+        int databaseSizeBeforeUpdate = commentRepository.findAll().size();
+
+        // Update the comment using partial update
+        Comment partialUpdatedComment = new Comment();
+        partialUpdatedComment.setId(comment.getId());
+
+        partialUpdatedComment.text(UPDATED_TEXT);
+
+        restCommentMockMvc
+            .perform(
+                patch("/api/comments")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedComment))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Comment in the database
+        List<Comment> commentList = commentRepository.findAll();
+        assertThat(commentList).hasSize(databaseSizeBeforeUpdate);
+        Comment testComment = commentList.get(commentList.size() - 1);
+        assertThat(testComment.getText()).isEqualTo(UPDATED_TEXT);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateCommentShouldThrown() throws Exception {
+        // Update the comment without id should throw
+        Comment partialUpdatedComment = new Comment();
+
+        restCommentMockMvc
+            .perform(
+                patch("/api/comments")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedComment))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    void deleteComment() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
         int databaseSizeBeforeDelete = commentRepository.findAll().size();
 
         // Delete the comment
-        restCommentMockMvc.perform(delete("/api/comments/{id}", comment.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restCommentMockMvc
+            .perform(delete("/api/comments/{id}", comment.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

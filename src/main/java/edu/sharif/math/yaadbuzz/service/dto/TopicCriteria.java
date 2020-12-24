@@ -34,8 +34,7 @@ public class TopicCriteria implements Serializable, Criteria {
 
     private LongFilter votersId;
 
-    public TopicCriteria() {
-    }
+    public TopicCriteria() {}
 
     public TopicCriteria(TopicCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -90,7 +89,6 @@ public class TopicCriteria implements Serializable, Criteria {
         this.votersId = votersId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -100,23 +98,18 @@ public class TopicCriteria implements Serializable, Criteria {
             return false;
         }
         final TopicCriteria that = (TopicCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(title, that.title) &&
             Objects.equals(votesId, that.votesId) &&
             Objects.equals(departmentId, that.departmentId) &&
-            Objects.equals(votersId, that.votersId);
+            Objects.equals(votersId, that.votersId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        title,
-        votesId,
-        departmentId,
-        votersId
-        );
+        return Objects.hash(id, title, votesId, departmentId, votersId);
     }
 
     // prettier-ignore
@@ -130,5 +123,4 @@ public class TopicCriteria implements Serializable, Criteria {
                 (votersId != null ? "votersId=" + votersId + ", " : "") +
             "}";
     }
-
 }

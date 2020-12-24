@@ -1,5 +1,7 @@
 import { IUserPerDepartment } from 'app/shared/model/user-per-department.model';
 import { IMemory } from 'app/shared/model/memory.model';
+import { IPicture } from 'app/shared/model/picture.model';
+import { IUser } from 'app/shared/model/user.model';
 
 export interface IDepartment {
   id?: number;
@@ -7,8 +9,8 @@ export interface IDepartment {
   password?: string;
   userPerDepartments?: IUserPerDepartment[];
   memories?: IMemory[];
-  avatarId?: number;
-  ownerId?: number;
+  avatar?: IPicture;
+  owner?: IUser;
 }
 
 export const defaultValue: Readonly<IDepartment> = {};

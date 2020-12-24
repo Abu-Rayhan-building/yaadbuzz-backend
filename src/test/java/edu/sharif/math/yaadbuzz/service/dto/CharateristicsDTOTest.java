@@ -1,13 +1,14 @@
 package edu.sharif.math.yaadbuzz.service.dto;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import edu.sharif.math.yaadbuzz.web.rest.TestUtil;
 
-public class CharateristicsDTOTest {
+import edu.sharif.math.yaadbuzz.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class CharateristicsDTOTest {
 
     @Test
-    public void dtoEqualsVerifier() throws Exception {
+    void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(CharateristicsDTO.class);
         CharateristicsDTO charateristicsDTO1 = new CharateristicsDTO();
         charateristicsDTO1.setId(1L);

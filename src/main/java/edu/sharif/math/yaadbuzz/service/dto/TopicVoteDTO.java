@@ -1,22 +1,22 @@
 package edu.sharif.math.yaadbuzz.service.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.TopicVote} entity.
  */
 public class TopicVoteDTO implements Serializable {
-    
+
     private Long id;
 
     private Integer repetitions;
 
+    private TopicDTO topic;
 
-    private Long topicId;
+    private UserPerDepartmentDTO user;
 
-    private Long userId;
-    
     public Long getId() {
         return id;
     }
@@ -33,20 +33,20 @@ public class TopicVoteDTO implements Serializable {
         this.repetitions = repetitions;
     }
 
-    public Long getTopicId() {
-        return topicId;
+    public TopicDTO getTopic() {
+        return topic;
     }
 
-    public void setTopicId(Long topicId) {
-        this.topicId = topicId;
+    public void setTopic(TopicDTO topic) {
+        this.topic = topic;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserPerDepartmentDTO getUser() {
+        return user;
     }
 
-    public void setUserId(Long userPerDepartmentId) {
-        this.userId = userPerDepartmentId;
+    public void setUser(UserPerDepartmentDTO user) {
+        this.user = user;
     }
 
     @Override
@@ -58,12 +58,16 @@ public class TopicVoteDTO implements Serializable {
             return false;
         }
 
-        return id != null && id.equals(((TopicVoteDTO) o).id);
+        TopicVoteDTO topicVoteDTO = (TopicVoteDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, topicVoteDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore
@@ -72,8 +76,8 @@ public class TopicVoteDTO implements Serializable {
         return "TopicVoteDTO{" +
             "id=" + getId() +
             ", repetitions=" + getRepetitions() +
-            ", topicId=" + getTopicId() +
-            ", userId=" + getUserId() +
+            ", topic=" + getTopic() +
+            ", user=" + getUser() +
             "}";
     }
 }

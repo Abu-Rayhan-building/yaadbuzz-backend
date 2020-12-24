@@ -38,8 +38,7 @@ public class DepartmentCriteria implements Serializable, Criteria {
 
     private LongFilter ownerId;
 
-    public DepartmentCriteria() {
-    }
+    public DepartmentCriteria() {}
 
     public DepartmentCriteria(DepartmentCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -112,7 +111,6 @@ public class DepartmentCriteria implements Serializable, Criteria {
         this.ownerId = ownerId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -122,27 +120,20 @@ public class DepartmentCriteria implements Serializable, Criteria {
             return false;
         }
         final DepartmentCriteria that = (DepartmentCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
             Objects.equals(password, that.password) &&
             Objects.equals(userPerDepartmentId, that.userPerDepartmentId) &&
             Objects.equals(memoryId, that.memoryId) &&
             Objects.equals(avatarId, that.avatarId) &&
-            Objects.equals(ownerId, that.ownerId);
+            Objects.equals(ownerId, that.ownerId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        name,
-        password,
-        userPerDepartmentId,
-        memoryId,
-        avatarId,
-        ownerId
-        );
+        return Objects.hash(id, name, password, userPerDepartmentId, memoryId, avatarId, ownerId);
     }
 
     // prettier-ignore
@@ -158,5 +149,4 @@ public class DepartmentCriteria implements Serializable, Criteria {
                 (ownerId != null ? "ownerId=" + ownerId + ", " : "") +
             "}";
     }
-
 }

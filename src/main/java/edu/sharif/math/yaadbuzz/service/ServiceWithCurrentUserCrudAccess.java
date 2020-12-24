@@ -1,5 +1,6 @@
 package edu.sharif.math.yaadbuzz.service;
 
+import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 
 public interface ServiceWithCurrentUserCrudAccess {
 

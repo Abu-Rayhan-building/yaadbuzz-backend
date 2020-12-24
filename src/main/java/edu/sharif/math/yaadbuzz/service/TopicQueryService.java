@@ -1,9 +1,13 @@
 package edu.sharif.math.yaadbuzz.service;
 
+import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
+import edu.sharif.math.yaadbuzz.domain.Topic;
+import edu.sharif.math.yaadbuzz.repository.TopicRepository;
+import edu.sharif.math.yaadbuzz.service.dto.TopicCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.TopicMapper;
 import java.util.List;
-
 import javax.persistence.criteria.JoinType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,15 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import tech.jhipster.service.QueryService;
-
-import edu.sharif.math.yaadbuzz.domain.Topic;
-import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
-import edu.sharif.math.yaadbuzz.repository.TopicRepository;
-import edu.sharif.math.yaadbuzz.service.dto.TopicCriteria;
-import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.TopicMapper;
 
 /**
  * Service for executing complex queries for {@link Topic} entities in the database.
@@ -64,8 +60,7 @@ public class TopicQueryService extends QueryService<Topic> {
     public Page<TopicDTO> findByCriteria(TopicCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<Topic> specification = createSpecification(criteria);
-        return topicRepository.findAll(specification, page)
-            .map(topicMapper::toDto);
+        return topicRepository.findAll(specification, page).map(topicMapper::toDto);
     }
 
     /**
@@ -94,17 +89,29 @@ public class TopicQueryService extends QueryService<Topic> {
             if (criteria.getTitle() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTitle(), Topic_.title));
             }
-            if (criteria.getVotersId() != null) {
-                specification = specification.and(buildSpecification(criteria.getVotersId(),
-                    root -> root.join(Topic_.votes, JoinType.LEFT).get(TopicVote_.id)));
+            if (criteria.getVotesId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getVotesId(), root -> root.join(Topic_.votes, JoinType.LEFT).get(TopicVote_.id))
+                    );
             }
             if (criteria.getDepartmentId() != null) {
-                specification = specification.and(buildSpecification(criteria.getDepartmentId(),
-                    root -> root.join(Topic_.department, JoinType.LEFT).get(Department_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getDepartmentId(),
+                            root -> root.join(Topic_.department, JoinType.LEFT).get(Department_.id)
+                        )
+                    );
             }
             if (criteria.getVotersId() != null) {
-                specification = specification.and(buildSpecification(criteria.getVotersId(),
-                    root -> root.join(Topic_.voters, JoinType.LEFT).get(UserPerDepartment_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getVotersId(),
+                            root -> root.join(Topic_.voters, JoinType.LEFT).get(UserPerDepartment_.id)
+                        )
+                    );
             }
         }
         return specification;

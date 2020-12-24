@@ -1,9 +1,13 @@
 package edu.sharif.math.yaadbuzz.service;
 
+import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
+import edu.sharif.math.yaadbuzz.domain.Memorial;
+import edu.sharif.math.yaadbuzz.repository.MemorialRepository;
+import edu.sharif.math.yaadbuzz.service.dto.MemorialCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.MemorialMapper;
 import java.util.List;
-
 import javax.persistence.criteria.JoinType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,15 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import tech.jhipster.service.QueryService;
-
-import edu.sharif.math.yaadbuzz.domain.Memorial;
-import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
-import edu.sharif.math.yaadbuzz.repository.MemorialRepository;
-import edu.sharif.math.yaadbuzz.service.dto.MemorialCriteria;
-import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.MemorialMapper;
 
 /**
  * Service for executing complex queries for {@link Memorial} entities in the database.
@@ -64,8 +60,7 @@ public class MemorialQueryService extends QueryService<Memorial> {
     public Page<MemorialDTO> findByCriteria(MemorialCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<Memorial> specification = createSpecification(criteria);
-        return memorialRepository.findAll(specification, page)
-            .map(memorialMapper::toDto);
+        return memorialRepository.findAll(specification, page).map(memorialMapper::toDto);
     }
 
     /**
@@ -92,24 +87,49 @@ public class MemorialQueryService extends QueryService<Memorial> {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Memorial_.id));
             }
             if (criteria.getAnonymousCommentId() != null) {
-                specification = specification.and(buildSpecification(criteria.getAnonymousCommentId(),
-                    root -> root.join(Memorial_.anonymousComment, JoinType.LEFT).get(Comment_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getAnonymousCommentId(),
+                            root -> root.join(Memorial_.anonymousComment, JoinType.LEFT).get(Comment_.id)
+                        )
+                    );
             }
             if (criteria.getNotAnonymousCommentId() != null) {
-                specification = specification.and(buildSpecification(criteria.getNotAnonymousCommentId(),
-                    root -> root.join(Memorial_.notAnonymousComment, JoinType.LEFT).get(Comment_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getNotAnonymousCommentId(),
+                            root -> root.join(Memorial_.notAnonymousComment, JoinType.LEFT).get(Comment_.id)
+                        )
+                    );
             }
             if (criteria.getWriterId() != null) {
-                specification = specification.and(buildSpecification(criteria.getWriterId(),
-                    root -> root.join(Memorial_.writer, JoinType.LEFT).get(UserPerDepartment_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getWriterId(),
+                            root -> root.join(Memorial_.writer, JoinType.LEFT).get(UserPerDepartment_.id)
+                        )
+                    );
             }
             if (criteria.getRecipientId() != null) {
-                specification = specification.and(buildSpecification(criteria.getRecipientId(),
-                    root -> root.join(Memorial_.recipient, JoinType.LEFT).get(UserPerDepartment_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getRecipientId(),
+                            root -> root.join(Memorial_.recipient, JoinType.LEFT).get(UserPerDepartment_.id)
+                        )
+                    );
             }
             if (criteria.getDepartmentId() != null) {
-                specification = specification.and(buildSpecification(criteria.getDepartmentId(),
-                    root -> root.join(Memorial_.department, JoinType.LEFT).get(Department_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getDepartmentId(),
+                            root -> root.join(Memorial_.department, JoinType.LEFT).get(Department_.id)
+                        )
+                    );
             }
         }
         return specification;

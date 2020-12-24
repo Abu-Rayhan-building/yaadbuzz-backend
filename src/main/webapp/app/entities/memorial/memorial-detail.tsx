@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './memorial.reducer';
-import { IMemorial } from 'app/shared/model/memorial.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IMemorialDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,32 +20,32 @@ export const MemorialDetail = (props: IMemorialDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          <Translate contentKey="yaadbuzzApp.memorial.detail.title">Memorial</Translate> [<b>{memorialEntity.id}</b>]
+        <h2 data-cy="memorialDetailsHeading">
+          <Translate contentKey="yaadbuzzApp.memorial.detail.title">Memorial</Translate> [<strong>{memorialEntity.id}</strong>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
             <Translate contentKey="yaadbuzzApp.memorial.anonymousComment">Anonymous Comment</Translate>
           </dt>
-          <dd>{memorialEntity.anonymousCommentId ? memorialEntity.anonymousCommentId : ''}</dd>
+          <dd>{memorialEntity.anonymousComment ? memorialEntity.anonymousComment.id : ''}</dd>
           <dt>
             <Translate contentKey="yaadbuzzApp.memorial.notAnonymousComment">Not Anonymous Comment</Translate>
           </dt>
-          <dd>{memorialEntity.notAnonymousCommentId ? memorialEntity.notAnonymousCommentId : ''}</dd>
+          <dd>{memorialEntity.notAnonymousComment ? memorialEntity.notAnonymousComment.id : ''}</dd>
           <dt>
             <Translate contentKey="yaadbuzzApp.memorial.writer">Writer</Translate>
           </dt>
-          <dd>{memorialEntity.writerId ? memorialEntity.writerId : ''}</dd>
+          <dd>{memorialEntity.writer ? memorialEntity.writer.id : ''}</dd>
           <dt>
             <Translate contentKey="yaadbuzzApp.memorial.recipient">Recipient</Translate>
           </dt>
-          <dd>{memorialEntity.recipientId ? memorialEntity.recipientId : ''}</dd>
+          <dd>{memorialEntity.recipient ? memorialEntity.recipient.id : ''}</dd>
           <dt>
             <Translate contentKey="yaadbuzzApp.memorial.department">Department</Translate>
           </dt>
-          <dd>{memorialEntity.departmentId ? memorialEntity.departmentId : ''}</dd>
+          <dd>{memorialEntity.department ? memorialEntity.department.id : ''}</dd>
         </dl>
-        <Button tag={Link} to="/memorial" replace color="info">
+        <Button tag={Link} to="/memorial" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

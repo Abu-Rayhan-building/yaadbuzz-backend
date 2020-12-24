@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 
@@ -32,7 +33,11 @@ public class MemoryWithIdUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 	final var res = new MemoryDTO();
 	res.setIsPrivate(this.isPrivate);
 	res.setTageds(this.tageds);
-	res.setTextId(this.textId);
+	{
+	    var com = new CommentDTO();
+	    com.setId(getTextId());
+	    res.setBaseComment(com);
+	}
 	res.setTitle(this.title);
 	res.setId(this.id);
 	return res;

@@ -3,6 +3,7 @@
     "picture": {
       "home": {
         "title": "Pictures",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Picture",
         "createOrEditLabel": "Create or edit a Picture",
         "notFound": "No Pictures found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Picture"
       },
+      "id": "ID",
       "image": "Image",
       "comment": "Comment"
     }

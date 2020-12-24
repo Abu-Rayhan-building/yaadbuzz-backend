@@ -1,11 +1,10 @@
 package edu.sharif.math.yaadbuzz.service;
 
+import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
 import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.CharateristicsVoteDTO;
 
 /**
@@ -20,11 +19,21 @@ public interface CharateristicsService
     boolean currentuserHasCreateAccess(Long depId);
 
     /**
-     * Delete the "id" charateristics.
+     * Save a charateristics.
      *
-     * @param id the id of the entity.
+     * @param charateristicsDTO the entity to save.
+     * @return the persisted entity.
      */
-    void delete(Long id);
+    CharateristicsDTO save(CharateristicsDTO charateristicsDTO);
+
+    /**
+     * Partially updates a charateristics.
+     *
+     * @param charateristicsDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<CharateristicsDTO> partialUpdate(
+	    CharateristicsDTO charateristicsDTO);
 
     /**
      * Get all the charateristics.
@@ -45,16 +54,15 @@ public interface CharateristicsService
     Optional<CharateristicsDTO> findOne(Long id);
 
     /**
-     * Save a charateristics.
+     * Delete the "id" charateristics.
      *
-     * @param charateristicsDTO the entity to save.
-     * @return the persisted entity.
+     * @param id the id of the entity.
      */
-    CharateristicsDTO save(CharateristicsDTO charateristicsDTO);
+    void delete(Long id);
 
     boolean currentuserHasVoteAccess(Long depId);
-    
 
     Page<CharateristicsDTO> findUsersCharactersInDep(Long updId,
 	    Pageable pageable);
+
 }

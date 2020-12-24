@@ -1,9 +1,11 @@
 package edu.sharif.math.yaadbuzz.service.impl;
 
+import edu.sharif.math.yaadbuzz.domain.Topic;
+import edu.sharif.math.yaadbuzz.repository.TopicRepository;
+import edu.sharif.math.yaadbuzz.service.TopicService;
+import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.TopicMapper;
 import java.util.Optional;
-
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -59,7 +61,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public boolean currentuserHasGetAccess(final Long id) {
 	return this.departmentService.currentuserHasGetAccess(
-		this.findOne(id).get().getDepartmentId());
+		this.findOne(id).get().getDepartment().getId());
     }
 
     @Override
@@ -70,48 +72,58 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public boolean currentuserHasVoteAccess(final Long id) {
 	return this.departmentService.currentuserHasGetAccess(
-		this.findOne(id).get().getDepartmentId());
+		this.findOne(id).get().getDepartment().getId());
     }
 
     @Override
-    public void delete(final Long id) {
-	this.log.debug("Request to delete Topic : {}", id);
-	this.topicRepository.deleteById(id);
+    public TopicDTO save(TopicDTO topicDTO) {
+	log.debug("Request to save Topic : {}", topicDTO);
+	Topic topic = topicMapper.toEntity(topicDTO);
+	topic = topicRepository.save(topic);
+	return topicMapper.toDto(topic);
+    }
+
+    @Override
+    public Optional<TopicDTO> partialUpdate(TopicDTO topicDTO) {
+	log.debug("Request to partially update Topic : {}", topicDTO);
+
+	return topicRepository.findById(topicDTO.getId()).map(existingTopic -> {
+	    if (topicDTO.getTitle() != null) {
+		existingTopic.setTitle(topicDTO.getTitle());
+	    }
+
+	    return existingTopic;
+	}).map(topicRepository::save).map(topicMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<TopicDTO> findAll(final Pageable pageable) {
-	this.log.debug("Request to get all Topics");
-	return this.topicRepository.findAll(pageable)
-		.map(this.topicMapper::toDto);
+    public Page<TopicDTO> findAll(Pageable pageable) {
+	log.debug("Request to get all Topics");
+	return topicRepository.findAll(pageable).map(topicMapper::toDto);
     }
 
-    @Override
-    public Page<TopicDTO> findAllWithEagerRelationships(
-	    final Pageable pageable) {
-	return this.topicRepository.findAllWithEagerRelationships(pageable)
-		.map(this.topicMapper::toDto);
+    public Page<TopicDTO> findAllWithEagerRelationships(Pageable pageable) {
+	return topicRepository.findAllWithEagerRelationships(pageable)
+		.map(topicMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<TopicDTO> findOne(final Long id) {
-	this.log.debug("Request to get Topic : {}", id);
-	return this.topicRepository.findOneWithEagerRelationships(id)
-		.map(this.topicMapper::toDto);
+    public Optional<TopicDTO> findOne(Long id) {
+	log.debug("Request to get Topic : {}", id);
+	return topicRepository.findOneWithEagerRelationships(id)
+		.map(topicMapper::toDto);
     }
 
     @Override
-    public TopicDTO save(final TopicDTO topicDTO) {
-	this.log.debug("Request to save Topic : {}", topicDTO);
-	Topic topic = this.topicMapper.toEntity(topicDTO);
-	topic = this.topicRepository.save(topic);
-	return this.topicMapper.toDto(topic);
+    public void delete(Long id) {
+	log.debug("Request to delete Topic : {}", id);
+	topicRepository.deleteById(id);
     }
 
     @Override
-    public TopicDTO vote(Long depId, @Valid TopicVoteUDTO topicVoteUDTO) {
+    public TopicDTO vote(Long depId, TopicVoteUDTO topicVoteUDTO) {
 	var upd = this.userPerDepartmentService.getCurrentUserInDep(depId);
 	var topic = this.findOne(topicVoteUDTO.getTopicId()).get();
 	topic.getVoters().add(upd);
@@ -120,5 +132,6 @@ public class TopicServiceImpl implements TopicService {
 	    this.topicVoteService.addBallot(topic.getId(), ballot);
 	}
 	return topic;
+
     }
 }

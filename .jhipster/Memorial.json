@@ -54,5 +54,6 @@
   "databaseType": "sql",
   "readOnly": false,
   "jpaMetamodelFiltering": true,
-  "pagination": "infinite-scroll"
+  "pagination": "infinite-scroll",
+  "name": "Memorial"
 }

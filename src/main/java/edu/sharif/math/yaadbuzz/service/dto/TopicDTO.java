@@ -1,24 +1,25 @@
 package edu.sharif.math.yaadbuzz.service.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Topic} entity.
  */
 public class TopicDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
     private String title;
 
-    private Long departmentId;
-    
+    private DepartmentDTO department;
+
     private Set<UserPerDepartmentDTO> voters = new HashSet<>();
-    
+
     public Long getId() {
         return id;
     }
@@ -35,20 +36,20 @@ public class TopicDTO implements Serializable {
         this.title = title;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public DepartmentDTO getDepartment() {
+        return department;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartment(DepartmentDTO department) {
+        this.department = department;
     }
 
     public Set<UserPerDepartmentDTO> getVoters() {
         return voters;
     }
 
-    public void setVoters(Set<UserPerDepartmentDTO> userPerDepartments) {
-        this.voters = userPerDepartments;
+    public void setVoters(Set<UserPerDepartmentDTO> voters) {
+        this.voters = voters;
     }
 
     @Override
@@ -60,12 +61,16 @@ public class TopicDTO implements Serializable {
             return false;
         }
 
-        return id != null && id.equals(((TopicDTO) o).id);
+        TopicDTO topicDTO = (TopicDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, topicDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore
@@ -74,8 +79,8 @@ public class TopicDTO implements Serializable {
         return "TopicDTO{" +
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
-            ", departmentId=" + getDepartmentId() +
-            ", voters='" + getVoters() + "'" +
+            ", department=" + getDepartment() +
+            ", voters=" + getVoters() +
             "}";
     }
 }

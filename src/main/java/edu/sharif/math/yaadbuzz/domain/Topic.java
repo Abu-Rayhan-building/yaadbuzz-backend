@@ -1,15 +1,13 @@
 package edu.sharif.math.yaadbuzz.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Topic.
@@ -32,18 +30,25 @@ public class Topic implements Serializable {
 
     @OneToMany(mappedBy = "topic")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "topic", "user" }, allowSetters = true)
     private Set<TopicVote> votes = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "topics", allowSetters = true)
+    @JsonIgnoreProperties(value = { "userPerDepartments", "memories", "avatar", "owner" }, allowSetters = true)
     private Department department;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JoinTable(name = "topic_voters",
-               joinColumns = @JoinColumn(name = "topic_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "voters_id", referencedColumnName = "id"))
+    @JoinTable(
+        name = "rel_topic__voters",
+        joinColumns = @JoinColumn(name = "topic_id"),
+        inverseJoinColumns = @JoinColumn(name = "voters_id")
+    )
+    @JsonIgnoreProperties(
+        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
+        allowSetters = true
+    )
     private Set<UserPerDepartment> voters = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -55,8 +60,13 @@ public class Topic implements Serializable {
         this.id = id;
     }
 
+    public Topic id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public Topic title(String title) {
@@ -69,36 +79,42 @@ public class Topic implements Serializable {
     }
 
     public Set<TopicVote> getVotes() {
-        return votes;
+        return this.votes;
     }
 
     public Topic votes(Set<TopicVote> topicVotes) {
-        this.votes = topicVotes;
+        this.setVotes(topicVotes);
         return this;
     }
 
-    public Topic addVotes(TopicVote topicRating) {
-        this.votes.add(topicRating);
-        topicRating.setTopic(this);
+    public Topic addVotes(TopicVote topicVote) {
+        this.votes.add(topicVote);
+        topicVote.setTopic(this);
         return this;
     }
 
-    public Topic removeVotes(TopicVote topicRating) {
-        this.votes.remove(topicRating);
-        topicRating.setTopic(null);
+    public Topic removeVotes(TopicVote topicVote) {
+        this.votes.remove(topicVote);
+        topicVote.setTopic(null);
         return this;
     }
 
     public void setVotes(Set<TopicVote> topicVotes) {
+        if (this.votes != null) {
+            this.votes.forEach(i -> i.setTopic(null));
+        }
+        if (topicVotes != null) {
+            topicVotes.forEach(i -> i.setTopic(this));
+        }
         this.votes = topicVotes;
     }
 
     public Department getDepartment() {
-        return department;
+        return this.department;
     }
 
     public Topic department(Department department) {
-        this.department = department;
+        this.setDepartment(department);
         return this;
     }
 
@@ -107,11 +123,11 @@ public class Topic implements Serializable {
     }
 
     public Set<UserPerDepartment> getVoters() {
-        return voters;
+        return this.voters;
     }
 
     public Topic voters(Set<UserPerDepartment> userPerDepartments) {
-        this.voters = userPerDepartments;
+        this.setVoters(userPerDepartments);
         return this;
     }
 
@@ -130,6 +146,7 @@ public class Topic implements Serializable {
     public void setVoters(Set<UserPerDepartment> userPerDepartments) {
         this.voters = userPerDepartments;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -145,7 +162,8 @@ public class Topic implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

@@ -1,13 +1,14 @@
 package edu.sharif.math.yaadbuzz.domain;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import edu.sharif.math.yaadbuzz.web.rest.TestUtil;
 
-public class TopicTest {
+import edu.sharif.math.yaadbuzz.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class TopicTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Topic.class);
         Topic topic1 = new Topic();
         topic1.setId(1L);

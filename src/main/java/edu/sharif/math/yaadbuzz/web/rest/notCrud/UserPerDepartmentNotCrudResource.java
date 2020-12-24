@@ -136,8 +136,8 @@ public class UserPerDepartmentNotCrudResource {
 	}
 	var old = this.userPerDepartmentService.findOne(departmentWithIdUDTO.getId()).get();
 	var newUPD = departmentWithIdUDTO.build();
-	newUPD.setDepartmentId(old.getDepartmentId());
-	newUPD.setRealUserId(old.getRealUserId());
+	newUPD.setDepartment(old.getDepartment());
+	newUPD.setRealUser(old.getRealUser());
 	
 	final UserPerDepartmentDTO result = this.userPerDepartmentService
 		.save(newUPD);

@@ -1,15 +1,14 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.TopicVoteDTO;
-
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
 /**
- * Service Interface for managing
- * {@link edu.sharif.math.yaadbuzz.domain.TopicVote}.
+ * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.TopicVote}.
  */
 public interface TopicVoteService extends ServiceWithCurrentUserCrudAccess {
 
@@ -20,6 +19,14 @@ public interface TopicVoteService extends ServiceWithCurrentUserCrudAccess {
      * @return the persisted entity.
      */
     TopicVoteDTO save(TopicVoteDTO topicVoteDTO);
+
+    /**
+     * Partially updates a topicVote.
+     *
+     * @param topicVoteDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<TopicVoteDTO> partialUpdate(TopicVoteDTO topicVoteDTO);
 
     /**
      * Get all the topicVotes.

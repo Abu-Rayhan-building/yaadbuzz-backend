@@ -42,8 +42,7 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
 
     private LongFilter tagedInMemoeriesId;
 
-    public UserPerDepartmentCriteria() {
-    }
+    public UserPerDepartmentCriteria() {}
 
     public UserPerDepartmentCriteria(UserPerDepartmentCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -134,7 +133,6 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
         this.tagedInMemoeriesId = tagedInMemoeriesId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -144,7 +142,7 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
             return false;
         }
         final UserPerDepartmentCriteria that = (UserPerDepartmentCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(nicName, that.nicName) &&
             Objects.equals(bio, that.bio) &&
@@ -153,22 +151,13 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
             Objects.equals(realUserId, that.realUserId) &&
             Objects.equals(departmentId, that.departmentId) &&
             Objects.equals(topicsVotedId, that.topicsVotedId) &&
-            Objects.equals(tagedInMemoeriesId, that.tagedInMemoeriesId);
+            Objects.equals(tagedInMemoeriesId, that.tagedInMemoeriesId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        nicName,
-        bio,
-        topicAssignedsId,
-        avatarId,
-        realUserId,
-        departmentId,
-        topicsVotedId,
-        tagedInMemoeriesId
-        );
+        return Objects.hash(id, nicName, bio, topicAssignedsId, avatarId, realUserId, departmentId, topicsVotedId, tagedInMemoeriesId);
     }
 
     // prettier-ignore
@@ -186,5 +175,4 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
                 (tagedInMemoeriesId != null ? "tagedInMemoeriesId=" + tagedInMemoeriesId + ", " : "") +
             "}";
     }
-
 }

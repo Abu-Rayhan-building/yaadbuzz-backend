@@ -32,8 +32,7 @@ public class CharateristicsCriteria implements Serializable, Criteria {
 
     private LongFilter userPerDepartmentId;
 
-    public CharateristicsCriteria() {
-    }
+    public CharateristicsCriteria() {}
 
     public CharateristicsCriteria(CharateristicsCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -79,7 +78,6 @@ public class CharateristicsCriteria implements Serializable, Criteria {
         this.userPerDepartmentId = userPerDepartmentId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -89,21 +87,17 @@ public class CharateristicsCriteria implements Serializable, Criteria {
             return false;
         }
         final CharateristicsCriteria that = (CharateristicsCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(title, that.title) &&
             Objects.equals(repetation, that.repetation) &&
-            Objects.equals(userPerDepartmentId, that.userPerDepartmentId);
+            Objects.equals(userPerDepartmentId, that.userPerDepartmentId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        title,
-        repetation,
-        userPerDepartmentId
-        );
+        return Objects.hash(id, title, repetation, userPerDepartmentId);
     }
 
     // prettier-ignore
@@ -116,5 +110,4 @@ public class CharateristicsCriteria implements Serializable, Criteria {
                 (userPerDepartmentId != null ? "userPerDepartmentId=" + userPerDepartmentId + ", " : "") +
             "}";
     }
-
 }

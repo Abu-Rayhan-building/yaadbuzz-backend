@@ -1,13 +1,11 @@
 package edu.sharif.math.yaadbuzz.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Memorial.
@@ -24,27 +22,35 @@ public class Memorial implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @JsonIgnoreProperties(value = { "pictures", "writer", "memory" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
     private Comment anonymousComment;
 
+    @JsonIgnoreProperties(value = { "pictures", "writer", "memory" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
     private Comment notAnonymousComment;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "memorials", allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
+        allowSetters = true
+    )
     private UserPerDepartment writer;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "memorials", allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
+        allowSetters = true
+    )
     private UserPerDepartment recipient;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "memorials", allowSetters = true)
+    @JsonIgnoreProperties(value = { "userPerDepartments", "memories", "avatar", "owner" }, allowSetters = true)
     private Department department;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -56,12 +62,17 @@ public class Memorial implements Serializable {
         this.id = id;
     }
 
+    public Memorial id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public Comment getAnonymousComment() {
-        return anonymousComment;
+        return this.anonymousComment;
     }
 
     public Memorial anonymousComment(Comment comment) {
-        this.anonymousComment = comment;
+        this.setAnonymousComment(comment);
         return this;
     }
 
@@ -70,11 +81,11 @@ public class Memorial implements Serializable {
     }
 
     public Comment getNotAnonymousComment() {
-        return notAnonymousComment;
+        return this.notAnonymousComment;
     }
 
     public Memorial notAnonymousComment(Comment comment) {
-        this.notAnonymousComment = comment;
+        this.setNotAnonymousComment(comment);
         return this;
     }
 
@@ -83,11 +94,11 @@ public class Memorial implements Serializable {
     }
 
     public UserPerDepartment getWriter() {
-        return writer;
+        return this.writer;
     }
 
     public Memorial writer(UserPerDepartment userPerDepartment) {
-        this.writer = userPerDepartment;
+        this.setWriter(userPerDepartment);
         return this;
     }
 
@@ -96,11 +107,11 @@ public class Memorial implements Serializable {
     }
 
     public UserPerDepartment getRecipient() {
-        return recipient;
+        return this.recipient;
     }
 
     public Memorial recipient(UserPerDepartment userPerDepartment) {
-        this.recipient = userPerDepartment;
+        this.setRecipient(userPerDepartment);
         return this;
     }
 
@@ -109,17 +120,18 @@ public class Memorial implements Serializable {
     }
 
     public Department getDepartment() {
-        return department;
+        return this.department;
     }
 
     public Memorial department(Department department) {
-        this.department = department;
+        this.setDepartment(department);
         return this;
     }
 
     public void setDepartment(Department department) {
         this.department = department;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -135,7 +147,8 @@ public class Memorial implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
