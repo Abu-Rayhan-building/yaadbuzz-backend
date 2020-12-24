@@ -2,14 +2,14 @@ package edu.sharif.math.yaadbuzz.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import io.github.jhipster.service.Criteria;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
+import tech.jhipster.service.Criteria;
+import tech.jhipster.service.filter.BooleanFilter;
+import tech.jhipster.service.filter.DoubleFilter;
+import tech.jhipster.service.filter.Filter;
+import tech.jhipster.service.filter.FloatFilter;
+import tech.jhipster.service.filter.IntegerFilter;
+import tech.jhipster.service.filter.LongFilter;
+import tech.jhipster.service.filter.StringFilter;
 
 /**
  * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Charateristics} entity. This class is used
@@ -32,8 +32,7 @@ public class CharateristicsCriteria implements Serializable, Criteria {
 
     private LongFilter userPerDepartmentId;
 
-    public CharateristicsCriteria() {
-    }
+    public CharateristicsCriteria() {}
 
     public CharateristicsCriteria(CharateristicsCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -79,7 +78,6 @@ public class CharateristicsCriteria implements Serializable, Criteria {
         this.userPerDepartmentId = userPerDepartmentId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -89,21 +87,17 @@ public class CharateristicsCriteria implements Serializable, Criteria {
             return false;
         }
         final CharateristicsCriteria that = (CharateristicsCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(title, that.title) &&
             Objects.equals(repetation, that.repetation) &&
-            Objects.equals(userPerDepartmentId, that.userPerDepartmentId);
+            Objects.equals(userPerDepartmentId, that.userPerDepartmentId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        title,
-        repetation,
-        userPerDepartmentId
-        );
+        return Objects.hash(id, title, repetation, userPerDepartmentId);
     }
 
     // prettier-ignore
@@ -116,5 +110,4 @@ public class CharateristicsCriteria implements Serializable, Criteria {
                 (userPerDepartmentId != null ? "userPerDepartmentId=" + userPerDepartmentId + ", " : "") +
             "}";
     }
-
 }

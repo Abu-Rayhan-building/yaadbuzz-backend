@@ -3,6 +3,7 @@
     "memory": {
       "home": {
         "title": "Memories",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Memory",
         "createOrEditLabel": "Create or edit a Memory",
         "notFound": "No Memories found"
@@ -16,10 +17,11 @@
       "detail": {
         "title": "Memory"
       },
+      "id": "ID",
       "title": "Title",
       "isPrivate": "Is Private",
       "comments": "Comments",
-      "text": "Text",
+      "baseComment": "Base Comment",
       "writer": "Writer",
       "taged": "Taged",
       "department": "Department"

@@ -24,6 +24,14 @@ public interface TopicService extends ServiceWithCurrentUserCrudAccess{
     TopicDTO save(TopicDTO topicDTO);
 
     /**
+     * Partially updates a topic.
+     *
+     * @param topicDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<TopicDTO> partialUpdate(TopicDTO topicDTO);
+
+    /**
      * Get all the topics.
      *
      * @param pageable the pagination information.
@@ -34,10 +42,10 @@ public interface TopicService extends ServiceWithCurrentUserCrudAccess{
     /**
      * Get all the topics with eager load of many-to-many relationships.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     Page<TopicDTO> findAllWithEagerRelationships(Pageable pageable);
-
 
     /**
      * Get the "id" topic.

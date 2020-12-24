@@ -3,6 +3,7 @@
     "memorial": {
       "home": {
         "title": "Memorials",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Memorial",
         "createOrEditLabel": "Create or edit a Memorial",
         "notFound": "No Memorials found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Memorial"
       },
+      "id": "ID",
       "anonymousComment": "Anonymous Comment",
       "notAnonymousComment": "Not Anonymous Comment",
       "writer": "Writer",

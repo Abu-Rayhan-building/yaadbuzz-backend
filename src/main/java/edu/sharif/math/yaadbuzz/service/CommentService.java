@@ -9,8 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 /**
- * Service Interface for managing
- * {@link edu.sharif.math.yaadbuzz.domain.Comment}.
+ * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.Comment}.
  */
 public interface CommentService extends ServiceWithCurrentUserCrudAccess{
 
@@ -21,6 +20,14 @@ public interface CommentService extends ServiceWithCurrentUserCrudAccess{
      * @return the persisted entity.
      */
     CommentDTO save(CommentDTO commentDTO);
+
+    /**
+     * Partially updates a comment.
+     *
+     * @param commentDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<CommentDTO> partialUpdate(CommentDTO commentDTO);
 
     /**
      * Get all the comments.

@@ -1,11 +1,11 @@
-id;title;is_private;is_annonymos;text_id;writer_id;department_id
-1;Facilitator Cambridgeshire;false;true;1;1;1
-2;Representative;true;false;2;2;2
-3;Re-contextualized maximized;true;true;3;3;3
-4;RAM;true;true;4;4;4
-5;Shoes;false;false;5;5;5
-6;relationships Beauty;false;false;6;6;6
-7;Buckinghamshire Frozen;false;false;7;7;7
-8;circuit;false;true;8;8;8
-9;deposit;false;true;9;9;9
-10;Wisconsin;true;false;10;10;10
+id;title;is_private;base_comment_id;writer_id;department_id
+1;Facilitator Liaison;false;1;1;1
+2;Configuration Forges maximized;true;2;2;2
+3;RAM;true;3;3;3
+4;Shoes;false;4;4;4
+5;architectures Kyrgyz;false;5;5;5
+6;Dollar Fish;false;6;6;6
+7;Metal Bacon Wisconsin;false;7;7;7
+8;Cross-platform;true;8;8;8
+9;Profit-focused SQL Steel;false;9;9;9
+10;Central Mobility;false;10;10;10

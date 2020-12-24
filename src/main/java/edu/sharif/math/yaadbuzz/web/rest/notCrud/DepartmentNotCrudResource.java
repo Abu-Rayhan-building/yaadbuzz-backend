@@ -32,6 +32,7 @@ import edu.sharif.math.yaadbuzz.service.MailService;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.UserDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.DepartmentCreateUDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.DepartmentWiteUPDCreateUDTO;
@@ -39,8 +40,8 @@ import edu.sharif.math.yaadbuzz.service.dto.helpers.DepartmentWithUserPerDepartm
 import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.UserPerDepartmentUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing users.
@@ -159,9 +160,18 @@ public class DepartmentNotCrudResource {
 	    @RequestBody final UserPerDepartmentUDTO userPerDepartmentDepJoinReqDTO) {
 	UserPerDepartmentDTO userPerDepartmentDTO = userPerDepartmentDepJoinReqDTO
 		.build();
-	userPerDepartmentDTO.setDepartmentId(departmentId);
-	final Optional<User> isUser = this.userService.getUserWithAuthorities();
-	userPerDepartmentDTO.setRealUserId(isUser.get().getId());
+	{
+	    var department = new DepartmentDTO();
+	    department.setId(departmentId);
+	    userPerDepartmentDTO.setDepartment(department);
+	}
+	{
+	    final Optional<User> isUser = this.userService
+		    .getUserWithAuthorities();
+	    var userDto = new UserDTO();
+	    userDto.setId(isUser.get().getId());
+	    userPerDepartmentDTO.setRealUser(userDto);
+	}
 	final DepartmentDTO departmentDTO = this.departmentService
 		.join(departmentId, password, userPerDepartmentDTO);
 	return ResponseUtil.wrapOrNotFound(Optional.of(departmentDTO));
@@ -184,7 +194,7 @@ public class DepartmentNotCrudResource {
 		departmentWiteUPDCreateUDTO);
 	var input = departmentWiteUPDCreateUDTO.build();
 	DepartmentDTO res = departmentService.save(input.getDepartmentDTO());
-	input.getUserPerDepartmentDTO().setDepartmentId(res.getId());
+	input.getUserPerDepartmentDTO().setDepartment(res);
 	var res2 = userPerDepartmentService
 		.save(input.getUserPerDepartmentDTO());
 

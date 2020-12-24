@@ -2,14 +2,14 @@ package edu.sharif.math.yaadbuzz.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import io.github.jhipster.service.Criteria;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
+import tech.jhipster.service.Criteria;
+import tech.jhipster.service.filter.BooleanFilter;
+import tech.jhipster.service.filter.DoubleFilter;
+import tech.jhipster.service.filter.Filter;
+import tech.jhipster.service.filter.FloatFilter;
+import tech.jhipster.service.filter.IntegerFilter;
+import tech.jhipster.service.filter.LongFilter;
+import tech.jhipster.service.filter.StringFilter;
 
 /**
  * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment} entity. This class is used
@@ -42,8 +42,7 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
 
     private LongFilter tagedInMemoeriesId;
 
-    public UserPerDepartmentCriteria() {
-    }
+    public UserPerDepartmentCriteria() {}
 
     public UserPerDepartmentCriteria(UserPerDepartmentCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -134,7 +133,6 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
         this.tagedInMemoeriesId = tagedInMemoeriesId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -144,7 +142,7 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
             return false;
         }
         final UserPerDepartmentCriteria that = (UserPerDepartmentCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(nicName, that.nicName) &&
             Objects.equals(bio, that.bio) &&
@@ -153,22 +151,13 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
             Objects.equals(realUserId, that.realUserId) &&
             Objects.equals(departmentId, that.departmentId) &&
             Objects.equals(topicsVotedId, that.topicsVotedId) &&
-            Objects.equals(tagedInMemoeriesId, that.tagedInMemoeriesId);
+            Objects.equals(tagedInMemoeriesId, that.tagedInMemoeriesId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        nicName,
-        bio,
-        topicAssignedsId,
-        avatarId,
-        realUserId,
-        departmentId,
-        topicsVotedId,
-        tagedInMemoeriesId
-        );
+        return Objects.hash(id, nicName, bio, topicAssignedsId, avatarId, realUserId, departmentId, topicsVotedId, tagedInMemoeriesId);
     }
 
     // prettier-ignore
@@ -186,5 +175,4 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
                 (tagedInMemoeriesId != null ? "tagedInMemoeriesId=" + tagedInMemoeriesId + ", " : "") +
             "}";
     }
-
 }

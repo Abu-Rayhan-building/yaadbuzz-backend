@@ -3,6 +3,7 @@
     "userPerDepartment": {
       "home": {
         "title": "User Per Departments",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new User Per Department",
         "createOrEditLabel": "Create or edit a User Per Department",
         "notFound": "No User Per Departments found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "User Per Department"
       },
+      "id": "ID",
       "nicName": "Nic Name",
       "bio": "Bio",
       "topicAssigneds": "Topic Assigneds",

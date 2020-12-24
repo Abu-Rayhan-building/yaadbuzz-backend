@@ -3,6 +3,7 @@
     "department": {
       "home": {
         "title": "Departments",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Department",
         "createOrEditLabel": "Create or edit a Department",
         "notFound": "No Departments found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Department"
       },
+      "id": "ID",
       "name": "Name",
       "password": "Password",
       "userPerDepartment": "User Per Department",

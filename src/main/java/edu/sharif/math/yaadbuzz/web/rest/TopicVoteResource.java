@@ -1,15 +1,19 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.service.TopicVoteService;
-import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
-import edu.sharif.math.yaadbuzz.service.dto.TopicVoteDTO;
-import edu.sharif.math.yaadbuzz.service.dto.TopicVoteCriteria;
 import edu.sharif.math.yaadbuzz.security.AuthoritiesConstants;
 import edu.sharif.math.yaadbuzz.service.TopicVoteQueryService;
+import edu.sharif.math.yaadbuzz.service.TopicVoteService;
+import edu.sharif.math.yaadbuzz.service.dto.TopicVoteCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.TopicVoteDTO;
+import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,23 +21,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.security.RolesAllowed;
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link edu.sharif.math.yaadbuzz.domain.TopicVote}.
  */
 @RestController
-@RolesAllowed(AuthoritiesConstants.ADMIN)
 @RequestMapping("/api")
+@RolesAllowed(AuthoritiesConstants.ADMIN)
 public class TopicVoteResource {
 
     private final Logger log = LoggerFactory.getLogger(TopicVoteResource.class);
@@ -66,7 +66,8 @@ public class TopicVoteResource {
             throw new BadRequestAlertException("A new topicVote cannot already have an ID", ENTITY_NAME, "idexists");
         }
         TopicVoteDTO result = topicVoteService.save(topicVoteDTO);
-        return ResponseEntity.created(new URI("/api/topic-votes/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/topic-votes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -87,9 +88,35 @@ public class TopicVoteResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         TopicVoteDTO result = topicVoteService.save(topicVoteDTO);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, topicVoteDTO.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /topic-votes} : Updates given fields of an existing topicVote.
+     *
+     * @param topicVoteDTO the topicVoteDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated topicVoteDTO,
+     * or with status {@code 400 (Bad Request)} if the topicVoteDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the topicVoteDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the topicVoteDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/topic-votes", consumes = "application/merge-patch+json")
+    public ResponseEntity<TopicVoteDTO> partialUpdateTopicVote(@NotNull @RequestBody TopicVoteDTO topicVoteDTO) throws URISyntaxException {
+        log.debug("REST request to update TopicVote partially : {}", topicVoteDTO);
+        if (topicVoteDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+
+        Optional<TopicVoteDTO> result = topicVoteService.partialUpdate(topicVoteDTO);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, topicVoteDTO.getId().toString())
+        );
     }
 
     /**
@@ -142,6 +169,9 @@ public class TopicVoteResource {
     public ResponseEntity<Void> deleteTopicVote(@PathVariable Long id) {
         log.debug("REST request to delete TopicVote : {}", id);
         topicVoteService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

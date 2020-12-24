@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -23,10 +23,10 @@ export interface IMemoryUpdateProps extends StateProps, DispatchProps, RouteComp
 export const MemoryUpdate = (props: IMemoryUpdateProps) => {
   const [idstaged, setIdstaged] = useState([]);
   const [commentsId, setCommentsId] = useState('0');
-  const [textId, setTextId] = useState('0');
+  const [baseCommentId, setBaseCommentId] = useState('0');
   const [writerId, setWriterId] = useState('0');
   const [departmentId, setDepartmentId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { memoryEntity, comments, userPerDepartments, departments, loading, updating } = props;
 
@@ -70,7 +70,7 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadbuzzApp.memory.home.createOrEditLabel">
+          <h2 id="yaadbuzzApp.memory.home.createOrEditLabel" data-cy="MemoryCreateUpdateHeading">
             <Translate contentKey="yaadbuzzApp.memory.home.createOrEditLabel">Create or edit a Memory</Translate>
           </h2>
         </Col>
@@ -93,19 +93,19 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
                 <Label id="titleLabel" for="memory-title">
                   <Translate contentKey="yaadbuzzApp.memory.title">Title</Translate>
                 </Label>
-                <AvField id="memory-title" type="text" name="title" />
+                <AvField id="memory-title" data-cy="title" type="text" name="title" />
               </AvGroup>
               <AvGroup check>
                 <Label id="isPrivateLabel">
-                  <AvInput id="memory-isPrivate" type="checkbox" className="form-check-input" name="isPrivate" />
+                  <AvInput id="memory-isPrivate" data-cy="isPrivate" type="checkbox" className="form-check-input" name="isPrivate" />
                   <Translate contentKey="yaadbuzzApp.memory.isPrivate">Is Private</Translate>
                 </Label>
               </AvGroup>
               <AvGroup>
-                <Label for="memory-text">
-                  <Translate contentKey="yaadbuzzApp.memory.text">Text</Translate>
+                <Label for="memory-baseComment">
+                  <Translate contentKey="yaadbuzzApp.memory.baseComment">Base Comment</Translate>
                 </Label>
-                <AvInput id="memory-text" type="select" className="form-control" name="textId" required>
+                <AvInput id="memory-baseComment" data-cy="baseComment" type="select" className="form-control" name="baseCommentId" required>
                   {comments
                     ? comments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -122,7 +122,7 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
                 <Label for="memory-writer">
                   <Translate contentKey="yaadbuzzApp.memory.writer">Writer</Translate>
                 </Label>
-                <AvInput id="memory-writer" type="select" className="form-control" name="writerId" required>
+                <AvInput id="memory-writer" data-cy="writer" type="select" className="form-control" name="writerId" required>
                   {userPerDepartments
                     ? userPerDepartments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -141,11 +141,12 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
                 </Label>
                 <AvInput
                   id="memory-taged"
+                  data-cy="taged"
                   type="select"
                   multiple
                   className="form-control"
                   name="tageds"
-                  value={memoryEntity.tageds && memoryEntity.tageds.map(e => e.id)}
+                  value={!isNew && memoryEntity.tageds && memoryEntity.tageds.map(e => e.id)}
                 >
                   <option value="" key="0" />
                   {userPerDepartments
@@ -161,7 +162,7 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
                 <Label for="memory-department">
                   <Translate contentKey="yaadbuzzApp.memory.department">Department</Translate>
                 </Label>
-                <AvInput id="memory-department" type="select" className="form-control" name="departmentId" required>
+                <AvInput id="memory-department" data-cy="department" type="select" className="form-control" name="departmentId" required>
                   {departments
                     ? departments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -182,7 +183,7 @@ export const MemoryUpdate = (props: IMemoryUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

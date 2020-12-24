@@ -1,49 +1,47 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.YaadbuzzBackendApp;
-import edu.sharif.math.yaadbuzz.domain.Topic;
-import edu.sharif.math.yaadbuzz.domain.TopicVote;
-import edu.sharif.math.yaadbuzz.domain.Department;
-import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
-import edu.sharif.math.yaadbuzz.repository.TopicRepository;
-import edu.sharif.math.yaadbuzz.service.TopicService;
-import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.TopicMapper;
-import edu.sharif.math.yaadbuzz.service.dto.TopicCriteria;
-import edu.sharif.math.yaadbuzz.service.TopicQueryService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import edu.sharif.math.yaadbuzz.IntegrationTest;
+import edu.sharif.math.yaadbuzz.domain.Department;
+import edu.sharif.math.yaadbuzz.domain.Topic;
+import edu.sharif.math.yaadbuzz.domain.TopicVote;
+import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
+import edu.sharif.math.yaadbuzz.repository.TopicRepository;
+import edu.sharif.math.yaadbuzz.service.TopicQueryService;
+import edu.sharif.math.yaadbuzz.service.TopicService;
+import edu.sharif.math.yaadbuzz.service.dto.TopicCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.TopicMapper;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Integration tests for the {@link TopicResource} REST controller.
  */
-@SpringBootTest(classes = YaadbuzzBackendApp.class)
+@IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class TopicResourceIT {
+class TopicResourceIT {
 
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
@@ -59,9 +57,6 @@ public class TopicResourceIT {
 
     @Mock
     private TopicService topicServiceMock;
-
-    @Autowired
-    private TopicService topicService;
 
     @Autowired
     private TopicQueryService topicQueryService;
@@ -81,8 +76,7 @@ public class TopicResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Topic createEntity(EntityManager em) {
-        Topic topic = new Topic()
-            .title(DEFAULT_TITLE);
+        Topic topic = new Topic().title(DEFAULT_TITLE);
         // Add required entity
         Department department;
         if (TestUtil.findAll(em, Department.class).isEmpty()) {
@@ -95,6 +89,7 @@ public class TopicResourceIT {
         topic.setDepartment(department);
         return topic;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -102,8 +97,7 @@ public class TopicResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Topic createUpdatedEntity(EntityManager em) {
-        Topic topic = new Topic()
-            .title(UPDATED_TITLE);
+        Topic topic = new Topic().title(UPDATED_TITLE);
         // Add required entity
         Department department;
         if (TestUtil.findAll(em, Department.class).isEmpty()) {
@@ -124,13 +118,12 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void createTopic() throws Exception {
+    void createTopic() throws Exception {
         int databaseSizeBeforeCreate = topicRepository.findAll().size();
         // Create the Topic
         TopicDTO topicDTO = topicMapper.toDto(topic);
-        restTopicMockMvc.perform(post("/api/topics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(topicDTO)))
+        restTopicMockMvc
+            .perform(post("/api/topics").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(topicDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Topic in the database
@@ -142,17 +135,16 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void createTopicWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = topicRepository.findAll().size();
-
+    void createTopicWithExistingId() throws Exception {
         // Create the Topic with an existing ID
         topic.setId(1L);
         TopicDTO topicDTO = topicMapper.toDto(topic);
 
+        int databaseSizeBeforeCreate = topicRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTopicMockMvc.perform(post("/api/topics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(topicDTO)))
+        restTopicMockMvc
+            .perform(post("/api/topics").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(topicDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Topic in the database
@@ -160,10 +152,9 @@ public class TopicResourceIT {
         assertThat(topicList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkTitleIsRequired() throws Exception {
+    void checkTitleIsRequired() throws Exception {
         int databaseSizeBeforeTest = topicRepository.findAll().size();
         // set the field null
         topic.setTitle(null);
@@ -171,10 +162,8 @@ public class TopicResourceIT {
         // Create the Topic, which fails.
         TopicDTO topicDTO = topicMapper.toDto(topic);
 
-
-        restTopicMockMvc.perform(post("/api/topics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(topicDTO)))
+        restTopicMockMvc
+            .perform(post("/api/topics").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(topicDTO)))
             .andExpect(status().isBadRequest());
 
         List<Topic> topicList = topicRepository.findAll();
@@ -183,56 +172,55 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopics() throws Exception {
+    void getAllTopics() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
         // Get all the topicList
-        restTopicMockMvc.perform(get("/api/topics?sort=id,desc"))
+        restTopicMockMvc
+            .perform(get("/api/topics?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(topic.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)));
     }
-    
-    @SuppressWarnings({"unchecked"})
-    public void getAllTopicsWithEagerRelationshipsIsEnabled() throws Exception {
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllTopicsWithEagerRelationshipsIsEnabled() throws Exception {
         when(topicServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
-        restTopicMockMvc.perform(get("/api/topics?eagerload=true"))
-            .andExpect(status().isOk());
+        restTopicMockMvc.perform(get("/api/topics?eagerload=true")).andExpect(status().isOk());
 
         verify(topicServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
-    @SuppressWarnings({"unchecked"})
-    public void getAllTopicsWithEagerRelationshipsIsNotEnabled() throws Exception {
+    @SuppressWarnings({ "unchecked" })
+    void getAllTopicsWithEagerRelationshipsIsNotEnabled() throws Exception {
         when(topicServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
-        restTopicMockMvc.perform(get("/api/topics?eagerload=true"))
-            .andExpect(status().isOk());
+        restTopicMockMvc.perform(get("/api/topics?eagerload=true")).andExpect(status().isOk());
 
         verify(topicServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test
     @Transactional
-    public void getTopic() throws Exception {
+    void getTopic() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
         // Get the topic
-        restTopicMockMvc.perform(get("/api/topics/{id}", topic.getId()))
+        restTopicMockMvc
+            .perform(get("/api/topics/{id}", topic.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(topic.getId().intValue()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE));
     }
 
-
     @Test
     @Transactional
-    public void getTopicsByIdFiltering() throws Exception {
+    void getTopicsByIdFiltering() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
@@ -248,10 +236,9 @@ public class TopicResourceIT {
         defaultTopicShouldNotBeFound("id.lessThan=" + id);
     }
 
-
     @Test
     @Transactional
-    public void getAllTopicsByTitleIsEqualToSomething() throws Exception {
+    void getAllTopicsByTitleIsEqualToSomething() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
@@ -264,7 +251,7 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicsByTitleIsNotEqualToSomething() throws Exception {
+    void getAllTopicsByTitleIsNotEqualToSomething() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
@@ -277,7 +264,7 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicsByTitleIsInShouldWork() throws Exception {
+    void getAllTopicsByTitleIsInShouldWork() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
@@ -290,7 +277,7 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicsByTitleIsNullOrNotNull() throws Exception {
+    void getAllTopicsByTitleIsNullOrNotNull() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
@@ -300,9 +287,10 @@ public class TopicResourceIT {
         // Get all the topicList where title is null
         defaultTopicShouldNotBeFound("title.specified=false");
     }
-                @Test
+
+    @Test
     @Transactional
-    public void getAllTopicsByTitleContainsSomething() throws Exception {
+    void getAllTopicsByTitleContainsSomething() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
@@ -315,7 +303,7 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicsByTitleNotContainsSomething() throws Exception {
+    void getAllTopicsByTitleNotContainsSomething() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
@@ -326,10 +314,9 @@ public class TopicResourceIT {
         defaultTopicShouldBeFound("title.doesNotContain=" + UPDATED_TITLE);
     }
 
-
     @Test
     @Transactional
-    public void getAllTopicsByVotesIsEqualToSomething() throws Exception {
+    void getAllTopicsByVotesIsEqualToSomething() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
         TopicVote votes = TopicVoteResourceIT.createEntity(em);
@@ -346,12 +333,15 @@ public class TopicResourceIT {
         defaultTopicShouldNotBeFound("votesId.equals=" + (votesId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllTopicsByDepartmentIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        Department department = topic.getDepartment();
+    void getAllTopicsByDepartmentIsEqualToSomething() throws Exception {
+        // Initialize the database
+        topicRepository.saveAndFlush(topic);
+        Department department = DepartmentResourceIT.createEntity(em);
+        em.persist(department);
+        em.flush();
+        topic.setDepartment(department);
         topicRepository.saveAndFlush(topic);
         Long departmentId = department.getId();
 
@@ -362,10 +352,9 @@ public class TopicResourceIT {
         defaultTopicShouldNotBeFound("departmentId.equals=" + (departmentId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllTopicsByVotersIsEqualToSomething() throws Exception {
+    void getAllTopicsByVotersIsEqualToSomething() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
         UserPerDepartment voters = UserPerDepartmentResourceIT.createEntity(em);
@@ -386,14 +375,16 @@ public class TopicResourceIT {
      * Executes the search, and checks that the default entity is returned.
      */
     private void defaultTopicShouldBeFound(String filter) throws Exception {
-        restTopicMockMvc.perform(get("/api/topics?sort=id,desc&" + filter))
+        restTopicMockMvc
+            .perform(get("/api/topics?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(topic.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)));
 
         // Check, that the count call also returns 1
-        restTopicMockMvc.perform(get("/api/topics/count?sort=id,desc&" + filter))
+        restTopicMockMvc
+            .perform(get("/api/topics/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("1"));
@@ -403,14 +394,16 @@ public class TopicResourceIT {
      * Executes the search, and checks that the default entity is not returned.
      */
     private void defaultTopicShouldNotBeFound(String filter) throws Exception {
-        restTopicMockMvc.perform(get("/api/topics?sort=id,desc&" + filter))
+        restTopicMockMvc
+            .perform(get("/api/topics?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$").isEmpty());
 
         // Check, that the count call also returns 0
-        restTopicMockMvc.perform(get("/api/topics/count?sort=id,desc&" + filter))
+        restTopicMockMvc
+            .perform(get("/api/topics/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("0"));
@@ -418,15 +411,14 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingTopic() throws Exception {
+    void getNonExistingTopic() throws Exception {
         // Get the topic
-        restTopicMockMvc.perform(get("/api/topics/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restTopicMockMvc.perform(get("/api/topics/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateTopic() throws Exception {
+    void updateTopic() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
@@ -436,13 +428,11 @@ public class TopicResourceIT {
         Topic updatedTopic = topicRepository.findById(topic.getId()).get();
         // Disconnect from session so that the updates on updatedTopic are not directly saved in db
         em.detach(updatedTopic);
-        updatedTopic
-            .title(UPDATED_TITLE);
+        updatedTopic.title(UPDATED_TITLE);
         TopicDTO topicDTO = topicMapper.toDto(updatedTopic);
 
-        restTopicMockMvc.perform(put("/api/topics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(topicDTO)))
+        restTopicMockMvc
+            .perform(put("/api/topics").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(topicDTO)))
             .andExpect(status().isOk());
 
         // Validate the Topic in the database
@@ -454,16 +444,15 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingTopic() throws Exception {
+    void updateNonExistingTopic() throws Exception {
         int databaseSizeBeforeUpdate = topicRepository.findAll().size();
 
         // Create the Topic
         TopicDTO topicDTO = topicMapper.toDto(topic);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restTopicMockMvc.perform(put("/api/topics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(topicDTO)))
+        restTopicMockMvc
+            .perform(put("/api/topics").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(topicDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Topic in the database
@@ -473,15 +462,88 @@ public class TopicResourceIT {
 
     @Test
     @Transactional
-    public void deleteTopic() throws Exception {
+    void partialUpdateTopicWithPatch() throws Exception {
+        // Initialize the database
+        topicRepository.saveAndFlush(topic);
+
+        int databaseSizeBeforeUpdate = topicRepository.findAll().size();
+
+        // Update the topic using partial update
+        Topic partialUpdatedTopic = new Topic();
+        partialUpdatedTopic.setId(topic.getId());
+
+        partialUpdatedTopic.title(UPDATED_TITLE);
+
+        restTopicMockMvc
+            .perform(
+                patch("/api/topics")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTopic))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Topic in the database
+        List<Topic> topicList = topicRepository.findAll();
+        assertThat(topicList).hasSize(databaseSizeBeforeUpdate);
+        Topic testTopic = topicList.get(topicList.size() - 1);
+        assertThat(testTopic.getTitle()).isEqualTo(UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateTopicWithPatch() throws Exception {
+        // Initialize the database
+        topicRepository.saveAndFlush(topic);
+
+        int databaseSizeBeforeUpdate = topicRepository.findAll().size();
+
+        // Update the topic using partial update
+        Topic partialUpdatedTopic = new Topic();
+        partialUpdatedTopic.setId(topic.getId());
+
+        partialUpdatedTopic.title(UPDATED_TITLE);
+
+        restTopicMockMvc
+            .perform(
+                patch("/api/topics")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTopic))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Topic in the database
+        List<Topic> topicList = topicRepository.findAll();
+        assertThat(topicList).hasSize(databaseSizeBeforeUpdate);
+        Topic testTopic = topicList.get(topicList.size() - 1);
+        assertThat(testTopic.getTitle()).isEqualTo(UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateTopicShouldThrown() throws Exception {
+        // Update the topic without id should throw
+        Topic partialUpdatedTopic = new Topic();
+
+        restTopicMockMvc
+            .perform(
+                patch("/api/topics")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTopic))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    void deleteTopic() throws Exception {
         // Initialize the database
         topicRepository.saveAndFlush(topic);
 
         int databaseSizeBeforeDelete = topicRepository.findAll().size();
 
         // Delete the topic
-        restTopicMockMvc.perform(delete("/api/topics/{id}", topic.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restTopicMockMvc
+            .perform(delete("/api/topics/{id}", topic.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

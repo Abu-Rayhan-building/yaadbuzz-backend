@@ -35,8 +35,8 @@ import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.UserPerDepartmentUDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.UserPerDepartmentWithIdUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 
 /**
  * REST controller for managing users.
@@ -136,8 +136,8 @@ public class UserPerDepartmentNotCrudResource {
 	}
 	var old = this.userPerDepartmentService.findOne(departmentWithIdUDTO.getId()).get();
 	var newUPD = departmentWithIdUDTO.build();
-	newUPD.setDepartmentId(old.getDepartmentId());
-	newUPD.setRealUserId(old.getRealUserId());
+	newUPD.setDepartment(old.getDepartment());
+	newUPD.setRealUser(old.getRealUser());
 	
 	final UserPerDepartmentDTO result = this.userPerDepartmentService
 		.save(newUPD);

@@ -5,8 +5,10 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 
-public class DepartmentCreateUDTO implements Serializable, UserInputDTO<DepartmentDTO> {
+public class DepartmentCreateUDTO
+	implements Serializable, UserInputDTO<DepartmentDTO> {
     @NotNull
     private String name;
 
@@ -35,7 +37,6 @@ public class DepartmentCreateUDTO implements Serializable, UserInputDTO<Departme
 	this.name = name;
     }
 
-
     public void setPassword(final String password) {
 	this.password = password;
     }
@@ -43,7 +44,11 @@ public class DepartmentCreateUDTO implements Serializable, UserInputDTO<Departme
     @Override
     public DepartmentDTO build() {
 	DepartmentDTO res = new DepartmentDTO();
-	res.setAvatarId(this.getAvatarId());
+	{
+	    var avatar = new PictureDTO();
+	    avatar.setId(this.getAvatarId());
+	    res.setAvatar(avatar);
+	}
 	res.setName(this.getName());
 	res.setPassword(this.getPassword());
 	return res;

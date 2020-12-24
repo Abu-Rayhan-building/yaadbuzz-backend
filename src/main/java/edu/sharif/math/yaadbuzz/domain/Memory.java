@@ -1,15 +1,13 @@
 package edu.sharif.math.yaadbuzz.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Memory.
@@ -34,28 +32,38 @@ public class Memory implements Serializable {
 
     @OneToMany(mappedBy = "memory")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "pictures", "writer", "memory" }, allowSetters = true)
     private Set<Comment> comments = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "memories", allowSetters = true)
-    private Comment text;
+    @JsonIgnoreProperties(value = { "pictures", "writer", "memory" }, allowSetters = true)
+    private Comment baseComment;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "memories", allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
+        allowSetters = true
+    )
     private UserPerDepartment writer;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JoinTable(name = "memory_taged",
-               joinColumns = @JoinColumn(name = "memory_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "taged_id", referencedColumnName = "id"))
+    @JoinTable(
+        name = "rel_memory__taged",
+        joinColumns = @JoinColumn(name = "memory_id"),
+        inverseJoinColumns = @JoinColumn(name = "taged_id")
+    )
+    @JsonIgnoreProperties(
+        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
+        allowSetters = true
+    )
     private Set<UserPerDepartment> tageds = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "memories", allowSetters = true)
+    @JsonIgnoreProperties(value = { "userPerDepartments", "memories", "avatar", "owner" }, allowSetters = true)
     private Department department;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -67,8 +75,13 @@ public class Memory implements Serializable {
         this.id = id;
     }
 
+    public Memory id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public Memory title(String title) {
@@ -80,8 +93,8 @@ public class Memory implements Serializable {
         this.title = title;
     }
 
-    public Boolean isIsPrivate() {
-        return isPrivate;
+    public Boolean getIsPrivate() {
+        return this.isPrivate;
     }
 
     public Memory isPrivate(Boolean isPrivate) {
@@ -94,11 +107,11 @@ public class Memory implements Serializable {
     }
 
     public Set<Comment> getComments() {
-        return comments;
+        return this.comments;
     }
 
     public Memory comments(Set<Comment> comments) {
-        this.comments = comments;
+        this.setComments(comments);
         return this;
     }
 
@@ -115,28 +128,34 @@ public class Memory implements Serializable {
     }
 
     public void setComments(Set<Comment> comments) {
+        if (this.comments != null) {
+            this.comments.forEach(i -> i.setMemory(null));
+        }
+        if (comments != null) {
+            comments.forEach(i -> i.setMemory(this));
+        }
         this.comments = comments;
     }
 
-    public Comment getText() {
-        return text;
+    public Comment getBaseComment() {
+        return this.baseComment;
     }
 
-    public Memory text(Comment comment) {
-        this.text = comment;
+    public Memory baseComment(Comment comment) {
+        this.setBaseComment(comment);
         return this;
     }
 
-    public void setText(Comment comment) {
-        this.text = comment;
+    public void setBaseComment(Comment comment) {
+        this.baseComment = comment;
     }
 
     public UserPerDepartment getWriter() {
-        return writer;
+        return this.writer;
     }
 
     public Memory writer(UserPerDepartment userPerDepartment) {
-        this.writer = userPerDepartment;
+        this.setWriter(userPerDepartment);
         return this;
     }
 
@@ -145,11 +164,11 @@ public class Memory implements Serializable {
     }
 
     public Set<UserPerDepartment> getTageds() {
-        return tageds;
+        return this.tageds;
     }
 
     public Memory tageds(Set<UserPerDepartment> userPerDepartments) {
-        this.tageds = userPerDepartments;
+        this.setTageds(userPerDepartments);
         return this;
     }
 
@@ -170,17 +189,18 @@ public class Memory implements Serializable {
     }
 
     public Department getDepartment() {
-        return department;
+        return this.department;
     }
 
     public Memory department(Department department) {
-        this.department = department;
+        this.setDepartment(department);
         return this;
     }
 
     public void setDepartment(Department department) {
         this.department = department;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -196,7 +216,8 @@ public class Memory implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
@@ -205,7 +226,7 @@ public class Memory implements Serializable {
         return "Memory{" +
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
-            ", isPrivate='" + isIsPrivate() + "'" +
+            ", isPrivate='" + getIsPrivate() + "'" +
             "}";
     }
 }

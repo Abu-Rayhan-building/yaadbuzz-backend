@@ -25,12 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.sharif.math.yaadbuzz.service.TopicService;
+import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.TopicVoteUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link edu.sharif.math.yaadbuzz.domain.Topic}.
@@ -66,13 +67,17 @@ public class TopicNotCrudResource {
     public ResponseEntity<TopicDTO> createTopic(@PathVariable final Long depId,
 	    @Valid @RequestBody final String title) throws URISyntaxException {
 	this.log.debug("REST request to save Topic : {}", title);
-	
+
 	if (!this.topicService.currentuserHasCreateAccess(depId)) {
 	    throw new AccessDeniedException("can't create topic upd");
 	}
 	var input = new TopicDTO();
 	input.setTitle(title);
-	input.setDepartmentId(depId);
+	{
+	    var dep = new DepartmentDTO();
+	    dep.setId(depId);
+	    input.setDepartment(dep);
+	}
 	final TopicDTO result = this.topicService.save(input);
 	return ResponseEntity.created(new URI("/api/topics/" + result.getId()))
 		.headers(HeaderUtil.createEntityCreationAlert(
@@ -141,11 +146,11 @@ public class TopicNotCrudResource {
 	    throws URISyntaxException {
 	this.log.debug("REST request to save Topic : {}", topicVoteUDTO);
 	if (topicVoteUDTO.getTopicId() != null) {
-	    throw new BadRequestAlertException(
-		    "no such id",
+	    throw new BadRequestAlertException("no such id",
 		    TopicNotCrudResource.ENTITY_NAME, "idnotexists");
 	}
-	if (!this.topicService.currentuserHasVoteAccess(topicVoteUDTO.getTopicId())) {
+	if (!this.topicService
+		.currentuserHasVoteAccess(topicVoteUDTO.getTopicId())) {
 	    throw new AccessDeniedException("can't vote for topic");
 	}
 	final TopicDTO result = this.topicService.vote(depId, topicVoteUDTO);

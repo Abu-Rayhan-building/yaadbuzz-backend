@@ -1,24 +1,26 @@
 package edu.sharif.math.yaadbuzz.service.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment} entity.
  */
 public class UserPerDepartmentDTO implements Serializable {
-    
+
     private Long id;
 
     private String nicName;
 
     private String bio;
 
-    private Long avatarId;
+    private PictureDTO avatar;
 
-    private Long realUserId;
+    private UserDTO realUser;
 
-    private Long departmentId;
-    
+    private DepartmentDTO department;
+
     public Long getId() {
         return id;
     }
@@ -43,28 +45,28 @@ public class UserPerDepartmentDTO implements Serializable {
         this.bio = bio;
     }
 
-    public Long getAvatarId() {
-        return avatarId;
+    public PictureDTO getAvatar() {
+        return avatar;
     }
 
-    public void setAvatarId(Long pictureId) {
-        this.avatarId = pictureId;
+    public void setAvatar(PictureDTO avatar) {
+        this.avatar = avatar;
     }
 
-    public Long getRealUserId() {
-        return realUserId;
+    public UserDTO getRealUser() {
+        return realUser;
     }
 
-    public void setRealUserId(Long userId) {
-        this.realUserId = userId;
+    public void setRealUser(UserDTO realUser) {
+        this.realUser = realUser;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public DepartmentDTO getDepartment() {
+        return department;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartment(DepartmentDTO department) {
+        this.department = department;
     }
 
     @Override
@@ -76,12 +78,16 @@ public class UserPerDepartmentDTO implements Serializable {
             return false;
         }
 
-        return id != null && id.equals(((UserPerDepartmentDTO) o).id);
+        UserPerDepartmentDTO userPerDepartmentDTO = (UserPerDepartmentDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, userPerDepartmentDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore
@@ -91,9 +97,9 @@ public class UserPerDepartmentDTO implements Serializable {
             "id=" + getId() +
             ", nicName='" + getNicName() + "'" +
             ", bio='" + getBio() + "'" +
-            ", avatarId=" + getAvatarId() +
-            ", realUserId=" + getRealUserId() +
-            ", departmentId=" + getDepartmentId() +
+            ", avatar=" + getAvatar() +
+            ", realUser=" + getRealUser() +
+            ", department=" + getDepartment() +
             "}";
     }
 }

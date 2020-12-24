@@ -1,11 +1,11 @@
 package edu.sharif.math.yaadbuzz.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-
-import java.io.Serializable;
 
 /**
  * A Picture.
@@ -22,7 +22,6 @@ public class Picture implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    
     @Lob
     @Column(name = "image", nullable = false)
     private byte[] image;
@@ -39,8 +38,13 @@ public class Picture implements Serializable {
         this.id = id;
     }
 
+    public Picture id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public byte[] getImage() {
-        return image;
+        return this.image;
     }
 
     public Picture image(byte[] image) {
@@ -53,7 +57,7 @@ public class Picture implements Serializable {
     }
 
     public String getImageContentType() {
-        return imageContentType;
+        return this.imageContentType;
     }
 
     public Picture imageContentType(String imageContentType) {
@@ -80,7 +84,8 @@ public class Picture implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

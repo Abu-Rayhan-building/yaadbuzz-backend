@@ -3,6 +3,7 @@
     "topicVote": {
       "home": {
         "title": "Topic Votes",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Topic Vote",
         "createOrEditLabel": "Create or edit a Topic Vote",
         "notFound": "No Topic Votes found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Topic Vote"
       },
+      "id": "ID",
       "repetitions": "Repetitions",
       "topic": "Topic",
       "user": "User"

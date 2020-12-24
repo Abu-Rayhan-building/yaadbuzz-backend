@@ -1,17 +1,13 @@
 package edu.sharif.math.yaadbuzz.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A UserPerDepartment.
@@ -28,7 +24,6 @@ public class UserPerDepartment implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    
     @Column(name = "nic_name", unique = true)
     private String nicName;
 
@@ -37,31 +32,30 @@ public class UserPerDepartment implements Serializable {
 
     @OneToMany(mappedBy = "user")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "topic", "user" }, allowSetters = true)
     private Set<TopicVote> topicAssigneds = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "userPerDepartments", allowSetters = true)
+    @JsonIgnoreProperties(value = { "comment" }, allowSetters = true)
     private Picture avatar;
 
-    @JoinColumn(name = "real_user_id")
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "userPerDepartments", allowSetters = true)
     private User realUser;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "userPerDepartments", allowSetters = true)
+    @JsonIgnoreProperties(value = { "userPerDepartments", "memories", "avatar", "owner" }, allowSetters = true)
     private Department department;
 
     @ManyToMany(mappedBy = "voters")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = { "votes", "department", "voters" }, allowSetters = true)
     private Set<Topic> topicsVoteds = new HashSet<>();
 
     @ManyToMany(mappedBy = "tageds")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = { "comments", "baseComment", "writer", "tageds", "department" }, allowSetters = true)
     private Set<Memory> tagedInMemoeries = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -73,8 +67,13 @@ public class UserPerDepartment implements Serializable {
         this.id = id;
     }
 
+    public UserPerDepartment id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getNicName() {
-        return nicName;
+        return this.nicName;
     }
 
     public UserPerDepartment nicName(String nicName) {
@@ -87,7 +86,7 @@ public class UserPerDepartment implements Serializable {
     }
 
     public String getBio() {
-        return bio;
+        return this.bio;
     }
 
     public UserPerDepartment bio(String bio) {
@@ -100,36 +99,42 @@ public class UserPerDepartment implements Serializable {
     }
 
     public Set<TopicVote> getTopicAssigneds() {
-        return topicAssigneds;
+        return this.topicAssigneds;
     }
 
     public UserPerDepartment topicAssigneds(Set<TopicVote> topicVotes) {
-        this.topicAssigneds = topicVotes;
+        this.setTopicAssigneds(topicVotes);
         return this;
     }
 
-    public UserPerDepartment addTopicAssigneds(TopicVote topicRating) {
-        this.topicAssigneds.add(topicRating);
-        topicRating.setUser(this);
+    public UserPerDepartment addTopicAssigneds(TopicVote topicVote) {
+        this.topicAssigneds.add(topicVote);
+        topicVote.setUser(this);
         return this;
     }
 
-    public UserPerDepartment removeTopicAssigneds(TopicVote topicRating) {
-        this.topicAssigneds.remove(topicRating);
-        topicRating.setUser(null);
+    public UserPerDepartment removeTopicAssigneds(TopicVote topicVote) {
+        this.topicAssigneds.remove(topicVote);
+        topicVote.setUser(null);
         return this;
     }
 
     public void setTopicAssigneds(Set<TopicVote> topicVotes) {
+        if (this.topicAssigneds != null) {
+            this.topicAssigneds.forEach(i -> i.setUser(null));
+        }
+        if (topicVotes != null) {
+            topicVotes.forEach(i -> i.setUser(this));
+        }
         this.topicAssigneds = topicVotes;
     }
 
     public Picture getAvatar() {
-        return avatar;
+        return this.avatar;
     }
 
     public UserPerDepartment avatar(Picture picture) {
-        this.avatar = picture;
+        this.setAvatar(picture);
         return this;
     }
 
@@ -138,11 +143,11 @@ public class UserPerDepartment implements Serializable {
     }
 
     public User getRealUser() {
-        return realUser;
+        return this.realUser;
     }
 
     public UserPerDepartment realUser(User user) {
-        this.realUser = user;
+        this.setRealUser(user);
         return this;
     }
 
@@ -151,11 +156,11 @@ public class UserPerDepartment implements Serializable {
     }
 
     public Department getDepartment() {
-        return department;
+        return this.department;
     }
 
     public UserPerDepartment department(Department department) {
-        this.department = department;
+        this.setDepartment(department);
         return this;
     }
 
@@ -164,11 +169,11 @@ public class UserPerDepartment implements Serializable {
     }
 
     public Set<Topic> getTopicsVoteds() {
-        return topicsVoteds;
+        return this.topicsVoteds;
     }
 
     public UserPerDepartment topicsVoteds(Set<Topic> topics) {
-        this.topicsVoteds = topics;
+        this.setTopicsVoteds(topics);
         return this;
     }
 
@@ -185,15 +190,21 @@ public class UserPerDepartment implements Serializable {
     }
 
     public void setTopicsVoteds(Set<Topic> topics) {
+        if (this.topicsVoteds != null) {
+            this.topicsVoteds.forEach(i -> i.removeVoters(this));
+        }
+        if (topics != null) {
+            topics.forEach(i -> i.addVoters(this));
+        }
         this.topicsVoteds = topics;
     }
 
     public Set<Memory> getTagedInMemoeries() {
-        return tagedInMemoeries;
+        return this.tagedInMemoeries;
     }
 
     public UserPerDepartment tagedInMemoeries(Set<Memory> memories) {
-        this.tagedInMemoeries = memories;
+        this.setTagedInMemoeries(memories);
         return this;
     }
 
@@ -210,8 +221,15 @@ public class UserPerDepartment implements Serializable {
     }
 
     public void setTagedInMemoeries(Set<Memory> memories) {
+        if (this.tagedInMemoeries != null) {
+            this.tagedInMemoeries.forEach(i -> i.removeTaged(this));
+        }
+        if (memories != null) {
+            memories.forEach(i -> i.addTaged(this));
+        }
         this.tagedInMemoeries = memories;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -227,7 +245,8 @@ public class UserPerDepartment implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

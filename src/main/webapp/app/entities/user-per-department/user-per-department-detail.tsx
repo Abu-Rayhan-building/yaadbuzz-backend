@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './user-per-department.reducer';
-import { IUserPerDepartment } from 'app/shared/model/user-per-department.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IUserPerDepartmentDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,9 +20,9 @@ export const UserPerDepartmentDetail = (props: IUserPerDepartmentDetailProps) =>
   return (
     <Row>
       <Col md="8">
-        <h2>
+        <h2 data-cy="userPerDepartmentDetailsHeading">
           <Translate contentKey="yaadbuzzApp.userPerDepartment.detail.title">UserPerDepartment</Translate> [
-          <b>{userPerDepartmentEntity.id}</b>]
+          <strong>{userPerDepartmentEntity.id}</strong>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
@@ -41,17 +40,17 @@ export const UserPerDepartmentDetail = (props: IUserPerDepartmentDetailProps) =>
           <dt>
             <Translate contentKey="yaadbuzzApp.userPerDepartment.avatar">Avatar</Translate>
           </dt>
-          <dd>{userPerDepartmentEntity.avatarId ? userPerDepartmentEntity.avatarId : ''}</dd>
+          <dd>{userPerDepartmentEntity.avatar ? userPerDepartmentEntity.avatar.id : ''}</dd>
           <dt>
             <Translate contentKey="yaadbuzzApp.userPerDepartment.realUser">Real User</Translate>
           </dt>
-          <dd>{userPerDepartmentEntity.realUserId ? userPerDepartmentEntity.realUserId : ''}</dd>
+          <dd>{userPerDepartmentEntity.realUser ? userPerDepartmentEntity.realUser.id : ''}</dd>
           <dt>
             <Translate contentKey="yaadbuzzApp.userPerDepartment.department">Department</Translate>
           </dt>
-          <dd>{userPerDepartmentEntity.departmentId ? userPerDepartmentEntity.departmentId : ''}</dd>
+          <dd>{userPerDepartmentEntity.department ? userPerDepartmentEntity.department.id : ''}</dd>
         </dl>
-        <Button tag={Link} to="/user-per-department" replace color="info">
+        <Button tag={Link} to="/user-per-department" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

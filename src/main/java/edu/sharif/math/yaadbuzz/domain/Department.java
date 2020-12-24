@@ -1,15 +1,13 @@
 package edu.sharif.math.yaadbuzz.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Department.
@@ -36,19 +34,23 @@ public class Department implements Serializable {
 
     @OneToMany(mappedBy = "department")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(
+        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
+        allowSetters = true
+    )
     private Set<UserPerDepartment> userPerDepartments = new HashSet<>();
 
     @OneToMany(mappedBy = "department")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "comments", "baseComment", "writer", "tageds", "department" }, allowSetters = true)
     private Set<Memory> memories = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "departments", allowSetters = true)
+    @JsonIgnoreProperties(value = { "comment" }, allowSetters = true)
     private Picture avatar;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "departments", allowSetters = true)
     private User owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -60,8 +62,13 @@ public class Department implements Serializable {
         this.id = id;
     }
 
+    public Department id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public Department name(String name) {
@@ -74,7 +81,7 @@ public class Department implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public Department password(String password) {
@@ -87,11 +94,11 @@ public class Department implements Serializable {
     }
 
     public Set<UserPerDepartment> getUserPerDepartments() {
-        return userPerDepartments;
+        return this.userPerDepartments;
     }
 
     public Department userPerDepartments(Set<UserPerDepartment> userPerDepartments) {
-        this.userPerDepartments = userPerDepartments;
+        this.setUserPerDepartments(userPerDepartments);
         return this;
     }
 
@@ -108,15 +115,21 @@ public class Department implements Serializable {
     }
 
     public void setUserPerDepartments(Set<UserPerDepartment> userPerDepartments) {
+        if (this.userPerDepartments != null) {
+            this.userPerDepartments.forEach(i -> i.setDepartment(null));
+        }
+        if (userPerDepartments != null) {
+            userPerDepartments.forEach(i -> i.setDepartment(this));
+        }
         this.userPerDepartments = userPerDepartments;
     }
 
     public Set<Memory> getMemories() {
-        return memories;
+        return this.memories;
     }
 
     public Department memories(Set<Memory> memories) {
-        this.memories = memories;
+        this.setMemories(memories);
         return this;
     }
 
@@ -133,15 +146,21 @@ public class Department implements Serializable {
     }
 
     public void setMemories(Set<Memory> memories) {
+        if (this.memories != null) {
+            this.memories.forEach(i -> i.setDepartment(null));
+        }
+        if (memories != null) {
+            memories.forEach(i -> i.setDepartment(this));
+        }
         this.memories = memories;
     }
 
     public Picture getAvatar() {
-        return avatar;
+        return this.avatar;
     }
 
     public Department avatar(Picture picture) {
-        this.avatar = picture;
+        this.setAvatar(picture);
         return this;
     }
 
@@ -150,17 +169,18 @@ public class Department implements Serializable {
     }
 
     public User getOwner() {
-        return owner;
+        return this.owner;
     }
 
     public Department owner(User user) {
-        this.owner = user;
+        this.setOwner(user);
         return this;
     }
 
     public void setOwner(User user) {
         this.owner = user;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -176,7 +196,8 @@ public class Department implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

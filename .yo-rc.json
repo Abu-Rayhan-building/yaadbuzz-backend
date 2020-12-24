@@ -4,7 +4,7 @@
       "packageName": "edu.sharif.math.yaadbuzz",
       "nativeLanguage": "en"
     },
-    "jhipsterVersion": "6.10.5",
+    "jhipsterVersion": "7.0.0-beta.0",
     "applicationType": "monolith",
     "baseName": "yaadbuzz",
     "packageName": "edu.sharif.math.yaadbuzz",
@@ -38,6 +38,15 @@
     "enableTranslation": true,
     "nativeLanguage": "en",
     "languages": ["en", "fa"],
-    "blueprints": []
+    "blueprints": [],
+    "skipClient": false,
+    "skipServer": false,
+    "skipUserManagement": false,
+    "skipCheckLengthOfIdentifier": false,
+    "skipFakeData": false,
+    "pages": [],
+    "withAdminUi": true,
+    "reactive": false,
+    "entities": ["Department", "UserPerDepartment", "Memory", "Comment", "Picture", "Topic", "TopicVote", "Charateristics", "Memorial"]
   }
 }

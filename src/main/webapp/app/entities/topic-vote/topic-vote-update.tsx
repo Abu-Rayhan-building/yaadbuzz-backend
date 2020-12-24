@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -21,7 +21,7 @@ export interface ITopicVoteUpdateProps extends StateProps, DispatchProps, RouteC
 export const TopicVoteUpdate = (props: ITopicVoteUpdateProps) => {
   const [topicId, setTopicId] = useState('0');
   const [userId, setUserId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { topicVoteEntity, topics, userPerDepartments, loading, updating } = props;
 
@@ -63,7 +63,7 @@ export const TopicVoteUpdate = (props: ITopicVoteUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadbuzzApp.topicVote.home.createOrEditLabel">
+          <h2 id="yaadbuzzApp.topicVote.home.createOrEditLabel" data-cy="TopicVoteCreateUpdateHeading">
             <Translate contentKey="yaadbuzzApp.topicVote.home.createOrEditLabel">Create or edit a TopicVote</Translate>
           </h2>
         </Col>
@@ -86,13 +86,13 @@ export const TopicVoteUpdate = (props: ITopicVoteUpdateProps) => {
                 <Label id="repetitionsLabel" for="topic-vote-repetitions">
                   <Translate contentKey="yaadbuzzApp.topicVote.repetitions">Repetitions</Translate>
                 </Label>
-                <AvField id="topic-vote-repetitions" type="string" className="form-control" name="repetitions" />
+                <AvField id="topic-vote-repetitions" data-cy="repetitions" type="string" className="form-control" name="repetitions" />
               </AvGroup>
               <AvGroup>
                 <Label for="topic-vote-topic">
                   <Translate contentKey="yaadbuzzApp.topicVote.topic">Topic</Translate>
                 </Label>
-                <AvInput id="topic-vote-topic" type="select" className="form-control" name="topicId" required>
+                <AvInput id="topic-vote-topic" data-cy="topic" type="select" className="form-control" name="topicId" required>
                   {topics
                     ? topics.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -109,7 +109,7 @@ export const TopicVoteUpdate = (props: ITopicVoteUpdateProps) => {
                 <Label for="topic-vote-user">
                   <Translate contentKey="yaadbuzzApp.topicVote.user">User</Translate>
                 </Label>
-                <AvInput id="topic-vote-user" type="select" className="form-control" name="userId" required>
+                <AvInput id="topic-vote-user" data-cy="user" type="select" className="form-control" name="userId" required>
                   {userPerDepartments
                     ? userPerDepartments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -130,7 +130,7 @@ export const TopicVoteUpdate = (props: ITopicVoteUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

@@ -1,13 +1,11 @@
 package edu.sharif.math.yaadbuzz.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Charateristics.
@@ -33,7 +31,10 @@ public class Charateristics implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "charateristics", allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
+        allowSetters = true
+    )
     private UserPerDepartment userPerDepartment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -45,8 +46,13 @@ public class Charateristics implements Serializable {
         this.id = id;
     }
 
+    public Charateristics id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public Charateristics title(String title) {
@@ -59,7 +65,7 @@ public class Charateristics implements Serializable {
     }
 
     public Integer getRepetation() {
-        return repetation;
+        return this.repetation;
     }
 
     public Charateristics repetation(Integer repetation) {
@@ -72,17 +78,18 @@ public class Charateristics implements Serializable {
     }
 
     public UserPerDepartment getUserPerDepartment() {
-        return userPerDepartment;
+        return this.userPerDepartment;
     }
 
     public Charateristics userPerDepartment(UserPerDepartment userPerDepartment) {
-        this.userPerDepartment = userPerDepartment;
+        this.setUserPerDepartment(userPerDepartment);
         return this;
     }
 
     public void setUserPerDepartment(UserPerDepartment userPerDepartment) {
         this.userPerDepartment = userPerDepartment;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -98,7 +105,8 @@ public class Charateristics implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

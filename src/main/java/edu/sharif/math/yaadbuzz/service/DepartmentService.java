@@ -23,6 +23,14 @@ public interface DepartmentService extends ServiceWithCurrentUserCrudAccess{
     DepartmentDTO save(DepartmentDTO departmentDTO);
 
     /**
+     * Partially updates a department.
+     *
+     * @param departmentDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<DepartmentDTO> partialUpdate(DepartmentDTO departmentDTO);
+
+    /**
      * Get all the departments.
      *
      * @param pageable the pagination information.

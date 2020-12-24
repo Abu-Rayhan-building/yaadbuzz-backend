@@ -2,14 +2,14 @@ package edu.sharif.math.yaadbuzz.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import io.github.jhipster.service.Criteria;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
+import tech.jhipster.service.Criteria;
+import tech.jhipster.service.filter.BooleanFilter;
+import tech.jhipster.service.filter.DoubleFilter;
+import tech.jhipster.service.filter.Filter;
+import tech.jhipster.service.filter.FloatFilter;
+import tech.jhipster.service.filter.IntegerFilter;
+import tech.jhipster.service.filter.LongFilter;
+import tech.jhipster.service.filter.StringFilter;
 
 /**
  * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.TopicVote} entity. This class is used
@@ -32,8 +32,7 @@ public class TopicVoteCriteria implements Serializable, Criteria {
 
     private LongFilter userId;
 
-    public TopicVoteCriteria() {
-    }
+    public TopicVoteCriteria() {}
 
     public TopicVoteCriteria(TopicVoteCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -79,7 +78,6 @@ public class TopicVoteCriteria implements Serializable, Criteria {
         this.userId = userId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -89,21 +87,17 @@ public class TopicVoteCriteria implements Serializable, Criteria {
             return false;
         }
         final TopicVoteCriteria that = (TopicVoteCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(repetitions, that.repetitions) &&
             Objects.equals(topicId, that.topicId) &&
-            Objects.equals(userId, that.userId);
+            Objects.equals(userId, that.userId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        repetitions,
-        topicId,
-        userId
-        );
+        return Objects.hash(id, repetitions, topicId, userId);
     }
 
     // prettier-ignore
@@ -116,5 +110,4 @@ public class TopicVoteCriteria implements Serializable, Criteria {
                 (userId != null ? "userId=" + userId + ", " : "") +
             "}";
     }
-
 }

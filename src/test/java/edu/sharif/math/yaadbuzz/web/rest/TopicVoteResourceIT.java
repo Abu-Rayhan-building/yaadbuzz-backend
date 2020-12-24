@@ -1,40 +1,37 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.YaadbuzzBackendApp;
-import edu.sharif.math.yaadbuzz.domain.TopicVote;
-import edu.sharif.math.yaadbuzz.domain.Topic;
-import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
-import edu.sharif.math.yaadbuzz.repository.TopicVoteRepository;
-import edu.sharif.math.yaadbuzz.service.TopicVoteService;
-import edu.sharif.math.yaadbuzz.service.dto.TopicVoteDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.TopicVoteMapper;
-import edu.sharif.math.yaadbuzz.service.dto.TopicVoteCriteria;
-import edu.sharif.math.yaadbuzz.service.TopicVoteQueryService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import edu.sharif.math.yaadbuzz.IntegrationTest;
+import edu.sharif.math.yaadbuzz.domain.Topic;
+import edu.sharif.math.yaadbuzz.domain.TopicVote;
+import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
+import edu.sharif.math.yaadbuzz.repository.TopicVoteRepository;
+import edu.sharif.math.yaadbuzz.service.TopicVoteQueryService;
+import edu.sharif.math.yaadbuzz.service.dto.TopicVoteCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.TopicVoteDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.TopicVoteMapper;
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Integration tests for the {@link TopicVoteResource} REST controller.
  */
-@SpringBootTest(classes = YaadbuzzBackendApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class TopicVoteResourceIT {
+class TopicVoteResourceIT {
 
     private static final Integer DEFAULT_REPETITIONS = 1;
     private static final Integer UPDATED_REPETITIONS = 2;
@@ -45,9 +42,6 @@ public class TopicVoteResourceIT {
 
     @Autowired
     private TopicVoteMapper topicVoteMapper;
-
-    @Autowired
-    private TopicVoteService topicVoteService;
 
     @Autowired
     private TopicVoteQueryService topicVoteQueryService;
@@ -67,8 +61,7 @@ public class TopicVoteResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TopicVote createEntity(EntityManager em) {
-        TopicVote topicVote = new TopicVote()
-            .repetitions(DEFAULT_REPETITIONS);
+        TopicVote topicVote = new TopicVote().repetitions(DEFAULT_REPETITIONS);
         // Add required entity
         Topic topic;
         if (TestUtil.findAll(em, Topic.class).isEmpty()) {
@@ -91,6 +84,7 @@ public class TopicVoteResourceIT {
         topicVote.setUser(userPerDepartment);
         return topicVote;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -98,8 +92,7 @@ public class TopicVoteResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TopicVote createUpdatedEntity(EntityManager em) {
-        TopicVote topicVote = new TopicVote()
-            .repetitions(UPDATED_REPETITIONS);
+        TopicVote topicVote = new TopicVote().repetitions(UPDATED_REPETITIONS);
         // Add required entity
         Topic topic;
         if (TestUtil.findAll(em, Topic.class).isEmpty()) {
@@ -130,13 +123,14 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void createTopicVote() throws Exception {
+    void createTopicVote() throws Exception {
         int databaseSizeBeforeCreate = topicVoteRepository.findAll().size();
         // Create the TopicVote
         TopicVoteDTO topicVoteDTO = topicVoteMapper.toDto(topicVote);
-        restTopicVoteMockMvc.perform(post("/api/topic-votes")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(topicVoteDTO)))
+        restTopicVoteMockMvc
+            .perform(
+                post("/api/topic-votes").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(topicVoteDTO))
+            )
             .andExpect(status().isCreated());
 
         // Validate the TopicVote in the database
@@ -148,17 +142,18 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void createTopicVoteWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = topicVoteRepository.findAll().size();
-
+    void createTopicVoteWithExistingId() throws Exception {
         // Create the TopicVote with an existing ID
         topicVote.setId(1L);
         TopicVoteDTO topicVoteDTO = topicVoteMapper.toDto(topicVote);
 
+        int databaseSizeBeforeCreate = topicVoteRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTopicVoteMockMvc.perform(post("/api/topic-votes")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(topicVoteDTO)))
+        restTopicVoteMockMvc
+            .perform(
+                post("/api/topic-votes").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(topicVoteDTO))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the TopicVote in the database
@@ -166,39 +161,39 @@ public class TopicVoteResourceIT {
         assertThat(topicVoteList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void getAllTopicVotes() throws Exception {
+    void getAllTopicVotes() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
         // Get all the topicVoteList
-        restTopicVoteMockMvc.perform(get("/api/topic-votes?sort=id,desc"))
+        restTopicVoteMockMvc
+            .perform(get("/api/topic-votes?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(topicVote.getId().intValue())))
             .andExpect(jsonPath("$.[*].repetitions").value(hasItem(DEFAULT_REPETITIONS)));
     }
-    
+
     @Test
     @Transactional
-    public void getTopicVote() throws Exception {
+    void getTopicVote() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
         // Get the topicVote
-        restTopicVoteMockMvc.perform(get("/api/topic-votes/{id}", topicVote.getId()))
+        restTopicVoteMockMvc
+            .perform(get("/api/topic-votes/{id}", topicVote.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(topicVote.getId().intValue()))
             .andExpect(jsonPath("$.repetitions").value(DEFAULT_REPETITIONS));
     }
 
-
     @Test
     @Transactional
-    public void getTopicVotesByIdFiltering() throws Exception {
+    void getTopicVotesByIdFiltering() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
@@ -214,10 +209,9 @@ public class TopicVoteResourceIT {
         defaultTopicVoteShouldNotBeFound("id.lessThan=" + id);
     }
 
-
     @Test
     @Transactional
-    public void getAllTopicVotesByRepetitionsIsEqualToSomething() throws Exception {
+    void getAllTopicVotesByRepetitionsIsEqualToSomething() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
@@ -230,7 +224,7 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicVotesByRepetitionsIsNotEqualToSomething() throws Exception {
+    void getAllTopicVotesByRepetitionsIsNotEqualToSomething() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
@@ -243,7 +237,7 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicVotesByRepetitionsIsInShouldWork() throws Exception {
+    void getAllTopicVotesByRepetitionsIsInShouldWork() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
@@ -256,7 +250,7 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicVotesByRepetitionsIsNullOrNotNull() throws Exception {
+    void getAllTopicVotesByRepetitionsIsNullOrNotNull() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
@@ -269,7 +263,7 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicVotesByRepetitionsIsGreaterThanOrEqualToSomething() throws Exception {
+    void getAllTopicVotesByRepetitionsIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
@@ -282,7 +276,7 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicVotesByRepetitionsIsLessThanOrEqualToSomething() throws Exception {
+    void getAllTopicVotesByRepetitionsIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
@@ -295,7 +289,7 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicVotesByRepetitionsIsLessThanSomething() throws Exception {
+    void getAllTopicVotesByRepetitionsIsLessThanSomething() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
@@ -308,7 +302,7 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void getAllTopicVotesByRepetitionsIsGreaterThanSomething() throws Exception {
+    void getAllTopicVotesByRepetitionsIsGreaterThanSomething() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
@@ -319,12 +313,15 @@ public class TopicVoteResourceIT {
         defaultTopicVoteShouldBeFound("repetitions.greaterThan=" + SMALLER_REPETITIONS);
     }
 
-
     @Test
     @Transactional
-    public void getAllTopicVotesByTopicIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        Topic topic = topicVote.getTopic();
+    void getAllTopicVotesByTopicIsEqualToSomething() throws Exception {
+        // Initialize the database
+        topicVoteRepository.saveAndFlush(topicVote);
+        Topic topic = TopicResourceIT.createEntity(em);
+        em.persist(topic);
+        em.flush();
+        topicVote.setTopic(topic);
         topicVoteRepository.saveAndFlush(topicVote);
         Long topicId = topic.getId();
 
@@ -335,12 +332,15 @@ public class TopicVoteResourceIT {
         defaultTopicVoteShouldNotBeFound("topicId.equals=" + (topicId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllTopicVotesByUserIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        UserPerDepartment user = topicVote.getUser();
+    void getAllTopicVotesByUserIsEqualToSomething() throws Exception {
+        // Initialize the database
+        topicVoteRepository.saveAndFlush(topicVote);
+        UserPerDepartment user = UserPerDepartmentResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        topicVote.setUser(user);
         topicVoteRepository.saveAndFlush(topicVote);
         Long userId = user.getId();
 
@@ -355,14 +355,16 @@ public class TopicVoteResourceIT {
      * Executes the search, and checks that the default entity is returned.
      */
     private void defaultTopicVoteShouldBeFound(String filter) throws Exception {
-        restTopicVoteMockMvc.perform(get("/api/topic-votes?sort=id,desc&" + filter))
+        restTopicVoteMockMvc
+            .perform(get("/api/topic-votes?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(topicVote.getId().intValue())))
             .andExpect(jsonPath("$.[*].repetitions").value(hasItem(DEFAULT_REPETITIONS)));
 
         // Check, that the count call also returns 1
-        restTopicVoteMockMvc.perform(get("/api/topic-votes/count?sort=id,desc&" + filter))
+        restTopicVoteMockMvc
+            .perform(get("/api/topic-votes/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("1"));
@@ -372,14 +374,16 @@ public class TopicVoteResourceIT {
      * Executes the search, and checks that the default entity is not returned.
      */
     private void defaultTopicVoteShouldNotBeFound(String filter) throws Exception {
-        restTopicVoteMockMvc.perform(get("/api/topic-votes?sort=id,desc&" + filter))
+        restTopicVoteMockMvc
+            .perform(get("/api/topic-votes?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$").isEmpty());
 
         // Check, that the count call also returns 0
-        restTopicVoteMockMvc.perform(get("/api/topic-votes/count?sort=id,desc&" + filter))
+        restTopicVoteMockMvc
+            .perform(get("/api/topic-votes/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("0"));
@@ -387,15 +391,14 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingTopicVote() throws Exception {
+    void getNonExistingTopicVote() throws Exception {
         // Get the topicVote
-        restTopicVoteMockMvc.perform(get("/api/topic-votes/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restTopicVoteMockMvc.perform(get("/api/topic-votes/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateTopicVote() throws Exception {
+    void updateTopicVote() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
@@ -405,13 +408,13 @@ public class TopicVoteResourceIT {
         TopicVote updatedTopicVote = topicVoteRepository.findById(topicVote.getId()).get();
         // Disconnect from session so that the updates on updatedTopicVote are not directly saved in db
         em.detach(updatedTopicVote);
-        updatedTopicVote
-            .repetitions(UPDATED_REPETITIONS);
+        updatedTopicVote.repetitions(UPDATED_REPETITIONS);
         TopicVoteDTO topicVoteDTO = topicVoteMapper.toDto(updatedTopicVote);
 
-        restTopicVoteMockMvc.perform(put("/api/topic-votes")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(topicVoteDTO)))
+        restTopicVoteMockMvc
+            .perform(
+                put("/api/topic-votes").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(topicVoteDTO))
+            )
             .andExpect(status().isOk());
 
         // Validate the TopicVote in the database
@@ -423,16 +426,17 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingTopicVote() throws Exception {
+    void updateNonExistingTopicVote() throws Exception {
         int databaseSizeBeforeUpdate = topicVoteRepository.findAll().size();
 
         // Create the TopicVote
         TopicVoteDTO topicVoteDTO = topicVoteMapper.toDto(topicVote);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restTopicVoteMockMvc.perform(put("/api/topic-votes")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(topicVoteDTO)))
+        restTopicVoteMockMvc
+            .perform(
+                put("/api/topic-votes").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(topicVoteDTO))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the TopicVote in the database
@@ -442,15 +446,88 @@ public class TopicVoteResourceIT {
 
     @Test
     @Transactional
-    public void deleteTopicVote() throws Exception {
+    void partialUpdateTopicVoteWithPatch() throws Exception {
+        // Initialize the database
+        topicVoteRepository.saveAndFlush(topicVote);
+
+        int databaseSizeBeforeUpdate = topicVoteRepository.findAll().size();
+
+        // Update the topicVote using partial update
+        TopicVote partialUpdatedTopicVote = new TopicVote();
+        partialUpdatedTopicVote.setId(topicVote.getId());
+
+        partialUpdatedTopicVote.repetitions(UPDATED_REPETITIONS);
+
+        restTopicVoteMockMvc
+            .perform(
+                patch("/api/topic-votes")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTopicVote))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the TopicVote in the database
+        List<TopicVote> topicVoteList = topicVoteRepository.findAll();
+        assertThat(topicVoteList).hasSize(databaseSizeBeforeUpdate);
+        TopicVote testTopicVote = topicVoteList.get(topicVoteList.size() - 1);
+        assertThat(testTopicVote.getRepetitions()).isEqualTo(UPDATED_REPETITIONS);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateTopicVoteWithPatch() throws Exception {
+        // Initialize the database
+        topicVoteRepository.saveAndFlush(topicVote);
+
+        int databaseSizeBeforeUpdate = topicVoteRepository.findAll().size();
+
+        // Update the topicVote using partial update
+        TopicVote partialUpdatedTopicVote = new TopicVote();
+        partialUpdatedTopicVote.setId(topicVote.getId());
+
+        partialUpdatedTopicVote.repetitions(UPDATED_REPETITIONS);
+
+        restTopicVoteMockMvc
+            .perform(
+                patch("/api/topic-votes")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTopicVote))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the TopicVote in the database
+        List<TopicVote> topicVoteList = topicVoteRepository.findAll();
+        assertThat(topicVoteList).hasSize(databaseSizeBeforeUpdate);
+        TopicVote testTopicVote = topicVoteList.get(topicVoteList.size() - 1);
+        assertThat(testTopicVote.getRepetitions()).isEqualTo(UPDATED_REPETITIONS);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateTopicVoteShouldThrown() throws Exception {
+        // Update the topicVote without id should throw
+        TopicVote partialUpdatedTopicVote = new TopicVote();
+
+        restTopicVoteMockMvc
+            .perform(
+                patch("/api/topic-votes")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTopicVote))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    void deleteTopicVote() throws Exception {
         // Initialize the database
         topicVoteRepository.saveAndFlush(topicVote);
 
         int databaseSizeBeforeDelete = topicVoteRepository.findAll().size();
 
         // Delete the topicVote
-        restTopicVoteMockMvc.perform(delete("/api/topic-votes/{id}", topicVote.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restTopicVoteMockMvc
+            .perform(delete("/api/topic-votes/{id}", topicVote.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

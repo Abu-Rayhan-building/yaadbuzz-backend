@@ -1,9 +1,13 @@
 package edu.sharif.math.yaadbuzz.service;
 
+import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
+import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
+import edu.sharif.math.yaadbuzz.repository.UserPerDepartmentRepository;
+import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.UserPerDepartmentMapper;
 import java.util.List;
-
 import javax.persistence.criteria.JoinType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,15 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import io.github.jhipster.service.QueryService;
-
-import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
-import edu.sharif.math.yaadbuzz.domain.*; // for static metamodels
-import edu.sharif.math.yaadbuzz.repository.UserPerDepartmentRepository;
-import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentCriteria;
-import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.UserPerDepartmentMapper;
+import tech.jhipster.service.QueryService;
 
 /**
  * Service for executing complex queries for {@link UserPerDepartment} entities in the database.
@@ -37,7 +33,10 @@ public class UserPerDepartmentQueryService extends QueryService<UserPerDepartmen
 
     private final UserPerDepartmentMapper userPerDepartmentMapper;
 
-    public UserPerDepartmentQueryService(UserPerDepartmentRepository userPerDepartmentRepository, UserPerDepartmentMapper userPerDepartmentMapper) {
+    public UserPerDepartmentQueryService(
+        UserPerDepartmentRepository userPerDepartmentRepository,
+        UserPerDepartmentMapper userPerDepartmentMapper
+    ) {
         this.userPerDepartmentRepository = userPerDepartmentRepository;
         this.userPerDepartmentMapper = userPerDepartmentMapper;
     }
@@ -64,8 +63,7 @@ public class UserPerDepartmentQueryService extends QueryService<UserPerDepartmen
     public Page<UserPerDepartmentDTO> findByCriteria(UserPerDepartmentCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<UserPerDepartment> specification = createSpecification(criteria);
-        return userPerDepartmentRepository.findAll(specification, page)
-            .map(userPerDepartmentMapper::toDto);
+        return userPerDepartmentRepository.findAll(specification, page).map(userPerDepartmentMapper::toDto);
     }
 
     /**
@@ -98,28 +96,58 @@ public class UserPerDepartmentQueryService extends QueryService<UserPerDepartmen
                 specification = specification.and(buildStringSpecification(criteria.getBio(), UserPerDepartment_.bio));
             }
             if (criteria.getTopicAssignedsId() != null) {
-                specification = specification.and(buildSpecification(criteria.getTopicAssignedsId(),
-                    root -> root.join(UserPerDepartment_.topicAssigneds, JoinType.LEFT).get(TopicVote_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTopicAssignedsId(),
+                            root -> root.join(UserPerDepartment_.topicAssigneds, JoinType.LEFT).get(TopicVote_.id)
+                        )
+                    );
             }
             if (criteria.getAvatarId() != null) {
-                specification = specification.and(buildSpecification(criteria.getAvatarId(),
-                    root -> root.join(UserPerDepartment_.avatar, JoinType.LEFT).get(Picture_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getAvatarId(),
+                            root -> root.join(UserPerDepartment_.avatar, JoinType.LEFT).get(Picture_.id)
+                        )
+                    );
             }
             if (criteria.getRealUserId() != null) {
-                specification = specification.and(buildSpecification(criteria.getRealUserId(),
-                    root -> root.join(UserPerDepartment_.realUser, JoinType.LEFT).get(User_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getRealUserId(),
+                            root -> root.join(UserPerDepartment_.realUser, JoinType.LEFT).get(User_.id)
+                        )
+                    );
             }
             if (criteria.getDepartmentId() != null) {
-                specification = specification.and(buildSpecification(criteria.getDepartmentId(),
-                    root -> root.join(UserPerDepartment_.department, JoinType.LEFT).get(Department_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getDepartmentId(),
+                            root -> root.join(UserPerDepartment_.department, JoinType.LEFT).get(Department_.id)
+                        )
+                    );
             }
             if (criteria.getTopicsVotedId() != null) {
-                specification = specification.and(buildSpecification(criteria.getTopicsVotedId(),
-                    root -> root.join(UserPerDepartment_.topicsVoteds, JoinType.LEFT).get(Topic_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTopicsVotedId(),
+                            root -> root.join(UserPerDepartment_.topicsVoteds, JoinType.LEFT).get(Topic_.id)
+                        )
+                    );
             }
             if (criteria.getTagedInMemoeriesId() != null) {
-                specification = specification.and(buildSpecification(criteria.getTagedInMemoeriesId(),
-                    root -> root.join(UserPerDepartment_.tagedInMemoeries, JoinType.LEFT).get(Memory_.id)));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTagedInMemoeriesId(),
+                            root -> root.join(UserPerDepartment_.tagedInMemoeries, JoinType.LEFT).get(Memory_.id)
+                        )
+                    );
             }
         }
         return specification;

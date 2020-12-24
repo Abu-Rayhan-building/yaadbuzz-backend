@@ -34,13 +34,14 @@ import edu.sharif.math.yaadbuzz.service.MailService;
 import edu.sharif.math.yaadbuzz.service.MemoryService;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
+import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.MemoryUDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.MemoryWithIdUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing users.
@@ -119,9 +120,13 @@ public class MemoryNotCrudResource {
 	}
 	final var input = memoryUDTO.build();
 
-	input.setDepartmentId(depId);
-	input.setWriterId(this.userPerDepartmentService
-		.getCurrentUserUserPerDepeartmentIdInDep(depId));
+	{
+	    var dep = new DepartmentDTO();
+	    dep.setId(depId);
+	    input.setDepartment(dep);
+	}
+	input.setWriter(this.userPerDepartmentService
+		.getCurrentUserUserPerDepeartmentInDep(depId));
 
 	final MemoryDTO result = this.memoryService.save(input);
 	return ResponseEntity
@@ -231,8 +236,8 @@ public class MemoryNotCrudResource {
 	final var old = this.memoryService.findOne(memoryWithIdUDTO.getId())
 		.get();
 	final var newMem = memoryWithIdUDTO.build();
-	newMem.setDepartmentId(old.getDepartmentId());
-	newMem.setWriterId(old.getWriterId());
+	newMem.setDepartment(old.getDepartment());
+	newMem.setWriter(old.getWriter());
 
 	final MemoryDTO result = this.memoryService.save(newMem);
 	return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(

@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './topic-vote.reducer';
-import { ITopicVote } from 'app/shared/model/topic-vote.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface ITopicVoteDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,8 +20,8 @@ export const TopicVoteDetail = (props: ITopicVoteDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          <Translate contentKey="yaadbuzzApp.topicVote.detail.title">TopicVote</Translate> [<b>{topicVoteEntity.id}</b>]
+        <h2 data-cy="topicVoteDetailsHeading">
+          <Translate contentKey="yaadbuzzApp.topicVote.detail.title">TopicVote</Translate> [<strong>{topicVoteEntity.id}</strong>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
@@ -34,13 +33,13 @@ export const TopicVoteDetail = (props: ITopicVoteDetailProps) => {
           <dt>
             <Translate contentKey="yaadbuzzApp.topicVote.topic">Topic</Translate>
           </dt>
-          <dd>{topicVoteEntity.topicId ? topicVoteEntity.topicId : ''}</dd>
+          <dd>{topicVoteEntity.topic ? topicVoteEntity.topic.id : ''}</dd>
           <dt>
             <Translate contentKey="yaadbuzzApp.topicVote.user">User</Translate>
           </dt>
-          <dd>{topicVoteEntity.userId ? topicVoteEntity.userId : ''}</dd>
+          <dd>{topicVoteEntity.user ? topicVoteEntity.user.id : ''}</dd>
         </dl>
-        <Button tag={Link} to="/topic-vote" replace color="info">
+        <Button tag={Link} to="/topic-vote" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

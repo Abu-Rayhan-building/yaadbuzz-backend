@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -21,7 +21,7 @@ export interface ITopicUpdateProps extends StateProps, DispatchProps, RouteCompo
 export const TopicUpdate = (props: ITopicUpdateProps) => {
   const [idsvoters, setIdsvoters] = useState([]);
   const [departmentId, setDepartmentId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { topicEntity, departments, userPerDepartments, loading, updating } = props;
 
@@ -64,7 +64,7 @@ export const TopicUpdate = (props: ITopicUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadbuzzApp.topic.home.createOrEditLabel">
+          <h2 id="yaadbuzzApp.topic.home.createOrEditLabel" data-cy="TopicCreateUpdateHeading">
             <Translate contentKey="yaadbuzzApp.topic.home.createOrEditLabel">Create or edit a Topic</Translate>
           </h2>
         </Col>
@@ -89,6 +89,7 @@ export const TopicUpdate = (props: ITopicUpdateProps) => {
                 </Label>
                 <AvField
                   id="topic-title"
+                  data-cy="title"
                   type="text"
                   name="title"
                   validate={{
@@ -100,7 +101,7 @@ export const TopicUpdate = (props: ITopicUpdateProps) => {
                 <Label for="topic-department">
                   <Translate contentKey="yaadbuzzApp.topic.department">Department</Translate>
                 </Label>
-                <AvInput id="topic-department" type="select" className="form-control" name="departmentId" required>
+                <AvInput id="topic-department" data-cy="department" type="select" className="form-control" name="departmentId" required>
                   {departments
                     ? departments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -119,11 +120,12 @@ export const TopicUpdate = (props: ITopicUpdateProps) => {
                 </Label>
                 <AvInput
                   id="topic-voters"
+                  data-cy="voters"
                   type="select"
                   multiple
                   className="form-control"
                   name="voters"
-                  value={topicEntity.voters && topicEntity.voters.map(e => e.id)}
+                  value={!isNew && topicEntity.voters && topicEntity.voters.map(e => e.id)}
                 >
                   <option value="" key="0" />
                   {userPerDepartments
@@ -143,7 +145,7 @@ export const TopicUpdate = (props: ITopicUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

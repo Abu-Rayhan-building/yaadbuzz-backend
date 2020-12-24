@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-import { Translate, ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { IPicture } from 'app/shared/model/picture.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './picture.reducer';
 
@@ -33,7 +32,7 @@ export const PictureDeleteDialog = (props: IPictureDeleteDialogProps) => {
   const { pictureEntity } = props;
   return (
     <Modal isOpen toggle={handleClose}>
-      <ModalHeader toggle={handleClose}>
+      <ModalHeader toggle={handleClose} data-cy="pictureDeleteDialogHeading">
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
       <ModalBody id="yaadbuzzApp.picture.delete.question">
@@ -47,7 +46,7 @@ export const PictureDeleteDialog = (props: IPictureDeleteDialogProps) => {
           &nbsp;
           <Translate contentKey="entity.action.cancel">Cancel</Translate>
         </Button>
-        <Button id="jhi-confirm-delete-picture" color="danger" onClick={confirmDelete}>
+        <Button id="jhi-confirm-delete-picture" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
           <FontAwesomeIcon icon="trash" />
           &nbsp;
           <Translate contentKey="entity.action.delete">Delete</Translate>

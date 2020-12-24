@@ -1,16 +1,17 @@
 package edu.sharif.math.yaadbuzz.service.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Lob;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Picture} entity.
  */
 public class PictureDTO implements Serializable {
-    
+
     private Long id;
 
-    
     @Lob
     private byte[] image;
 
@@ -49,12 +50,16 @@ public class PictureDTO implements Serializable {
             return false;
         }
 
-        return id != null && id.equals(((PictureDTO) o).id);
+        PictureDTO pictureDTO = (PictureDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, pictureDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore

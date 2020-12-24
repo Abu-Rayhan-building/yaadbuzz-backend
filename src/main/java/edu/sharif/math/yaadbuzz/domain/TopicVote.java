@@ -1,13 +1,11 @@
 package edu.sharif.math.yaadbuzz.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A TopicVote.
@@ -29,12 +27,15 @@ public class TopicVote implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "votes", allowSetters = true)
+    @JsonIgnoreProperties(value = { "votes", "department", "voters" }, allowSetters = true)
     private Topic topic;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "topicAssigneds", allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
+        allowSetters = true
+    )
     private UserPerDepartment user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -46,8 +47,13 @@ public class TopicVote implements Serializable {
         this.id = id;
     }
 
+    public TopicVote id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public Integer getRepetitions() {
-        return repetitions;
+        return this.repetitions;
     }
 
     public TopicVote repetitions(Integer repetitions) {
@@ -60,11 +66,11 @@ public class TopicVote implements Serializable {
     }
 
     public Topic getTopic() {
-        return topic;
+        return this.topic;
     }
 
     public TopicVote topic(Topic topic) {
-        this.topic = topic;
+        this.setTopic(topic);
         return this;
     }
 
@@ -73,17 +79,18 @@ public class TopicVote implements Serializable {
     }
 
     public UserPerDepartment getUser() {
-        return user;
+        return this.user;
     }
 
     public TopicVote user(UserPerDepartment userPerDepartment) {
-        this.user = userPerDepartment;
+        this.setUser(userPerDepartment);
         return this;
     }
 
     public void setUser(UserPerDepartment userPerDepartment) {
         this.user = userPerDepartment;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -99,7 +106,8 @@ public class TopicVote implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <!--
         Added the constraints for entity Topic.
     -->
@@ -10,19 +10,19 @@
         
         <addForeignKeyConstraint baseColumnNames="department_id"
                                  baseTableName="topic"
-                                 constraintName="fk_topic_department_id"
+                                 constraintName="fk_topic__department_id"
                                  referencedColumnNames="id"
                                  referencedTableName="department"/>
 
         <addForeignKeyConstraint baseColumnNames="topic_id"
-                                 baseTableName="topic_voters"
-                                 constraintName="fk_topic_voters_topic_id"
+                                 baseTableName="rel_topic__voters"
+                                 constraintName="fk_rel_topic__voters__topic_id"
                                  referencedColumnNames="id"
                                  referencedTableName="topic"/>
 
         <addForeignKeyConstraint baseColumnNames="voters_id"
-                                 baseTableName="topic_voters"
-                                 constraintName="fk_topic_voters_voters_id"
+                                 baseTableName="rel_topic__voters"
+                                 constraintName="fk_rel_topic__voters__voters_id"
                                  referencedColumnNames="id"
                                  referencedTableName="user_per_department"/>
         

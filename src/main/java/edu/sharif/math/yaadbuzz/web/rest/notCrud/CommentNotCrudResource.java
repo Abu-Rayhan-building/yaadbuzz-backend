@@ -35,11 +35,12 @@ import edu.sharif.math.yaadbuzz.service.MemoryService;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentCreateUDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentWithIdUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 
 /**
  * REST controller for managing users.
@@ -125,12 +126,16 @@ public class CommentNotCrudResource {
 	}
 
 	CommentDTO dto = new CommentDTO();
-	dto.setMemoryId(memId);
+	{
+	    var mem = new MemoryDTO();
+	    mem.setId(memId);
+	    dto.setMemory(mem);
+	}
 	dto.setPictures(commentCreateReqDTO.getPictures());
 	dto.setText(commentCreateReqDTO.getText());
-	var udpid = this.userPerDepartmentService
-		.getCurrentUserUserPerDepeartmentIdInDep(depId);
-	dto.setWriterId(udpid);
+	var udp = this.userPerDepartmentService
+		.getCurrentUserUserPerDepeartmentInDep(depId);
+	dto.setWriter(udp);
 	final CommentDTO result = this.commentService.save(dto);
 	return ResponseEntity
 		.created(new URI("/api/comments/" + result.getId()))

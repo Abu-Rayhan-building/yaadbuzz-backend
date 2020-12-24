@@ -1,11 +1,9 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
-
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Optional;
 
 /**
  * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.Picture}.
@@ -21,13 +19,20 @@ public interface PictureService extends ServiceWithCurrentUserCrudAccess {
     PictureDTO save(PictureDTO pictureDTO);
 
     /**
+     * Partially updates a picture.
+     *
+     * @param pictureDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<PictureDTO> partialUpdate(PictureDTO pictureDTO);
+
+    /**
      * Get all the pictures.
      *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
     Page<PictureDTO> findAll(Pageable pageable);
-
 
     /**
      * Get the "id" picture.

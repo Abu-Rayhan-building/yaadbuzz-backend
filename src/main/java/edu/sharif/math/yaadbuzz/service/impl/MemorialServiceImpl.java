@@ -10,6 +10,9 @@ import edu.sharif.math.yaadbuzz.repository.MemorialRepository;
 import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.MemorialUDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.MemorialMapper;
+
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,10 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
-
 /**
  * Service Implementation for managing {@link Memorial}.
  */
@@ -29,8 +28,7 @@ import javax.validation.Valid;
 @Transactional
 public class MemorialServiceImpl implements MemorialService {
 
-    private final Logger log = LoggerFactory
-	    .getLogger(MemorialServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(MemorialServiceImpl.class);
 
     private final MemorialRepository memorialRepository;
 
@@ -55,30 +53,45 @@ public class MemorialServiceImpl implements MemorialService {
 
     @Override
     public MemorialDTO save(MemorialDTO memorialDTO) {
-	log.debug("Request to save Memorial : {}", memorialDTO);
-	Memorial memorial = memorialMapper.toEntity(memorialDTO);
-	memorial = memorialRepository.save(memorial);
-	return memorialMapper.toDto(memorial);
+        log.debug("Request to save Memorial : {}", memorialDTO);
+        Memorial memorial = memorialMapper.toEntity(memorialDTO);
+        memorial = memorialRepository.save(memorial);
+        return memorialMapper.toDto(memorial);
+    }
+
+    @Override
+    public Optional<MemorialDTO> partialUpdate(MemorialDTO memorialDTO) {
+        log.debug("Request to partially update Memorial : {}", memorialDTO);
+
+        return memorialRepository
+            .findById(memorialDTO.getId())
+            .map(
+                existingMemorial -> {
+                    return existingMemorial;
+                }
+            )
+            .map(memorialRepository::save)
+            .map(memorialMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<MemorialDTO> findAll(Pageable pageable) {
-	log.debug("Request to get all Memorials");
-	return memorialRepository.findAll(pageable).map(memorialMapper::toDto);
+        log.debug("Request to get all Memorials");
+        return memorialRepository.findAll(pageable).map(memorialMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<MemorialDTO> findOne(Long id) {
-	log.debug("Request to get Memorial : {}", id);
-	return memorialRepository.findById(id).map(memorialMapper::toDto);
+        log.debug("Request to get Memorial : {}", id);
+        return memorialRepository.findById(id).map(memorialMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
-	log.debug("Request to delete Memorial : {}", id);
-	memorialRepository.deleteById(id);
+        log.debug("Request to delete Memorial : {}", id);
+        memorialRepository.deleteById(id);
     }
 
     private final UserPerDepartmentService userPerDepartmentService;
@@ -102,21 +115,21 @@ public class MemorialServiceImpl implements MemorialService {
     }
 
     @Override
-    public MemorialDTO create(Long depId, @Valid MemorialUDTO memorialUDTO) {
+    public MemorialDTO create(Long depId, MemorialUDTO memorialUDTO) {
 	var memeorialDTO = memorialUDTO.build();
 	if (memorialUDTO.getAnonymousComment() != null) {
 	    var an = this.commentService
 		    .save(memorialUDTO.getAnonymousComment().build());
-	    memeorialDTO.setAnonymousCommentId(an.getId());
+	    memeorialDTO.setAnonymousComment(an);
 	}
 	if (memorialUDTO.getNotAnonymousComment() != null) {
 	    var notAn = this.commentService
 		    .save(memorialUDTO.getNotAnonymousComment().build());
-	    memeorialDTO.setNotAnonymousCommentId(notAn.getId());
+	    memeorialDTO.setNotAnonymousComment(notAn);
 	}
 
-	memeorialDTO.setWriterId(this.userPerDepartmentService
-		.getCurrentUserUserPerDepeartmentIdInDep(depId));
+	memeorialDTO.setWriter(this.userPerDepartmentService
+		.getCurrentUserUserPerDepeartmentInDep(depId));
 
 	return this.save(memeorialDTO);
     }

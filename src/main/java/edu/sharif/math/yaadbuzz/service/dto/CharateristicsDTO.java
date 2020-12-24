@@ -1,13 +1,14 @@
 package edu.sharif.math.yaadbuzz.service.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Charateristics} entity.
  */
 public class CharateristicsDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -15,8 +16,8 @@ public class CharateristicsDTO implements Serializable {
 
     private Integer repetation;
 
-    private Long userPerDepartmentId;
-    
+    private UserPerDepartmentDTO userPerDepartment;
+
     public Long getId() {
         return id;
     }
@@ -41,12 +42,12 @@ public class CharateristicsDTO implements Serializable {
         this.repetation = repetation;
     }
 
-    public Long getUserPerDepartmentId() {
-        return userPerDepartmentId;
+    public UserPerDepartmentDTO getUserPerDepartment() {
+        return userPerDepartment;
     }
 
-    public void setUserPerDepartmentId(Long userPerDepartmentId) {
-        this.userPerDepartmentId = userPerDepartmentId;
+    public void setUserPerDepartment(UserPerDepartmentDTO userPerDepartment) {
+        this.userPerDepartment = userPerDepartment;
     }
 
     @Override
@@ -58,12 +59,16 @@ public class CharateristicsDTO implements Serializable {
             return false;
         }
 
-        return id != null && id.equals(((CharateristicsDTO) o).id);
+        CharateristicsDTO charateristicsDTO = (CharateristicsDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, charateristicsDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore
@@ -73,7 +78,7 @@ public class CharateristicsDTO implements Serializable {
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
             ", repetation=" + getRepetation() +
-            ", userPerDepartmentId=" + getUserPerDepartmentId() +
+            ", userPerDepartment=" + getUserPerDepartment() +
             "}";
     }
 }

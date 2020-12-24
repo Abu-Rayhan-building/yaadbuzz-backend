@@ -1,28 +1,30 @@
 package edu.sharif.math.yaadbuzz.service.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Memory} entity.
  */
 public class MemoryDTO implements Serializable {
-    
+
     private Long id;
 
     private String title;
 
     private Boolean isPrivate;
 
-    private Long textId;
+    private CommentDTO baseComment;
 
-    private Long writerId;
+    private UserPerDepartmentDTO writer;
+
     private Set<UserPerDepartmentDTO> tageds = new HashSet<>();
 
-    private Long departmentId;
-    
+    private DepartmentDTO department;
+
     public Long getId() {
         return id;
     }
@@ -39,7 +41,7 @@ public class MemoryDTO implements Serializable {
         this.title = title;
     }
 
-    public Boolean isIsPrivate() {
+    public Boolean getIsPrivate() {
         return isPrivate;
     }
 
@@ -47,36 +49,36 @@ public class MemoryDTO implements Serializable {
         this.isPrivate = isPrivate;
     }
 
-    public Long getTextId() {
-        return textId;
+    public CommentDTO getBaseComment() {
+        return baseComment;
     }
 
-    public void setTextId(Long commentId) {
-        this.textId = commentId;
+    public void setBaseComment(CommentDTO baseComment) {
+        this.baseComment = baseComment;
     }
 
-    public Long getWriterId() {
-        return writerId;
+    public UserPerDepartmentDTO getWriter() {
+        return writer;
     }
 
-    public void setWriterId(Long userPerDepartmentId) {
-        this.writerId = userPerDepartmentId;
+    public void setWriter(UserPerDepartmentDTO writer) {
+        this.writer = writer;
     }
 
     public Set<UserPerDepartmentDTO> getTageds() {
         return tageds;
     }
 
-    public void setTageds(Set<UserPerDepartmentDTO> userPerDepartments) {
-        this.tageds = userPerDepartments;
+    public void setTageds(Set<UserPerDepartmentDTO> tageds) {
+        this.tageds = tageds;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public DepartmentDTO getDepartment() {
+        return department;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartment(DepartmentDTO department) {
+        this.department = department;
     }
 
     @Override
@@ -88,12 +90,16 @@ public class MemoryDTO implements Serializable {
             return false;
         }
 
-        return id != null && id.equals(((MemoryDTO) o).id);
+        MemoryDTO memoryDTO = (MemoryDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, memoryDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore
@@ -102,11 +108,11 @@ public class MemoryDTO implements Serializable {
         return "MemoryDTO{" +
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
-            ", isPrivate='" + isIsPrivate() + "'" +
-            ", textId=" + getTextId() +
-            ", writerId=" + getWriterId() +
-            ", tageds='" + getTageds() + "'" +
-            ", departmentId=" + getDepartmentId() +
+            ", isPrivate='" + getIsPrivate() + "'" +
+            ", baseComment=" + getBaseComment() +
+            ", writer=" + getWriter() +
+            ", tageds=" + getTageds() +
+            ", department=" + getDepartment() +
             "}";
     }
 }

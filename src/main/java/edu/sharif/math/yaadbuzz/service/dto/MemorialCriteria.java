@@ -2,14 +2,14 @@ package edu.sharif.math.yaadbuzz.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import io.github.jhipster.service.Criteria;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
+import tech.jhipster.service.Criteria;
+import tech.jhipster.service.filter.BooleanFilter;
+import tech.jhipster.service.filter.DoubleFilter;
+import tech.jhipster.service.filter.Filter;
+import tech.jhipster.service.filter.FloatFilter;
+import tech.jhipster.service.filter.IntegerFilter;
+import tech.jhipster.service.filter.LongFilter;
+import tech.jhipster.service.filter.StringFilter;
 
 /**
  * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Memorial} entity. This class is used
@@ -36,8 +36,7 @@ public class MemorialCriteria implements Serializable, Criteria {
 
     private LongFilter departmentId;
 
-    public MemorialCriteria() {
-    }
+    public MemorialCriteria() {}
 
     public MemorialCriteria(MemorialCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -101,7 +100,6 @@ public class MemorialCriteria implements Serializable, Criteria {
         this.departmentId = departmentId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -111,25 +109,19 @@ public class MemorialCriteria implements Serializable, Criteria {
             return false;
         }
         final MemorialCriteria that = (MemorialCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(anonymousCommentId, that.anonymousCommentId) &&
             Objects.equals(notAnonymousCommentId, that.notAnonymousCommentId) &&
             Objects.equals(writerId, that.writerId) &&
             Objects.equals(recipientId, that.recipientId) &&
-            Objects.equals(departmentId, that.departmentId);
+            Objects.equals(departmentId, that.departmentId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        anonymousCommentId,
-        notAnonymousCommentId,
-        writerId,
-        recipientId,
-        departmentId
-        );
+        return Objects.hash(id, anonymousCommentId, notAnonymousCommentId, writerId, recipientId, departmentId);
     }
 
     // prettier-ignore
@@ -144,5 +136,4 @@ public class MemorialCriteria implements Serializable, Criteria {
                 (departmentId != null ? "departmentId=" + departmentId + ", " : "") +
             "}";
     }
-
 }

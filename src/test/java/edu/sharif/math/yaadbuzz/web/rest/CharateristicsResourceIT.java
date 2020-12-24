@@ -1,39 +1,36 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.YaadbuzzBackendApp;
-import edu.sharif.math.yaadbuzz.domain.Charateristics;
-import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
-import edu.sharif.math.yaadbuzz.repository.CharateristicsRepository;
-import edu.sharif.math.yaadbuzz.service.CharateristicsService;
-import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.CharateristicsMapper;
-import edu.sharif.math.yaadbuzz.service.dto.CharateristicsCriteria;
-import edu.sharif.math.yaadbuzz.service.CharateristicsQueryService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import edu.sharif.math.yaadbuzz.IntegrationTest;
+import edu.sharif.math.yaadbuzz.domain.Charateristics;
+import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
+import edu.sharif.math.yaadbuzz.repository.CharateristicsRepository;
+import edu.sharif.math.yaadbuzz.service.CharateristicsQueryService;
+import edu.sharif.math.yaadbuzz.service.dto.CharateristicsCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.CharateristicsMapper;
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Integration tests for the {@link CharateristicsResource} REST controller.
  */
-@SpringBootTest(classes = YaadbuzzBackendApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class CharateristicsResourceIT {
+class CharateristicsResourceIT {
 
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
@@ -47,9 +44,6 @@ public class CharateristicsResourceIT {
 
     @Autowired
     private CharateristicsMapper charateristicsMapper;
-
-    @Autowired
-    private CharateristicsService charateristicsService;
 
     @Autowired
     private CharateristicsQueryService charateristicsQueryService;
@@ -69,9 +63,7 @@ public class CharateristicsResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Charateristics createEntity(EntityManager em) {
-        Charateristics charateristics = new Charateristics()
-            .title(DEFAULT_TITLE)
-            .repetation(DEFAULT_REPETATION);
+        Charateristics charateristics = new Charateristics().title(DEFAULT_TITLE).repetation(DEFAULT_REPETATION);
         // Add required entity
         UserPerDepartment userPerDepartment;
         if (TestUtil.findAll(em, UserPerDepartment.class).isEmpty()) {
@@ -84,6 +76,7 @@ public class CharateristicsResourceIT {
         charateristics.setUserPerDepartment(userPerDepartment);
         return charateristics;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -91,9 +84,7 @@ public class CharateristicsResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Charateristics createUpdatedEntity(EntityManager em) {
-        Charateristics charateristics = new Charateristics()
-            .title(UPDATED_TITLE)
-            .repetation(UPDATED_REPETATION);
+        Charateristics charateristics = new Charateristics().title(UPDATED_TITLE).repetation(UPDATED_REPETATION);
         // Add required entity
         UserPerDepartment userPerDepartment;
         if (TestUtil.findAll(em, UserPerDepartment.class).isEmpty()) {
@@ -114,13 +105,16 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void createCharateristics() throws Exception {
+    void createCharateristics() throws Exception {
         int databaseSizeBeforeCreate = charateristicsRepository.findAll().size();
         // Create the Charateristics
         CharateristicsDTO charateristicsDTO = charateristicsMapper.toDto(charateristics);
-        restCharateristicsMockMvc.perform(post("/api/charateristics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(charateristicsDTO)))
+        restCharateristicsMockMvc
+            .perform(
+                post("/api/charateristics")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(charateristicsDTO))
+            )
             .andExpect(status().isCreated());
 
         // Validate the Charateristics in the database
@@ -133,17 +127,20 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void createCharateristicsWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = charateristicsRepository.findAll().size();
-
+    void createCharateristicsWithExistingId() throws Exception {
         // Create the Charateristics with an existing ID
         charateristics.setId(1L);
         CharateristicsDTO charateristicsDTO = charateristicsMapper.toDto(charateristics);
 
+        int databaseSizeBeforeCreate = charateristicsRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCharateristicsMockMvc.perform(post("/api/charateristics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(charateristicsDTO)))
+        restCharateristicsMockMvc
+            .perform(
+                post("/api/charateristics")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(charateristicsDTO))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Charateristics in the database
@@ -151,10 +148,9 @@ public class CharateristicsResourceIT {
         assertThat(charateristicsList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkTitleIsRequired() throws Exception {
+    void checkTitleIsRequired() throws Exception {
         int databaseSizeBeforeTest = charateristicsRepository.findAll().size();
         // set the field null
         charateristics.setTitle(null);
@@ -162,10 +158,12 @@ public class CharateristicsResourceIT {
         // Create the Charateristics, which fails.
         CharateristicsDTO charateristicsDTO = charateristicsMapper.toDto(charateristics);
 
-
-        restCharateristicsMockMvc.perform(post("/api/charateristics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(charateristicsDTO)))
+        restCharateristicsMockMvc
+            .perform(
+                post("/api/charateristics")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(charateristicsDTO))
+            )
             .andExpect(status().isBadRequest());
 
         List<Charateristics> charateristicsList = charateristicsRepository.findAll();
@@ -174,27 +172,29 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristics() throws Exception {
+    void getAllCharateristics() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
         // Get all the charateristicsList
-        restCharateristicsMockMvc.perform(get("/api/charateristics?sort=id,desc"))
+        restCharateristicsMockMvc
+            .perform(get("/api/charateristics?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(charateristics.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].repetation").value(hasItem(DEFAULT_REPETATION)));
     }
-    
+
     @Test
     @Transactional
-    public void getCharateristics() throws Exception {
+    void getCharateristics() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
         // Get the charateristics
-        restCharateristicsMockMvc.perform(get("/api/charateristics/{id}", charateristics.getId()))
+        restCharateristicsMockMvc
+            .perform(get("/api/charateristics/{id}", charateristics.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(charateristics.getId().intValue()))
@@ -202,10 +202,9 @@ public class CharateristicsResourceIT {
             .andExpect(jsonPath("$.repetation").value(DEFAULT_REPETATION));
     }
 
-
     @Test
     @Transactional
-    public void getCharateristicsByIdFiltering() throws Exception {
+    void getCharateristicsByIdFiltering() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -221,10 +220,9 @@ public class CharateristicsResourceIT {
         defaultCharateristicsShouldNotBeFound("id.lessThan=" + id);
     }
 
-
     @Test
     @Transactional
-    public void getAllCharateristicsByTitleIsEqualToSomething() throws Exception {
+    void getAllCharateristicsByTitleIsEqualToSomething() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -237,7 +235,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByTitleIsNotEqualToSomething() throws Exception {
+    void getAllCharateristicsByTitleIsNotEqualToSomething() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -250,7 +248,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByTitleIsInShouldWork() throws Exception {
+    void getAllCharateristicsByTitleIsInShouldWork() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -263,7 +261,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByTitleIsNullOrNotNull() throws Exception {
+    void getAllCharateristicsByTitleIsNullOrNotNull() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -273,9 +271,10 @@ public class CharateristicsResourceIT {
         // Get all the charateristicsList where title is null
         defaultCharateristicsShouldNotBeFound("title.specified=false");
     }
-                @Test
+
+    @Test
     @Transactional
-    public void getAllCharateristicsByTitleContainsSomething() throws Exception {
+    void getAllCharateristicsByTitleContainsSomething() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -288,7 +287,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByTitleNotContainsSomething() throws Exception {
+    void getAllCharateristicsByTitleNotContainsSomething() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -299,10 +298,9 @@ public class CharateristicsResourceIT {
         defaultCharateristicsShouldBeFound("title.doesNotContain=" + UPDATED_TITLE);
     }
 
-
     @Test
     @Transactional
-    public void getAllCharateristicsByRepetationIsEqualToSomething() throws Exception {
+    void getAllCharateristicsByRepetationIsEqualToSomething() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -315,7 +313,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByRepetationIsNotEqualToSomething() throws Exception {
+    void getAllCharateristicsByRepetationIsNotEqualToSomething() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -328,7 +326,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByRepetationIsInShouldWork() throws Exception {
+    void getAllCharateristicsByRepetationIsInShouldWork() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -341,7 +339,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByRepetationIsNullOrNotNull() throws Exception {
+    void getAllCharateristicsByRepetationIsNullOrNotNull() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -354,7 +352,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByRepetationIsGreaterThanOrEqualToSomething() throws Exception {
+    void getAllCharateristicsByRepetationIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -367,7 +365,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByRepetationIsLessThanOrEqualToSomething() throws Exception {
+    void getAllCharateristicsByRepetationIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -380,7 +378,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByRepetationIsLessThanSomething() throws Exception {
+    void getAllCharateristicsByRepetationIsLessThanSomething() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -393,7 +391,7 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getAllCharateristicsByRepetationIsGreaterThanSomething() throws Exception {
+    void getAllCharateristicsByRepetationIsGreaterThanSomething() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -404,12 +402,15 @@ public class CharateristicsResourceIT {
         defaultCharateristicsShouldBeFound("repetation.greaterThan=" + SMALLER_REPETATION);
     }
 
-
     @Test
     @Transactional
-    public void getAllCharateristicsByUserPerDepartmentIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        UserPerDepartment userPerDepartment = charateristics.getUserPerDepartment();
+    void getAllCharateristicsByUserPerDepartmentIsEqualToSomething() throws Exception {
+        // Initialize the database
+        charateristicsRepository.saveAndFlush(charateristics);
+        UserPerDepartment userPerDepartment = UserPerDepartmentResourceIT.createEntity(em);
+        em.persist(userPerDepartment);
+        em.flush();
+        charateristics.setUserPerDepartment(userPerDepartment);
         charateristicsRepository.saveAndFlush(charateristics);
         Long userPerDepartmentId = userPerDepartment.getId();
 
@@ -424,7 +425,8 @@ public class CharateristicsResourceIT {
      * Executes the search, and checks that the default entity is returned.
      */
     private void defaultCharateristicsShouldBeFound(String filter) throws Exception {
-        restCharateristicsMockMvc.perform(get("/api/charateristics?sort=id,desc&" + filter))
+        restCharateristicsMockMvc
+            .perform(get("/api/charateristics?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(charateristics.getId().intValue())))
@@ -432,7 +434,8 @@ public class CharateristicsResourceIT {
             .andExpect(jsonPath("$.[*].repetation").value(hasItem(DEFAULT_REPETATION)));
 
         // Check, that the count call also returns 1
-        restCharateristicsMockMvc.perform(get("/api/charateristics/count?sort=id,desc&" + filter))
+        restCharateristicsMockMvc
+            .perform(get("/api/charateristics/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("1"));
@@ -442,14 +445,16 @@ public class CharateristicsResourceIT {
      * Executes the search, and checks that the default entity is not returned.
      */
     private void defaultCharateristicsShouldNotBeFound(String filter) throws Exception {
-        restCharateristicsMockMvc.perform(get("/api/charateristics?sort=id,desc&" + filter))
+        restCharateristicsMockMvc
+            .perform(get("/api/charateristics?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$").isEmpty());
 
         // Check, that the count call also returns 0
-        restCharateristicsMockMvc.perform(get("/api/charateristics/count?sort=id,desc&" + filter))
+        restCharateristicsMockMvc
+            .perform(get("/api/charateristics/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("0"));
@@ -457,15 +462,14 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingCharateristics() throws Exception {
+    void getNonExistingCharateristics() throws Exception {
         // Get the charateristics
-        restCharateristicsMockMvc.perform(get("/api/charateristics/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restCharateristicsMockMvc.perform(get("/api/charateristics/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateCharateristics() throws Exception {
+    void updateCharateristics() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
@@ -475,14 +479,15 @@ public class CharateristicsResourceIT {
         Charateristics updatedCharateristics = charateristicsRepository.findById(charateristics.getId()).get();
         // Disconnect from session so that the updates on updatedCharateristics are not directly saved in db
         em.detach(updatedCharateristics);
-        updatedCharateristics
-            .title(UPDATED_TITLE)
-            .repetation(UPDATED_REPETATION);
+        updatedCharateristics.title(UPDATED_TITLE).repetation(UPDATED_REPETATION);
         CharateristicsDTO charateristicsDTO = charateristicsMapper.toDto(updatedCharateristics);
 
-        restCharateristicsMockMvc.perform(put("/api/charateristics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(charateristicsDTO)))
+        restCharateristicsMockMvc
+            .perform(
+                put("/api/charateristics")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(charateristicsDTO))
+            )
             .andExpect(status().isOk());
 
         // Validate the Charateristics in the database
@@ -495,16 +500,19 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingCharateristics() throws Exception {
+    void updateNonExistingCharateristics() throws Exception {
         int databaseSizeBeforeUpdate = charateristicsRepository.findAll().size();
 
         // Create the Charateristics
         CharateristicsDTO charateristicsDTO = charateristicsMapper.toDto(charateristics);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restCharateristicsMockMvc.perform(put("/api/charateristics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(charateristicsDTO)))
+        restCharateristicsMockMvc
+            .perform(
+                put("/api/charateristics")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(charateristicsDTO))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Charateristics in the database
@@ -514,15 +522,90 @@ public class CharateristicsResourceIT {
 
     @Test
     @Transactional
-    public void deleteCharateristics() throws Exception {
+    void partialUpdateCharateristicsWithPatch() throws Exception {
+        // Initialize the database
+        charateristicsRepository.saveAndFlush(charateristics);
+
+        int databaseSizeBeforeUpdate = charateristicsRepository.findAll().size();
+
+        // Update the charateristics using partial update
+        Charateristics partialUpdatedCharateristics = new Charateristics();
+        partialUpdatedCharateristics.setId(charateristics.getId());
+
+        partialUpdatedCharateristics.title(UPDATED_TITLE);
+
+        restCharateristicsMockMvc
+            .perform(
+                patch("/api/charateristics")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedCharateristics))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Charateristics in the database
+        List<Charateristics> charateristicsList = charateristicsRepository.findAll();
+        assertThat(charateristicsList).hasSize(databaseSizeBeforeUpdate);
+        Charateristics testCharateristics = charateristicsList.get(charateristicsList.size() - 1);
+        assertThat(testCharateristics.getTitle()).isEqualTo(UPDATED_TITLE);
+        assertThat(testCharateristics.getRepetation()).isEqualTo(DEFAULT_REPETATION);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateCharateristicsWithPatch() throws Exception {
+        // Initialize the database
+        charateristicsRepository.saveAndFlush(charateristics);
+
+        int databaseSizeBeforeUpdate = charateristicsRepository.findAll().size();
+
+        // Update the charateristics using partial update
+        Charateristics partialUpdatedCharateristics = new Charateristics();
+        partialUpdatedCharateristics.setId(charateristics.getId());
+
+        partialUpdatedCharateristics.title(UPDATED_TITLE).repetation(UPDATED_REPETATION);
+
+        restCharateristicsMockMvc
+            .perform(
+                patch("/api/charateristics")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedCharateristics))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Charateristics in the database
+        List<Charateristics> charateristicsList = charateristicsRepository.findAll();
+        assertThat(charateristicsList).hasSize(databaseSizeBeforeUpdate);
+        Charateristics testCharateristics = charateristicsList.get(charateristicsList.size() - 1);
+        assertThat(testCharateristics.getTitle()).isEqualTo(UPDATED_TITLE);
+        assertThat(testCharateristics.getRepetation()).isEqualTo(UPDATED_REPETATION);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateCharateristicsShouldThrown() throws Exception {
+        // Update the charateristics without id should throw
+        Charateristics partialUpdatedCharateristics = new Charateristics();
+
+        restCharateristicsMockMvc
+            .perform(
+                patch("/api/charateristics")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedCharateristics))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    void deleteCharateristics() throws Exception {
         // Initialize the database
         charateristicsRepository.saveAndFlush(charateristics);
 
         int databaseSizeBeforeDelete = charateristicsRepository.findAll().size();
 
         // Delete the charateristics
-        restCharateristicsMockMvc.perform(delete("/api/charateristics/{id}", charateristics.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restCharateristicsMockMvc
+            .perform(delete("/api/charateristics/{id}", charateristics.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

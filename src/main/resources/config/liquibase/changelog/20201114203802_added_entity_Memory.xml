@@ -3,10 +3,9 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    
     <!--
         Added the entity Memory.
     -->
@@ -21,10 +20,7 @@
             <column name="is_private" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="is_annonymos" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="text_id" type="bigint">
+            <column name="base_comment_id" type="bigint">
                 <constraints nullable="false" />
             </column>
             <column name="writer_id" type="bigint">
@@ -39,7 +35,7 @@
 
     <changeSet id="20201114203802-1-relations" author="jhipster">
 
-        <createTable tableName="memory_taged">
+        <createTable tableName="rel_memory__taged">
             <column name="taged_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -48,9 +44,9 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="memory_id, taged_id" tableName="memory_taged"/>
-        
+        <addPrimaryKey columnNames="memory_id, taged_id" tableName="rel_memory__taged"/>
     </changeSet>
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
@@ -69,12 +65,10 @@
             <column name="id" type="numeric"/>
             <column name="title" type="string"/>
             <column name="is_private" type="boolean"/>
-            <column name="is_annonymos" type="boolean"/>
-            <column name="text_id" type="numeric"/>
+            <column name="base_comment_id" type="numeric"/>
             <column name="writer_id" type="numeric"/>
             <column name="department_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
-
 </databaseChangeLog>

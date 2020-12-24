@@ -31,9 +31,8 @@ spring:
     serialization:
       write-durations-as-timestamps: false
   jpa:
-    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    database-platform: tech.jhipster.domain.util.FixedH2Dialect
     open-in-view: false
-    show-sql: false
     hibernate:
       ddl-auto: none
       naming:
@@ -47,6 +46,7 @@ spring:
       hibernate.generate_statistics: false
       hibernate.hbm2ddl.auto: validate
       hibernate.jdbc.time_zone: UTC
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
   liquibase:
     contexts: test
   mail:
@@ -97,14 +97,9 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: NmI0MDVmZmI2M2E3N2Q3YWY3MTc1MzU3NDZkYTMxM2I5MDU3MTM5NjQ3MzFiYmQzMDQ1NjYwMjM2NmU4OGMzMzQ4ZWIyODU1MzBhZTUzOTAyNTQ4NTU3MGJjZmQzMGI1MTY2ODgzY2Q3YjYxNDk4NTkwZDczNmQ4MzdmNDlmYTI=
+        base64-secret: NWIzZTk1MjBlMGUyNmQ2ZmIyYzRhNGM5MTkwZTk2NDhhMjQ5YjhjNWI4ODYzMWJmZTE4ZjdlNzkxNDVhZDI5MzlhNjI0ZTM4Y2NlZmE1NWMyYTk5ZmVmMWU2YjIwZWY1MTJlNTI4MTllYTVjYjhjZDhlZTcwNjI1OTM5NWJkYmQ=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
-  metrics:
-    logs: # Reports metrics in the logs
-      enabled: true
-      report-frequency: 60 # in seconds
-
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

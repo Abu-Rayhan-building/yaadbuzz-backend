@@ -2,14 +2,14 @@ package edu.sharif.math.yaadbuzz.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import io.github.jhipster.service.Criteria;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
+import tech.jhipster.service.Criteria;
+import tech.jhipster.service.filter.BooleanFilter;
+import tech.jhipster.service.filter.DoubleFilter;
+import tech.jhipster.service.filter.Filter;
+import tech.jhipster.service.filter.FloatFilter;
+import tech.jhipster.service.filter.IntegerFilter;
+import tech.jhipster.service.filter.LongFilter;
+import tech.jhipster.service.filter.StringFilter;
 
 /**
  * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Memory} entity. This class is used
@@ -32,7 +32,7 @@ public class MemoryCriteria implements Serializable, Criteria {
 
     private LongFilter commentsId;
 
-    private LongFilter textId;
+    private LongFilter baseCommentId;
 
     private LongFilter writerId;
 
@@ -40,15 +40,14 @@ public class MemoryCriteria implements Serializable, Criteria {
 
     private LongFilter departmentId;
 
-    public MemoryCriteria() {
-    }
+    public MemoryCriteria() {}
 
     public MemoryCriteria(MemoryCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.title = other.title == null ? null : other.title.copy();
         this.isPrivate = other.isPrivate == null ? null : other.isPrivate.copy();
         this.commentsId = other.commentsId == null ? null : other.commentsId.copy();
-        this.textId = other.textId == null ? null : other.textId.copy();
+        this.baseCommentId = other.baseCommentId == null ? null : other.baseCommentId.copy();
         this.writerId = other.writerId == null ? null : other.writerId.copy();
         this.tagedId = other.tagedId == null ? null : other.tagedId.copy();
         this.departmentId = other.departmentId == null ? null : other.departmentId.copy();
@@ -91,12 +90,12 @@ public class MemoryCriteria implements Serializable, Criteria {
         this.commentsId = commentsId;
     }
 
-    public LongFilter getTextId() {
-        return textId;
+    public LongFilter getBaseCommentId() {
+        return baseCommentId;
     }
 
-    public void setTextId(LongFilter textId) {
-        this.textId = textId;
+    public void setBaseCommentId(LongFilter baseCommentId) {
+        this.baseCommentId = baseCommentId;
     }
 
     public LongFilter getWriterId() {
@@ -123,7 +122,6 @@ public class MemoryCriteria implements Serializable, Criteria {
         this.departmentId = departmentId;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -133,29 +131,21 @@ public class MemoryCriteria implements Serializable, Criteria {
             return false;
         }
         final MemoryCriteria that = (MemoryCriteria) o;
-        return
+        return (
             Objects.equals(id, that.id) &&
             Objects.equals(title, that.title) &&
             Objects.equals(isPrivate, that.isPrivate) &&
             Objects.equals(commentsId, that.commentsId) &&
-            Objects.equals(textId, that.textId) &&
+            Objects.equals(baseCommentId, that.baseCommentId) &&
             Objects.equals(writerId, that.writerId) &&
             Objects.equals(tagedId, that.tagedId) &&
-            Objects.equals(departmentId, that.departmentId);
+            Objects.equals(departmentId, that.departmentId)
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-        id,
-        title,
-        isPrivate,
-        commentsId,
-        textId,
-        writerId,
-        tagedId,
-        departmentId
-        );
+        return Objects.hash(id, title, isPrivate, commentsId, baseCommentId, writerId, tagedId, departmentId);
     }
 
     // prettier-ignore
@@ -166,11 +156,10 @@ public class MemoryCriteria implements Serializable, Criteria {
                 (title != null ? "title=" + title + ", " : "") +
                 (isPrivate != null ? "isPrivate=" + isPrivate + ", " : "") +
                 (commentsId != null ? "commentsId=" + commentsId + ", " : "") +
-                (textId != null ? "textId=" + textId + ", " : "") +
+                (baseCommentId != null ? "baseCommentId=" + baseCommentId + ", " : "") +
                 (writerId != null ? "writerId=" + writerId + ", " : "") +
                 (tagedId != null ? "tagedId=" + tagedId + ", " : "") +
                 (departmentId != null ? "departmentId=" + departmentId + ", " : "") +
             "}";
     }
-
 }

@@ -1,15 +1,17 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.service.CommentService;
-import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
-import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.CommentCriteria;
 import edu.sharif.math.yaadbuzz.security.AuthoritiesConstants;
 import edu.sharif.math.yaadbuzz.service.CommentQueryService;
-
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import edu.sharif.math.yaadbuzz.service.CommentService;
+import edu.sharif.math.yaadbuzz.service.dto.CommentCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
+import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,17 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 import javax.annotation.security.RolesAllowed;
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-
 /**
  * REST controller for managing {@link edu.sharif.math.yaadbuzz.domain.Comment}.
  */
@@ -66,7 +65,8 @@ public class CommentResource {
             throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
         }
         CommentDTO result = commentService.save(commentDTO);
-        return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/comments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -87,9 +87,35 @@ public class CommentResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         CommentDTO result = commentService.save(commentDTO);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, commentDTO.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /comments} : Updates given fields of an existing comment.
+     *
+     * @param commentDTO the commentDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated commentDTO,
+     * or with status {@code 400 (Bad Request)} if the commentDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the commentDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the commentDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/comments", consumes = "application/merge-patch+json")
+    public ResponseEntity<CommentDTO> partialUpdateComment(@NotNull @RequestBody CommentDTO commentDTO) throws URISyntaxException {
+        log.debug("REST request to update Comment partially : {}", commentDTO);
+        if (commentDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+
+        Optional<CommentDTO> result = commentService.partialUpdate(commentDTO);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, commentDTO.getId().toString())
+        );
     }
 
     /**
@@ -142,6 +168,9 @@ public class CommentResource {
     public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         log.debug("REST request to delete Comment : {}", id);
         commentService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

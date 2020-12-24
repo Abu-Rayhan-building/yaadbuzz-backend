@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './topic.reducer';
-import { ITopic } from 'app/shared/model/topic.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface ITopicDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,8 +20,8 @@ export const TopicDetail = (props: ITopicDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          <Translate contentKey="yaadbuzzApp.topic.detail.title">Topic</Translate> [<b>{topicEntity.id}</b>]
+        <h2 data-cy="topicDetailsHeading">
+          <Translate contentKey="yaadbuzzApp.topic.detail.title">Topic</Translate> [<strong>{topicEntity.id}</strong>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
@@ -34,7 +33,7 @@ export const TopicDetail = (props: ITopicDetailProps) => {
           <dt>
             <Translate contentKey="yaadbuzzApp.topic.department">Department</Translate>
           </dt>
-          <dd>{topicEntity.departmentId ? topicEntity.departmentId : ''}</dd>
+          <dd>{topicEntity.department ? topicEntity.department.id : ''}</dd>
           <dt>
             <Translate contentKey="yaadbuzzApp.topic.voters">Voters</Translate>
           </dt>
@@ -49,7 +48,7 @@ export const TopicDetail = (props: ITopicDetailProps) => {
               : null}
           </dd>
         </dl>
-        <Button tag={Link} to="/topic" replace color="info">
+        <Button tag={Link} to="/topic" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

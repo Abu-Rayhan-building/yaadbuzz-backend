@@ -1,8 +1,13 @@
 package edu.sharif.math.yaadbuzz.service.impl;
 
+import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
+import edu.sharif.math.yaadbuzz.repository.UserPerDepartmentRepository;
+import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
+import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.UserPerDepartmentMapper;
+
 import java.util.HashSet;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +30,7 @@ import edu.sharif.math.yaadbuzz.service.dto.TopicVoteCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.UserPerDepartmentMapper;
-import io.github.jhipster.service.filter.LongFilter;
+import tech.jhipster.service.filter.LongFilter;
 
 /**
  * Service Implementation for managing {@link UserPerDepartment}.
@@ -69,35 +74,56 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
     @Override
     public boolean currentuserHasGetAccess(final Long id) {
 	return this.departmentService.currentuserHasGetAccess(
-		this.findOne(id).get().getDepartmentId());
+		this.findOne(id).get().getDepartment().getId());
     }
 
     @Override
     public boolean currentuserHasUpdateAccess(final Long id) {
-	return this.findOne(id).get().getRealUserId()
+	return this.findOne(id).get().getRealUser().getId()
 		.equals(this.userService.getCurrentUserId());
     }
 
     @Override
-    public void delete(final Long id) {
-	this.log.debug("Request to delete UserPerDepartment : {}", id);
-	this.userPerDepartmentRepository.deleteById(id);
+    public UserPerDepartmentDTO save(
+	    UserPerDepartmentDTO userPerDepartmentDTO) {
+	log.debug("Request to save UserPerDepartment : {}",
+		userPerDepartmentDTO);
+	UserPerDepartment userPerDepartment = userPerDepartmentMapper
+		.toEntity(userPerDepartmentDTO);
+	userPerDepartment = userPerDepartmentRepository.save(userPerDepartment);
+	return userPerDepartmentMapper.toDto(userPerDepartment);
+    }
+
+    @Override
+    public Optional<UserPerDepartmentDTO> partialUpdate(
+	    UserPerDepartmentDTO userPerDepartmentDTO) {
+	log.debug("Request to partially update UserPerDepartment : {}",
+		userPerDepartmentDTO);
+
+	return userPerDepartmentRepository
+		.findById(userPerDepartmentDTO.getId())
+		.map(existingUserPerDepartment -> {
+		    if (userPerDepartmentDTO.getNicName() != null) {
+			existingUserPerDepartment
+				.setNicName(userPerDepartmentDTO.getNicName());
+		    }
+
+		    if (userPerDepartmentDTO.getBio() != null) {
+			existingUserPerDepartment
+				.setBio(userPerDepartmentDTO.getBio());
+		    }
+
+		    return existingUserPerDepartment;
+		}).map(userPerDepartmentRepository::save)
+		.map(userPerDepartmentMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<UserPerDepartmentDTO> findAll(final Pageable pageable) {
-	this.log.debug("Request to get all UserPerDepartments");
-	return this.userPerDepartmentRepository.findAll(pageable)
-		.map(this.userPerDepartmentMapper::toDto);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<UserPerDepartmentDTO> findOne(final Long id) {
-	this.log.debug("Request to get UserPerDepartment : {}", id);
-	return this.userPerDepartmentRepository.findById(id)
-		.map(this.userPerDepartmentMapper::toDto);
+    public Page<UserPerDepartmentDTO> findAll(Pageable pageable) {
+	log.debug("Request to get all UserPerDepartments");
+	return userPerDepartmentRepository.findAll(pageable)
+		.map(userPerDepartmentMapper::toDto);
     }
 
     @Override
@@ -132,7 +158,7 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 	    topics.stream().forEach(t -> {
 		final boolean[] flag = new boolean[1];
 		voted.forEach(tr -> {
-		    if (tr.getTopicId().equals(t.getId())) {
+		    if (tr.getTopic().equals(t)) {
 			flag[0] = true;
 		    }
 		});
@@ -156,7 +182,7 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 	    allUsers.forEach(upd -> {
 		final boolean[] flag = new boolean[1];
 		memorials.forEach(mem -> {
-		    if (mem.getRecipientId().equals(upd.getId())) {
+		    if (mem.getRecipient().equals(upd)) {
 			flag[0] = true;
 		    }
 		});
@@ -174,24 +200,32 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 
     @Override
     public Long getCurrentUserUserPerDepeartmentIdInDep(final Long depid) {
-	return this.getCurrentUserInDep(depid).getId();
+	return this.getCurrentUserUserPerDepeartmentInDep(depid).getId();
     }
 
     @Override
-    public UserPerDepartmentDTO save(
-	    final UserPerDepartmentDTO userPerDepartmentDTO) {
-	this.log.debug("Request to save UserPerDepartment : {}",
-		userPerDepartmentDTO);
-	UserPerDepartment userPerDepartment = this.userPerDepartmentMapper
-		.toEntity(userPerDepartmentDTO);
-	userPerDepartment = this.userPerDepartmentRepository
-		.save(userPerDepartment);
-	return this.userPerDepartmentMapper.toDto(userPerDepartment);
+    @Transactional(readOnly = true)
+    public Optional<UserPerDepartmentDTO> findOne(Long id) {
+	log.debug("Request to get UserPerDepartment : {}", id);
+	return userPerDepartmentRepository.findById(id)
+		.map(userPerDepartmentMapper::toDto);
+    }
+
+    @Override
+    public void delete(Long id) {
+	log.debug("Request to delete UserPerDepartment : {}", id);
+	userPerDepartmentRepository.deleteById(id);
     }
 
     @Autowired
     public void setDepartmentService(
 	    final DepartmentService departmentService) {
 	this.departmentService = departmentService;
+    }
+
+    @Override
+    public UserPerDepartmentDTO getCurrentUserUserPerDepeartmentInDep(
+	    Long depId) {
+	return this.getCurrentUserInDep(depId);
     }
 }

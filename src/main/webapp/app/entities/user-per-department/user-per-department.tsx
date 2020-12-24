@@ -3,7 +3,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate, ICrudGetAllAction, getSortState, IPaginationBaseState } from 'react-jhipster';
+import { Translate, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -75,16 +75,26 @@ export const UserPerDepartment = (props: IUserPerDepartmentProps) => {
     setSorting(true);
   };
 
+  const handleSyncList = () => {
+    resetAll();
+  };
+
   const { userPerDepartmentList, match, loading } = props;
   return (
     <div>
-      <h2 id="user-per-department-heading">
+      <h2 id="user-per-department-heading" data-cy="UserPerDepartmentHeading">
         <Translate contentKey="yaadbuzzApp.userPerDepartment.home.title">User Per Departments</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="yaadbuzzApp.userPerDepartment.home.createLabel">Create new User Per Department</Translate>
-        </Link>
+        <div className="d-flex justify-content-end">
+          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
+            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
+            <Translate contentKey="yaadbuzzApp.userPerDepartment.home.refreshListLabel">Refresh List</Translate>
+          </Button>
+          <Link to={`${match.url}/new`} className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+            <FontAwesomeIcon icon="plus" />
+            &nbsp;
+            <Translate contentKey="yaadbuzzApp.userPerDepartment.home.createLabel">Create new User Per Department</Translate>
+          </Link>
+        </div>
       </h2>
       <div className="table-responsive">
         <InfiniteScroll
@@ -122,7 +132,7 @@ export const UserPerDepartment = (props: IUserPerDepartmentProps) => {
               </thead>
               <tbody>
                 {userPerDepartmentList.map((userPerDepartment, i) => (
-                  <tr key={`entity-${i}`}>
+                  <tr key={`entity-${i}`} data-cy="entityTable">
                     <td>
                       <Button tag={Link} to={`${match.url}/${userPerDepartment.id}`} color="link" size="sm">
                         {userPerDepartment.id}
@@ -131,35 +141,47 @@ export const UserPerDepartment = (props: IUserPerDepartmentProps) => {
                     <td>{userPerDepartment.nicName}</td>
                     <td>{userPerDepartment.bio}</td>
                     <td>
-                      {userPerDepartment.avatarId ? (
-                        <Link to={`picture/${userPerDepartment.avatarId}`}>{userPerDepartment.avatarId}</Link>
+                      {userPerDepartment.avatar ? (
+                        <Link to={`picture/${userPerDepartment.avatar.id}`}>{userPerDepartment.avatar.id}</Link>
                       ) : (
                         ''
                       )}
                     </td>
-                    <td>{userPerDepartment.realUserId ? userPerDepartment.realUserId : ''}</td>
+                    <td>{userPerDepartment.realUser ? userPerDepartment.realUser.id : ''}</td>
                     <td>
-                      {userPerDepartment.departmentId ? (
-                        <Link to={`department/${userPerDepartment.departmentId}`}>{userPerDepartment.departmentId}</Link>
+                      {userPerDepartment.department ? (
+                        <Link to={`department/${userPerDepartment.department.id}`}>{userPerDepartment.department.id}</Link>
                       ) : (
                         ''
                       )}
                     </td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${userPerDepartment.id}`} color="info" size="sm">
+                        <Button tag={Link} to={`${match.url}/${userPerDepartment.id}`} color="info" size="sm" data-cy="entityDetailsButton">
                           <FontAwesomeIcon icon="eye" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.view">View</Translate>
                           </span>
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${userPerDepartment.id}/edit`} color="primary" size="sm">
+                        <Button
+                          tag={Link}
+                          to={`${match.url}/${userPerDepartment.id}/edit`}
+                          color="primary"
+                          size="sm"
+                          data-cy="entityEditButton"
+                        >
                           <FontAwesomeIcon icon="pencil-alt" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.edit">Edit</Translate>
                           </span>
                         </Button>
-                        <Button tag={Link} to={`${match.url}/${userPerDepartment.id}/delete`} color="danger" size="sm">
+                        <Button
+                          tag={Link}
+                          to={`${match.url}/${userPerDepartment.id}/delete`}
+                          color="danger"
+                          size="sm"
+                          data-cy="entityDeleteButton"
+                        >
                           <FontAwesomeIcon icon="trash" />{' '}
                           <span className="d-none d-md-inline">
                             <Translate contentKey="entity.action.delete">Delete</Translate>

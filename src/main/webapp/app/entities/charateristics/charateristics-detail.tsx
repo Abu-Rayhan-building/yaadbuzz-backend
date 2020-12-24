@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './charateristics.reducer';
-import { ICharateristics } from 'app/shared/model/charateristics.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface ICharateristicsDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,8 +20,9 @@ export const CharateristicsDetail = (props: ICharateristicsDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          <Translate contentKey="yaadbuzzApp.charateristics.detail.title">Charateristics</Translate> [<b>{charateristicsEntity.id}</b>]
+        <h2 data-cy="charateristicsDetailsHeading">
+          <Translate contentKey="yaadbuzzApp.charateristics.detail.title">Charateristics</Translate> [
+          <strong>{charateristicsEntity.id}</strong>]
         </h2>
         <dl className="jh-entity-details">
           <dt>
@@ -40,9 +40,9 @@ export const CharateristicsDetail = (props: ICharateristicsDetailProps) => {
           <dt>
             <Translate contentKey="yaadbuzzApp.charateristics.userPerDepartment">User Per Department</Translate>
           </dt>
-          <dd>{charateristicsEntity.userPerDepartmentId ? charateristicsEntity.userPerDepartmentId : ''}</dd>
+          <dd>{charateristicsEntity.userPerDepartment ? charateristicsEntity.userPerDepartment.id : ''}</dd>
         </dl>
-        <Button tag={Link} to="/charateristics" replace color="info">
+        <Button tag={Link} to="/charateristics" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

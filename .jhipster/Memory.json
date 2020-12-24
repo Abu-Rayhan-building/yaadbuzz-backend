@@ -20,9 +20,9 @@
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "comment",
-      "otherEntityRelationshipName": "memory",
+      "otherEntityRelationshipName": "fuckmemory",
       "relationshipValidateRules": "required",
-      "relationshipName": "text",
+      "relationshipName": "baseComment",
       "otherEntityField": "id"
     },
     {

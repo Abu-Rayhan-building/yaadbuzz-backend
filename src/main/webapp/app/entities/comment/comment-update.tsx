@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -21,7 +21,7 @@ export interface ICommentUpdateProps extends StateProps, DispatchProps, RouteCom
 export const CommentUpdate = (props: ICommentUpdateProps) => {
   const [writerId, setWriterId] = useState('0');
   const [memoryId, setMemoryId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { commentEntity, userPerDepartments, memories, loading, updating } = props;
 
@@ -63,7 +63,7 @@ export const CommentUpdate = (props: ICommentUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="yaadbuzzApp.comment.home.createOrEditLabel">
+          <h2 id="yaadbuzzApp.comment.home.createOrEditLabel" data-cy="CommentCreateUpdateHeading">
             <Translate contentKey="yaadbuzzApp.comment.home.createOrEditLabel">Create or edit a Comment</Translate>
           </h2>
         </Col>
@@ -88,6 +88,7 @@ export const CommentUpdate = (props: ICommentUpdateProps) => {
                 </Label>
                 <AvField
                   id="comment-text"
+                  data-cy="text"
                   type="text"
                   name="text"
                   validate={{
@@ -99,7 +100,7 @@ export const CommentUpdate = (props: ICommentUpdateProps) => {
                 <Label for="comment-writer">
                   <Translate contentKey="yaadbuzzApp.comment.writer">Writer</Translate>
                 </Label>
-                <AvInput id="comment-writer" type="select" className="form-control" name="writerId" required>
+                <AvInput id="comment-writer" data-cy="writer" type="select" className="form-control" name="writerId" required>
                   {userPerDepartments
                     ? userPerDepartments.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -116,7 +117,7 @@ export const CommentUpdate = (props: ICommentUpdateProps) => {
                 <Label for="comment-memory">
                   <Translate contentKey="yaadbuzzApp.comment.memory">Memory</Translate>
                 </Label>
-                <AvInput id="comment-memory" type="select" className="form-control" name="memoryId" required>
+                <AvInput id="comment-memory" data-cy="memory" type="select" className="form-control" name="memoryId" required>
                   {memories
                     ? memories.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -137,7 +138,7 @@ export const CommentUpdate = (props: ICommentUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

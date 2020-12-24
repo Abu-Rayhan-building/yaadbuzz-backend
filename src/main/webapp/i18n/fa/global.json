@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "yaadbuzz",
+    "title": "Yaadbuzz",
     "browsehappy": "شما از مرورگر <strong>قدیمی</strong> استفاده می‌کنید. لطفا <a href=\"http://browsehappy.com/?locale=en\">مرورگر خود را به روز کنید</a>",
     "menu": {
       "home": "خانه",
@@ -36,7 +36,6 @@
         "health": "سلامتی",
         "configuration": "پیکربندی",
         "logs": "وقایع ثبت شده",
-        "audits": "وقایع بازرسی",
         "apidocs": "ای‌پی‌آی",
         "database": "پایگاه داده",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"

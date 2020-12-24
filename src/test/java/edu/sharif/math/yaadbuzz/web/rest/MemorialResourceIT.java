@@ -1,49 +1,44 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.YaadbuzzBackendApp;
-import edu.sharif.math.yaadbuzz.domain.Memorial;
-import edu.sharif.math.yaadbuzz.domain.Comment;
-import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
-import edu.sharif.math.yaadbuzz.repository.MemorialRepository;
-import edu.sharif.math.yaadbuzz.service.MemorialService;
-import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.MemorialMapper;
-import edu.sharif.math.yaadbuzz.service.dto.MemorialCriteria;
-import edu.sharif.math.yaadbuzz.service.MemorialQueryService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import edu.sharif.math.yaadbuzz.IntegrationTest;
+import edu.sharif.math.yaadbuzz.domain.Comment;
+import edu.sharif.math.yaadbuzz.domain.Department;
+import edu.sharif.math.yaadbuzz.domain.Memorial;
+import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
+import edu.sharif.math.yaadbuzz.repository.MemorialRepository;
+import edu.sharif.math.yaadbuzz.service.MemorialQueryService;
+import edu.sharif.math.yaadbuzz.service.dto.MemorialCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.MemorialMapper;
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Integration tests for the {@link MemorialResource} REST controller.
  */
-@SpringBootTest(classes = YaadbuzzBackendApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class MemorialResourceIT {
+class MemorialResourceIT {
 
     @Autowired
     private MemorialRepository memorialRepository;
 
     @Autowired
     private MemorialMapper memorialMapper;
-
-    @Autowired
-    private MemorialService memorialService;
 
     @Autowired
     private MemorialQueryService memorialQueryService;
@@ -76,8 +71,19 @@ public class MemorialResourceIT {
         memorial.setWriter(userPerDepartment);
         // Add required entity
         memorial.setRecipient(userPerDepartment);
+        // Add required entity
+        Department department;
+        if (TestUtil.findAll(em, Department.class).isEmpty()) {
+            department = DepartmentResourceIT.createEntity(em);
+            em.persist(department);
+            em.flush();
+        } else {
+            department = TestUtil.findAll(em, Department.class).get(0);
+        }
+        memorial.setDepartment(department);
         return memorial;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -98,6 +104,16 @@ public class MemorialResourceIT {
         memorial.setWriter(userPerDepartment);
         // Add required entity
         memorial.setRecipient(userPerDepartment);
+        // Add required entity
+        Department department;
+        if (TestUtil.findAll(em, Department.class).isEmpty()) {
+            department = DepartmentResourceIT.createUpdatedEntity(em);
+            em.persist(department);
+            em.flush();
+        } else {
+            department = TestUtil.findAll(em, Department.class).get(0);
+        }
+        memorial.setDepartment(department);
         return memorial;
     }
 
@@ -108,13 +124,12 @@ public class MemorialResourceIT {
 
     @Test
     @Transactional
-    public void createMemorial() throws Exception {
+    void createMemorial() throws Exception {
         int databaseSizeBeforeCreate = memorialRepository.findAll().size();
         // Create the Memorial
         MemorialDTO memorialDTO = memorialMapper.toDto(memorial);
-        restMemorialMockMvc.perform(post("/api/memorials")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(memorialDTO)))
+        restMemorialMockMvc
+            .perform(post("/api/memorials").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(memorialDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Memorial in the database
@@ -125,17 +140,16 @@ public class MemorialResourceIT {
 
     @Test
     @Transactional
-    public void createMemorialWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = memorialRepository.findAll().size();
-
+    void createMemorialWithExistingId() throws Exception {
         // Create the Memorial with an existing ID
         memorial.setId(1L);
         MemorialDTO memorialDTO = memorialMapper.toDto(memorial);
 
+        int databaseSizeBeforeCreate = memorialRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restMemorialMockMvc.perform(post("/api/memorials")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(memorialDTO)))
+        restMemorialMockMvc
+            .perform(post("/api/memorials").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(memorialDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Memorial in the database
@@ -143,37 +157,37 @@ public class MemorialResourceIT {
         assertThat(memorialList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void getAllMemorials() throws Exception {
+    void getAllMemorials() throws Exception {
         // Initialize the database
         memorialRepository.saveAndFlush(memorial);
 
         // Get all the memorialList
-        restMemorialMockMvc.perform(get("/api/memorials?sort=id,desc"))
+        restMemorialMockMvc
+            .perform(get("/api/memorials?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(memorial.getId().intValue())));
     }
-    
+
     @Test
     @Transactional
-    public void getMemorial() throws Exception {
+    void getMemorial() throws Exception {
         // Initialize the database
         memorialRepository.saveAndFlush(memorial);
 
         // Get the memorial
-        restMemorialMockMvc.perform(get("/api/memorials/{id}", memorial.getId()))
+        restMemorialMockMvc
+            .perform(get("/api/memorials/{id}", memorial.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(memorial.getId().intValue()));
     }
 
-
     @Test
     @Transactional
-    public void getMemorialsByIdFiltering() throws Exception {
+    void getMemorialsByIdFiltering() throws Exception {
         // Initialize the database
         memorialRepository.saveAndFlush(memorial);
 
@@ -189,10 +203,9 @@ public class MemorialResourceIT {
         defaultMemorialShouldNotBeFound("id.lessThan=" + id);
     }
 
-
     @Test
     @Transactional
-    public void getAllMemorialsByAnonymousCommentIsEqualToSomething() throws Exception {
+    void getAllMemorialsByAnonymousCommentIsEqualToSomething() throws Exception {
         // Initialize the database
         memorialRepository.saveAndFlush(memorial);
         Comment anonymousComment = CommentResourceIT.createEntity(em);
@@ -209,10 +222,9 @@ public class MemorialResourceIT {
         defaultMemorialShouldNotBeFound("anonymousCommentId.equals=" + (anonymousCommentId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllMemorialsByNotAnonymousCommentIsEqualToSomething() throws Exception {
+    void getAllMemorialsByNotAnonymousCommentIsEqualToSomething() throws Exception {
         // Initialize the database
         memorialRepository.saveAndFlush(memorial);
         Comment notAnonymousComment = CommentResourceIT.createEntity(em);
@@ -229,12 +241,15 @@ public class MemorialResourceIT {
         defaultMemorialShouldNotBeFound("notAnonymousCommentId.equals=" + (notAnonymousCommentId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllMemorialsByWriterIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        UserPerDepartment writer = memorial.getWriter();
+    void getAllMemorialsByWriterIsEqualToSomething() throws Exception {
+        // Initialize the database
+        memorialRepository.saveAndFlush(memorial);
+        UserPerDepartment writer = UserPerDepartmentResourceIT.createEntity(em);
+        em.persist(writer);
+        em.flush();
+        memorial.setWriter(writer);
         memorialRepository.saveAndFlush(memorial);
         Long writerId = writer.getId();
 
@@ -245,12 +260,15 @@ public class MemorialResourceIT {
         defaultMemorialShouldNotBeFound("writerId.equals=" + (writerId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllMemorialsByRecipientIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        UserPerDepartment recipient = memorial.getRecipient();
+    void getAllMemorialsByRecipientIsEqualToSomething() throws Exception {
+        // Initialize the database
+        memorialRepository.saveAndFlush(memorial);
+        UserPerDepartment recipient = UserPerDepartmentResourceIT.createEntity(em);
+        em.persist(recipient);
+        em.flush();
+        memorial.setRecipient(recipient);
         memorialRepository.saveAndFlush(memorial);
         Long recipientId = recipient.getId();
 
@@ -261,17 +279,38 @@ public class MemorialResourceIT {
         defaultMemorialShouldNotBeFound("recipientId.equals=" + (recipientId + 1));
     }
 
+    @Test
+    @Transactional
+    void getAllMemorialsByDepartmentIsEqualToSomething() throws Exception {
+        // Initialize the database
+        memorialRepository.saveAndFlush(memorial);
+        Department department = DepartmentResourceIT.createEntity(em);
+        em.persist(department);
+        em.flush();
+        memorial.setDepartment(department);
+        memorialRepository.saveAndFlush(memorial);
+        Long departmentId = department.getId();
+
+        // Get all the memorialList where department equals to departmentId
+        defaultMemorialShouldBeFound("departmentId.equals=" + departmentId);
+
+        // Get all the memorialList where department equals to departmentId + 1
+        defaultMemorialShouldNotBeFound("departmentId.equals=" + (departmentId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
     private void defaultMemorialShouldBeFound(String filter) throws Exception {
-        restMemorialMockMvc.perform(get("/api/memorials?sort=id,desc&" + filter))
+        restMemorialMockMvc
+            .perform(get("/api/memorials?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(memorial.getId().intValue())));
 
         // Check, that the count call also returns 1
-        restMemorialMockMvc.perform(get("/api/memorials/count?sort=id,desc&" + filter))
+        restMemorialMockMvc
+            .perform(get("/api/memorials/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("1"));
@@ -281,14 +320,16 @@ public class MemorialResourceIT {
      * Executes the search, and checks that the default entity is not returned.
      */
     private void defaultMemorialShouldNotBeFound(String filter) throws Exception {
-        restMemorialMockMvc.perform(get("/api/memorials?sort=id,desc&" + filter))
+        restMemorialMockMvc
+            .perform(get("/api/memorials?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$").isEmpty());
 
         // Check, that the count call also returns 0
-        restMemorialMockMvc.perform(get("/api/memorials/count?sort=id,desc&" + filter))
+        restMemorialMockMvc
+            .perform(get("/api/memorials/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("0"));
@@ -296,15 +337,14 @@ public class MemorialResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingMemorial() throws Exception {
+    void getNonExistingMemorial() throws Exception {
         // Get the memorial
-        restMemorialMockMvc.perform(get("/api/memorials/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restMemorialMockMvc.perform(get("/api/memorials/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateMemorial() throws Exception {
+    void updateMemorial() throws Exception {
         // Initialize the database
         memorialRepository.saveAndFlush(memorial);
 
@@ -316,9 +356,8 @@ public class MemorialResourceIT {
         em.detach(updatedMemorial);
         MemorialDTO memorialDTO = memorialMapper.toDto(updatedMemorial);
 
-        restMemorialMockMvc.perform(put("/api/memorials")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(memorialDTO)))
+        restMemorialMockMvc
+            .perform(put("/api/memorials").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(memorialDTO)))
             .andExpect(status().isOk());
 
         // Validate the Memorial in the database
@@ -329,16 +368,15 @@ public class MemorialResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingMemorial() throws Exception {
+    void updateNonExistingMemorial() throws Exception {
         int databaseSizeBeforeUpdate = memorialRepository.findAll().size();
 
         // Create the Memorial
         MemorialDTO memorialDTO = memorialMapper.toDto(memorial);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restMemorialMockMvc.perform(put("/api/memorials")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(memorialDTO)))
+        restMemorialMockMvc
+            .perform(put("/api/memorials").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(memorialDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Memorial in the database
@@ -348,15 +386,82 @@ public class MemorialResourceIT {
 
     @Test
     @Transactional
-    public void deleteMemorial() throws Exception {
+    void partialUpdateMemorialWithPatch() throws Exception {
+        // Initialize the database
+        memorialRepository.saveAndFlush(memorial);
+
+        int databaseSizeBeforeUpdate = memorialRepository.findAll().size();
+
+        // Update the memorial using partial update
+        Memorial partialUpdatedMemorial = new Memorial();
+        partialUpdatedMemorial.setId(memorial.getId());
+
+        restMemorialMockMvc
+            .perform(
+                patch("/api/memorials")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedMemorial))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Memorial in the database
+        List<Memorial> memorialList = memorialRepository.findAll();
+        assertThat(memorialList).hasSize(databaseSizeBeforeUpdate);
+        Memorial testMemorial = memorialList.get(memorialList.size() - 1);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateMemorialWithPatch() throws Exception {
+        // Initialize the database
+        memorialRepository.saveAndFlush(memorial);
+
+        int databaseSizeBeforeUpdate = memorialRepository.findAll().size();
+
+        // Update the memorial using partial update
+        Memorial partialUpdatedMemorial = new Memorial();
+        partialUpdatedMemorial.setId(memorial.getId());
+
+        restMemorialMockMvc
+            .perform(
+                patch("/api/memorials")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedMemorial))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Memorial in the database
+        List<Memorial> memorialList = memorialRepository.findAll();
+        assertThat(memorialList).hasSize(databaseSizeBeforeUpdate);
+        Memorial testMemorial = memorialList.get(memorialList.size() - 1);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateMemorialShouldThrown() throws Exception {
+        // Update the memorial without id should throw
+        Memorial partialUpdatedMemorial = new Memorial();
+
+        restMemorialMockMvc
+            .perform(
+                patch("/api/memorials")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedMemorial))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    void deleteMemorial() throws Exception {
         // Initialize the database
         memorialRepository.saveAndFlush(memorial);
 
         int databaseSizeBeforeDelete = memorialRepository.findAll().size();
 
         // Delete the memorial
-        restMemorialMockMvc.perform(delete("/api/memorials/{id}", memorial.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restMemorialMockMvc
+            .perform(delete("/api/memorials/{id}", memorial.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 
@@ -21,7 +22,7 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 
     private Boolean isPrivate;
 
-    private Long textId;
+    private Long baseCommentId;
 
     private Set<UserPerDepartmentDTO> tageds = new HashSet<>();
 
@@ -30,7 +31,11 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 	final var res = new MemoryDTO();
 	res.setIsPrivate(this.isPrivate);
 	res.setTageds(this.tageds);
-	res.setTextId(this.textId);
+	{
+	    var com = new CommentDTO();
+	    com.setId(this.getBaseCommentId());
+	    res.setBaseComment(com);
+	}
 	res.setTitle(this.title);
 	return res;
     }
@@ -39,8 +44,8 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 	return this.tageds;
     }
 
-    public Long getTextId() {
-	return this.textId;
+    public Long getBaseCommentId() {
+	return this.baseCommentId;
     }
 
     public String getTitle() {
@@ -64,8 +69,8 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 	this.tageds = userPerDepartments;
     }
 
-    public void setTextId(final Long commentId) {
-	this.textId = commentId;
+    public void setBaseCommentId(final Long commentId) {
+	this.baseCommentId = commentId;
     }
 
     public void setTitle(final String title) {
@@ -77,7 +82,7 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
     public String toString() {
 	return "MemoryDTO{" + ", title='" + this.getTitle() + "'"
 		+ ", isPrivate='" + this.isIsPrivate() + "'" + ", textId="
-		+ this.getTextId() + ", tageds='" + this.getTageds() + "'"
+		+ this.getBaseCommentId() + ", tageds='" + this.getTageds() + "'"
 		+ "}";
     }
 }

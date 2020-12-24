@@ -1,49 +1,47 @@
 package edu.sharif.math.yaadbuzz.web.rest;
 
-import edu.sharif.math.yaadbuzz.YaadbuzzBackendApp;
-import edu.sharif.math.yaadbuzz.domain.Memory;
-import edu.sharif.math.yaadbuzz.domain.Comment;
-import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
-import edu.sharif.math.yaadbuzz.domain.Department;
-import edu.sharif.math.yaadbuzz.repository.MemoryRepository;
-import edu.sharif.math.yaadbuzz.service.MemoryService;
-import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
-import edu.sharif.math.yaadbuzz.service.mapper.MemoryMapper;
-import edu.sharif.math.yaadbuzz.service.dto.MemoryCriteria;
-import edu.sharif.math.yaadbuzz.service.MemoryQueryService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import edu.sharif.math.yaadbuzz.IntegrationTest;
+import edu.sharif.math.yaadbuzz.domain.Comment;
+import edu.sharif.math.yaadbuzz.domain.Department;
+import edu.sharif.math.yaadbuzz.domain.Memory;
+import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
+import edu.sharif.math.yaadbuzz.repository.MemoryRepository;
+import edu.sharif.math.yaadbuzz.service.MemoryQueryService;
+import edu.sharif.math.yaadbuzz.service.MemoryService;
+import edu.sharif.math.yaadbuzz.service.dto.MemoryCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.MemoryMapper;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Integration tests for the {@link MemoryResource} REST controller.
  */
-@SpringBootTest(classes = YaadbuzzBackendApp.class)
+@IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class MemoryResourceIT {
+class MemoryResourceIT {
 
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
@@ -64,9 +62,6 @@ public class MemoryResourceIT {
     private MemoryService memoryServiceMock;
 
     @Autowired
-    private MemoryService memoryService;
-
-    @Autowired
     private MemoryQueryService memoryQueryService;
 
     @Autowired
@@ -84,9 +79,7 @@ public class MemoryResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Memory createEntity(EntityManager em) {
-        Memory memory = new Memory()
-            .title(DEFAULT_TITLE)
-            .isPrivate(DEFAULT_IS_PRIVATE);
+        Memory memory = new Memory().title(DEFAULT_TITLE).isPrivate(DEFAULT_IS_PRIVATE);
         // Add required entity
         Comment comment;
         if (TestUtil.findAll(em, Comment.class).isEmpty()) {
@@ -96,7 +89,7 @@ public class MemoryResourceIT {
         } else {
             comment = TestUtil.findAll(em, Comment.class).get(0);
         }
-        memory.setText(comment);
+        memory.setBaseComment(comment);
         // Add required entity
         UserPerDepartment userPerDepartment;
         if (TestUtil.findAll(em, UserPerDepartment.class).isEmpty()) {
@@ -119,6 +112,7 @@ public class MemoryResourceIT {
         memory.setDepartment(department);
         return memory;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -126,9 +120,7 @@ public class MemoryResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Memory createUpdatedEntity(EntityManager em) {
-        Memory memory = new Memory()
-            .title(UPDATED_TITLE)
-            .isPrivate(UPDATED_IS_PRIVATE);
+        Memory memory = new Memory().title(UPDATED_TITLE).isPrivate(UPDATED_IS_PRIVATE);
         // Add required entity
         Comment comment;
         if (TestUtil.findAll(em, Comment.class).isEmpty()) {
@@ -138,7 +130,7 @@ public class MemoryResourceIT {
         } else {
             comment = TestUtil.findAll(em, Comment.class).get(0);
         }
-        memory.setText(comment);
+        memory.setBaseComment(comment);
         // Add required entity
         UserPerDepartment userPerDepartment;
         if (TestUtil.findAll(em, UserPerDepartment.class).isEmpty()) {
@@ -169,13 +161,12 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void createMemory() throws Exception {
+    void createMemory() throws Exception {
         int databaseSizeBeforeCreate = memoryRepository.findAll().size();
         // Create the Memory
         MemoryDTO memoryDTO = memoryMapper.toDto(memory);
-        restMemoryMockMvc.perform(post("/api/memories")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(memoryDTO)))
+        restMemoryMockMvc
+            .perform(post("/api/memories").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(memoryDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Memory in the database
@@ -183,22 +174,21 @@ public class MemoryResourceIT {
         assertThat(memoryList).hasSize(databaseSizeBeforeCreate + 1);
         Memory testMemory = memoryList.get(memoryList.size() - 1);
         assertThat(testMemory.getTitle()).isEqualTo(DEFAULT_TITLE);
-        assertThat(testMemory.isIsPrivate()).isEqualTo(DEFAULT_IS_PRIVATE);
+        assertThat(testMemory.getIsPrivate()).isEqualTo(DEFAULT_IS_PRIVATE);
     }
 
     @Test
     @Transactional
-    public void createMemoryWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = memoryRepository.findAll().size();
-
+    void createMemoryWithExistingId() throws Exception {
         // Create the Memory with an existing ID
         memory.setId(1L);
         MemoryDTO memoryDTO = memoryMapper.toDto(memory);
 
+        int databaseSizeBeforeCreate = memoryRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restMemoryMockMvc.perform(post("/api/memories")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(memoryDTO)))
+        restMemoryMockMvc
+            .perform(post("/api/memories").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(memoryDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Memory in the database
@@ -206,50 +196,49 @@ public class MemoryResourceIT {
         assertThat(memoryList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void getAllMemories() throws Exception {
+    void getAllMemories() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
         // Get all the memoryList
-        restMemoryMockMvc.perform(get("/api/memories?sort=id,desc"))
+        restMemoryMockMvc
+            .perform(get("/api/memories?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(memory.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())));
     }
-    
-    @SuppressWarnings({"unchecked"})
-    public void getAllMemoriesWithEagerRelationshipsIsEnabled() throws Exception {
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllMemoriesWithEagerRelationshipsIsEnabled() throws Exception {
         when(memoryServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
-        restMemoryMockMvc.perform(get("/api/memories?eagerload=true"))
-            .andExpect(status().isOk());
+        restMemoryMockMvc.perform(get("/api/memories?eagerload=true")).andExpect(status().isOk());
 
         verify(memoryServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
-    @SuppressWarnings({"unchecked"})
-    public void getAllMemoriesWithEagerRelationshipsIsNotEnabled() throws Exception {
+    @SuppressWarnings({ "unchecked" })
+    void getAllMemoriesWithEagerRelationshipsIsNotEnabled() throws Exception {
         when(memoryServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
-        restMemoryMockMvc.perform(get("/api/memories?eagerload=true"))
-            .andExpect(status().isOk());
+        restMemoryMockMvc.perform(get("/api/memories?eagerload=true")).andExpect(status().isOk());
 
         verify(memoryServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test
     @Transactional
-    public void getMemory() throws Exception {
+    void getMemory() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
         // Get the memory
-        restMemoryMockMvc.perform(get("/api/memories/{id}", memory.getId()))
+        restMemoryMockMvc
+            .perform(get("/api/memories/{id}", memory.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(memory.getId().intValue()))
@@ -257,10 +246,9 @@ public class MemoryResourceIT {
             .andExpect(jsonPath("$.isPrivate").value(DEFAULT_IS_PRIVATE.booleanValue()));
     }
 
-
     @Test
     @Transactional
-    public void getMemoriesByIdFiltering() throws Exception {
+    void getMemoriesByIdFiltering() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -276,10 +264,9 @@ public class MemoryResourceIT {
         defaultMemoryShouldNotBeFound("id.lessThan=" + id);
     }
 
-
     @Test
     @Transactional
-    public void getAllMemoriesByTitleIsEqualToSomething() throws Exception {
+    void getAllMemoriesByTitleIsEqualToSomething() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -292,7 +279,7 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void getAllMemoriesByTitleIsNotEqualToSomething() throws Exception {
+    void getAllMemoriesByTitleIsNotEqualToSomething() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -305,7 +292,7 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void getAllMemoriesByTitleIsInShouldWork() throws Exception {
+    void getAllMemoriesByTitleIsInShouldWork() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -318,7 +305,7 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void getAllMemoriesByTitleIsNullOrNotNull() throws Exception {
+    void getAllMemoriesByTitleIsNullOrNotNull() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -328,9 +315,10 @@ public class MemoryResourceIT {
         // Get all the memoryList where title is null
         defaultMemoryShouldNotBeFound("title.specified=false");
     }
-                @Test
+
+    @Test
     @Transactional
-    public void getAllMemoriesByTitleContainsSomething() throws Exception {
+    void getAllMemoriesByTitleContainsSomething() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -343,7 +331,7 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void getAllMemoriesByTitleNotContainsSomething() throws Exception {
+    void getAllMemoriesByTitleNotContainsSomething() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -354,10 +342,9 @@ public class MemoryResourceIT {
         defaultMemoryShouldBeFound("title.doesNotContain=" + UPDATED_TITLE);
     }
 
-
     @Test
     @Transactional
-    public void getAllMemoriesByIsPrivateIsEqualToSomething() throws Exception {
+    void getAllMemoriesByIsPrivateIsEqualToSomething() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -370,7 +357,7 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void getAllMemoriesByIsPrivateIsNotEqualToSomething() throws Exception {
+    void getAllMemoriesByIsPrivateIsNotEqualToSomething() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -383,7 +370,7 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void getAllMemoriesByIsPrivateIsInShouldWork() throws Exception {
+    void getAllMemoriesByIsPrivateIsInShouldWork() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -396,7 +383,7 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void getAllMemoriesByIsPrivateIsNullOrNotNull() throws Exception {
+    void getAllMemoriesByIsPrivateIsNullOrNotNull() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -409,7 +396,7 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void getAllMemoriesByCommentsIsEqualToSomething() throws Exception {
+    void getAllMemoriesByCommentsIsEqualToSomething() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
         Comment comments = CommentResourceIT.createEntity(em);
@@ -426,28 +413,34 @@ public class MemoryResourceIT {
         defaultMemoryShouldNotBeFound("commentsId.equals=" + (commentsId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllMemoriesByTextIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        Comment text = memory.getText();
+    void getAllMemoriesByBaseCommentIsEqualToSomething() throws Exception {
+        // Initialize the database
         memoryRepository.saveAndFlush(memory);
-        Long textId = text.getId();
+        Comment baseComment = CommentResourceIT.createEntity(em);
+        em.persist(baseComment);
+        em.flush();
+        memory.setBaseComment(baseComment);
+        memoryRepository.saveAndFlush(memory);
+        Long baseCommentId = baseComment.getId();
 
-        // Get all the memoryList where text equals to textId
-        defaultMemoryShouldBeFound("textId.equals=" + textId);
+        // Get all the memoryList where baseComment equals to baseCommentId
+        defaultMemoryShouldBeFound("baseCommentId.equals=" + baseCommentId);
 
-        // Get all the memoryList where text equals to textId + 1
-        defaultMemoryShouldNotBeFound("textId.equals=" + (textId + 1));
+        // Get all the memoryList where baseComment equals to baseCommentId + 1
+        defaultMemoryShouldNotBeFound("baseCommentId.equals=" + (baseCommentId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllMemoriesByWriterIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        UserPerDepartment writer = memory.getWriter();
+    void getAllMemoriesByWriterIsEqualToSomething() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+        UserPerDepartment writer = UserPerDepartmentResourceIT.createEntity(em);
+        em.persist(writer);
+        em.flush();
+        memory.setWriter(writer);
         memoryRepository.saveAndFlush(memory);
         Long writerId = writer.getId();
 
@@ -458,10 +451,9 @@ public class MemoryResourceIT {
         defaultMemoryShouldNotBeFound("writerId.equals=" + (writerId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllMemoriesByTagedIsEqualToSomething() throws Exception {
+    void getAllMemoriesByTagedIsEqualToSomething() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
         UserPerDepartment taged = UserPerDepartmentResourceIT.createEntity(em);
@@ -478,12 +470,15 @@ public class MemoryResourceIT {
         defaultMemoryShouldNotBeFound("tagedId.equals=" + (tagedId + 1));
     }
 
-
     @Test
     @Transactional
-    public void getAllMemoriesByDepartmentIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        Department department = memory.getDepartment();
+    void getAllMemoriesByDepartmentIsEqualToSomething() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+        Department department = DepartmentResourceIT.createEntity(em);
+        em.persist(department);
+        em.flush();
+        memory.setDepartment(department);
         memoryRepository.saveAndFlush(memory);
         Long departmentId = department.getId();
 
@@ -498,7 +493,8 @@ public class MemoryResourceIT {
      * Executes the search, and checks that the default entity is returned.
      */
     private void defaultMemoryShouldBeFound(String filter) throws Exception {
-        restMemoryMockMvc.perform(get("/api/memories?sort=id,desc&" + filter))
+        restMemoryMockMvc
+            .perform(get("/api/memories?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(memory.getId().intValue())))
@@ -506,7 +502,8 @@ public class MemoryResourceIT {
             .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())));
 
         // Check, that the count call also returns 1
-        restMemoryMockMvc.perform(get("/api/memories/count?sort=id,desc&" + filter))
+        restMemoryMockMvc
+            .perform(get("/api/memories/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("1"));
@@ -516,14 +513,16 @@ public class MemoryResourceIT {
      * Executes the search, and checks that the default entity is not returned.
      */
     private void defaultMemoryShouldNotBeFound(String filter) throws Exception {
-        restMemoryMockMvc.perform(get("/api/memories?sort=id,desc&" + filter))
+        restMemoryMockMvc
+            .perform(get("/api/memories?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$").isEmpty());
 
         // Check, that the count call also returns 0
-        restMemoryMockMvc.perform(get("/api/memories/count?sort=id,desc&" + filter))
+        restMemoryMockMvc
+            .perform(get("/api/memories/count?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(content().string("0"));
@@ -531,15 +530,14 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingMemory() throws Exception {
+    void getNonExistingMemory() throws Exception {
         // Get the memory
-        restMemoryMockMvc.perform(get("/api/memories/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restMemoryMockMvc.perform(get("/api/memories/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateMemory() throws Exception {
+    void updateMemory() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
@@ -549,14 +547,11 @@ public class MemoryResourceIT {
         Memory updatedMemory = memoryRepository.findById(memory.getId()).get();
         // Disconnect from session so that the updates on updatedMemory are not directly saved in db
         em.detach(updatedMemory);
-        updatedMemory
-            .title(UPDATED_TITLE)
-            .isPrivate(UPDATED_IS_PRIVATE);
+        updatedMemory.title(UPDATED_TITLE).isPrivate(UPDATED_IS_PRIVATE);
         MemoryDTO memoryDTO = memoryMapper.toDto(updatedMemory);
 
-        restMemoryMockMvc.perform(put("/api/memories")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(memoryDTO)))
+        restMemoryMockMvc
+            .perform(put("/api/memories").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(memoryDTO)))
             .andExpect(status().isOk());
 
         // Validate the Memory in the database
@@ -564,21 +559,20 @@ public class MemoryResourceIT {
         assertThat(memoryList).hasSize(databaseSizeBeforeUpdate);
         Memory testMemory = memoryList.get(memoryList.size() - 1);
         assertThat(testMemory.getTitle()).isEqualTo(UPDATED_TITLE);
-        assertThat(testMemory.isIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
+        assertThat(testMemory.getIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
     }
 
     @Test
     @Transactional
-    public void updateNonExistingMemory() throws Exception {
+    void updateNonExistingMemory() throws Exception {
         int databaseSizeBeforeUpdate = memoryRepository.findAll().size();
 
         // Create the Memory
         MemoryDTO memoryDTO = memoryMapper.toDto(memory);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restMemoryMockMvc.perform(put("/api/memories")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(memoryDTO)))
+        restMemoryMockMvc
+            .perform(put("/api/memories").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(memoryDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Memory in the database
@@ -588,15 +582,90 @@ public class MemoryResourceIT {
 
     @Test
     @Transactional
-    public void deleteMemory() throws Exception {
+    void partialUpdateMemoryWithPatch() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        int databaseSizeBeforeUpdate = memoryRepository.findAll().size();
+
+        // Update the memory using partial update
+        Memory partialUpdatedMemory = new Memory();
+        partialUpdatedMemory.setId(memory.getId());
+
+        partialUpdatedMemory.title(UPDATED_TITLE).isPrivate(UPDATED_IS_PRIVATE);
+
+        restMemoryMockMvc
+            .perform(
+                patch("/api/memories")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedMemory))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Memory in the database
+        List<Memory> memoryList = memoryRepository.findAll();
+        assertThat(memoryList).hasSize(databaseSizeBeforeUpdate);
+        Memory testMemory = memoryList.get(memoryList.size() - 1);
+        assertThat(testMemory.getTitle()).isEqualTo(UPDATED_TITLE);
+        assertThat(testMemory.getIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateMemoryWithPatch() throws Exception {
+        // Initialize the database
+        memoryRepository.saveAndFlush(memory);
+
+        int databaseSizeBeforeUpdate = memoryRepository.findAll().size();
+
+        // Update the memory using partial update
+        Memory partialUpdatedMemory = new Memory();
+        partialUpdatedMemory.setId(memory.getId());
+
+        partialUpdatedMemory.title(UPDATED_TITLE).isPrivate(UPDATED_IS_PRIVATE);
+
+        restMemoryMockMvc
+            .perform(
+                patch("/api/memories")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedMemory))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Memory in the database
+        List<Memory> memoryList = memoryRepository.findAll();
+        assertThat(memoryList).hasSize(databaseSizeBeforeUpdate);
+        Memory testMemory = memoryList.get(memoryList.size() - 1);
+        assertThat(testMemory.getTitle()).isEqualTo(UPDATED_TITLE);
+        assertThat(testMemory.getIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateMemoryShouldThrown() throws Exception {
+        // Update the memory without id should throw
+        Memory partialUpdatedMemory = new Memory();
+
+        restMemoryMockMvc
+            .perform(
+                patch("/api/memories")
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedMemory))
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    void deleteMemory() throws Exception {
         // Initialize the database
         memoryRepository.saveAndFlush(memory);
 
         int databaseSizeBeforeDelete = memoryRepository.findAll().size();
 
         // Delete the memory
-        restMemoryMockMvc.perform(delete("/api/memories/{id}", memory.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restMemoryMockMvc
+            .perform(delete("/api/memories/{id}", memory.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
