@@ -6,13 +6,4 @@
     <!--
         Added the constraints for entity Picture.
     -->
-    <changeSet id="20201114204002-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="comment_id"
-                                 baseTableName="picture"
-                                 constraintName="fk_picture__comment_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="comment"/>
-
-    </changeSet>
 </databaseChangeLog>
