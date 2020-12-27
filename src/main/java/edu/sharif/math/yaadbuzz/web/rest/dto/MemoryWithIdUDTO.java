@@ -1,4 +1,4 @@
-package edu.sharif.math.yaadbuzz.service.dto.helpers;
+package edu.sharif.math.yaadbuzz.web.rest.dto;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -11,18 +11,20 @@ import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Memory} entity.
  */
-public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
+public class MemoryWithIdUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
+    private Long id;
+
     private String title;
 
     private Boolean isPrivate;
 
-    private Long baseCommentId;
+    private Long textId;
 
     private Set<UserPerDepartmentDTO> tageds = new HashSet<>();
 
@@ -33,19 +35,36 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 	res.setTageds(this.tageds);
 	{
 	    var com = new CommentDTO();
-	    com.setId(this.getBaseCommentId());
+	    com.setId(getTextId());
 	    res.setBaseComment(com);
 	}
 	res.setTitle(this.title);
+	res.setId(this.id);
 	return res;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+	if (this == o) {
+	    return true;
+	}
+	if (!(o instanceof MemoryDTO)) {
+	    return false;
+	}
+
+	return this.id != null && this.id.equals(((MemoryWithIdUDTO) o).id);
+    }
+
+    public Long getId() {
+	return this.id;
     }
 
     public Set<UserPerDepartmentDTO> getTageds() {
 	return this.tageds;
     }
 
-    public Long getBaseCommentId() {
-	return this.baseCommentId;
+    public Long getTextId() {
+	return this.textId;
     }
 
     public String getTitle() {
@@ -61,6 +80,10 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 	return this.isPrivate;
     }
 
+    public void setId(final Long id) {
+	this.id = id;
+    }
+
     public void setIsPrivate(final Boolean isPrivate) {
 	this.isPrivate = isPrivate;
     }
@@ -69,8 +92,8 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 	this.tageds = userPerDepartments;
     }
 
-    public void setBaseCommentId(final Long commentId) {
-	this.baseCommentId = commentId;
+    public void setTextId(final Long commentId) {
+	this.textId = commentId;
     }
 
     public void setTitle(final String title) {
@@ -80,9 +103,9 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
     // prettier-ignore
     @Override
     public String toString() {
-	return "MemoryDTO{" + ", title='" + this.getTitle() + "'"
-		+ ", isPrivate='" + this.isIsPrivate() + "'" + ", textId="
-		+ this.getBaseCommentId() + ", tageds='" + this.getTageds() + "'"
-		+ "}";
+	return "MemoryDTO{" + "id=" + this.getId() + ", title='"
+		+ this.getTitle() + "'" + ", isPrivate='" + this.isIsPrivate()
+		+ "'" + ", textId=" + this.getTextId() + ", tageds='"
+		+ this.getTageds() + "'" + "}";
     }
 }

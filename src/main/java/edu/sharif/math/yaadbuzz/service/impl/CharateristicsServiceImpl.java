@@ -6,6 +6,8 @@ import edu.sharif.math.yaadbuzz.service.CharateristicsService;
 import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.CharateristicsMapper;
+import edu.sharif.math.yaadbuzz.web.rest.dto.CharateristicsVoteDTO;
+
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,6 @@ import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.CharateristicsVoteDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.CharateristicsMapper;
 
 /**

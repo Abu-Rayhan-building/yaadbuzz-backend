@@ -112,8 +112,8 @@ export const UserPerDepartment = (props: IUserPerDepartmentProps) => {
                   <th className="hand" onClick={sort('id')}>
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th className="hand" onClick={sort('nicName')}>
-                    <Translate contentKey="yaadbuzzApp.userPerDepartment.nicName">Nic Name</Translate> <FontAwesomeIcon icon="sort" />
+                  <th className="hand" onClick={sort('nickname')}>
+                    <Translate contentKey="yaadbuzzApp.userPerDepartment.nickname">Nickname</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th className="hand" onClick={sort('bio')}>
                     <Translate contentKey="yaadbuzzApp.userPerDepartment.bio">Bio</Translate> <FontAwesomeIcon icon="sort" />
@@ -138,7 +138,7 @@ export const UserPerDepartment = (props: IUserPerDepartmentProps) => {
                         {userPerDepartment.id}
                       </Button>
                     </td>
-                    <td>{userPerDepartment.nicName}</td>
+                    <td>{userPerDepartment.nickname}</td>
                     <td>{userPerDepartment.bio}</td>
                     <td>
                       {userPerDepartment.avatar ? (

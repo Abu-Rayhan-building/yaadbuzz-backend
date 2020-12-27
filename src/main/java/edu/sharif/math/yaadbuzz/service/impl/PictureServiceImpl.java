@@ -20,65 +20,57 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PictureServiceImpl implements PictureService {
 
-    private final Logger log = LoggerFactory.getLogger(PictureServiceImpl.class);
+    private final Logger log = LoggerFactory
+	    .getLogger(PictureServiceImpl.class);
 
     private final PictureRepository pictureRepository;
 
     private final PictureMapper pictureMapper;
 
-    public PictureServiceImpl(PictureRepository pictureRepository, PictureMapper pictureMapper) {
-        this.pictureRepository = pictureRepository;
-        this.pictureMapper = pictureMapper;
+    public PictureServiceImpl(PictureRepository pictureRepository,
+	    PictureMapper pictureMapper) {
+	this.pictureRepository = pictureRepository;
+	this.pictureMapper = pictureMapper;
     }
 
     @Override
     public PictureDTO save(PictureDTO pictureDTO) {
-        log.debug("Request to save Picture : {}", pictureDTO);
-        Picture picture = pictureMapper.toEntity(pictureDTO);
-        picture = pictureRepository.save(picture);
-        return pictureMapper.toDto(picture);
+	log.debug("Request to save Picture : {}", pictureDTO);
+	Picture picture = pictureMapper.toEntity(pictureDTO);
+	picture = pictureRepository.save(picture);
+	return pictureMapper.toDto(picture);
     }
 
+    // fuck
     @Override
     public Optional<PictureDTO> partialUpdate(PictureDTO pictureDTO) {
-        log.debug("Request to partially update Picture : {}", pictureDTO);
+	log.debug("Request to partially update Picture : {}", pictureDTO);
 
-        return pictureRepository
-            .findById(pictureDTO.getId())
-            .map(
-                existingPicture -> {
-                    if (pictureDTO.getImage() != null) {
-                        existingPicture.setImage(pictureDTO.getImage());
-                    }
-                    if (pictureDTO.getImageContentType() != null) {
-                        existingPicture.setImageContentType(pictureDTO.getImageContentType());
-                    }
+	return pictureRepository.findById(pictureDTO.getId())
+		.map(existingPicture -> {
 
-                    return existingPicture;
-                }
-            )
-            .map(pictureRepository::save)
-            .map(pictureMapper::toDto);
+		    return existingPicture;
+		}).map(pictureRepository::save).map(pictureMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<PictureDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Pictures");
-        return pictureRepository.findAll(pageable).map(pictureMapper::toDto);
+	log.debug("Request to get all Pictures");
+	return pictureRepository.findAll(pageable).map(pictureMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<PictureDTO> findOne(Long id) {
-        log.debug("Request to get Picture : {}", id);
-        return pictureRepository.findById(id).map(pictureMapper::toDto);
+	log.debug("Request to get Picture : {}", id);
+	return pictureRepository.findById(id).map(pictureMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Picture : {}", id);
-        pictureRepository.deleteById(id);
+	log.debug("Request to delete Picture : {}", id);
+	pictureRepository.deleteById(id);
     }
 
     @Override

@@ -13,6 +13,7 @@ import Topic from './topic';
 import Charateristics from './charateristics';
 import Memorial from './memorial';
 import TopicVote from './topic-vote';
+import UserExtra from './user-extra';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -28,6 +29,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}charateristics`} component={Charateristics} />
       <ErrorBoundaryRoute path={`${match.url}memorial`} component={Memorial} />
       <ErrorBoundaryRoute path={`${match.url}topic-vote`} component={TopicVote} />
+      <ErrorBoundaryRoute path={`${match.url}user-extra`} component={UserExtra} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

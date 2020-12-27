@@ -12,62 +12,38 @@ public class PictureDTO implements Serializable {
 
     private Long id;
 
-    @Lob
-    private byte[] image;
-
-    private String imageContentType;
-
     public Long getId() {
-        return id;
+	return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public String getImageContentType() {
-        return imageContentType;
-    }
-
-    public void setImageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
+	this.id = id;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof PictureDTO)) {
-            return false;
-        }
+	if (this == o) {
+	    return true;
+	}
+	if (!(o instanceof PictureDTO)) {
+	    return false;
+	}
 
-        PictureDTO pictureDTO = (PictureDTO) o;
-        if (this.id == null) {
-            return false;
-        }
-        return Objects.equals(this.id, pictureDTO.id);
+	PictureDTO pictureDTO = (PictureDTO) o;
+	if (this.id == null) {
+	    return false;
+	}
+	return Objects.equals(this.id, pictureDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+	return Objects.hash(this.id);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
-        return "PictureDTO{" +
-            "id=" + getId() +
-            ", image='" + getImage() + "'" +
-            "}";
+	return "PictureDTO{" + "id=" + getId() + "'" + "}";
     }
 }

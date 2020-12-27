@@ -3,6 +3,7 @@ package edu.sharif.math.yaadbuzz.service.impl;
 import edu.sharif.math.yaadbuzz.domain.Department;
 import edu.sharif.math.yaadbuzz.repository.DepartmentRepository;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
+import edu.sharif.math.yaadbuzz.service.UserExtraService;
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.DepartmentMapper;
 
@@ -30,9 +31,9 @@ import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.DepartmentMapper;
 import edu.sharif.math.yaadbuzz.service.mapper.UserPerDepartmentMapper;
+import edu.sharif.math.yaadbuzz.web.rest.dto.MyUserPerDepartmentStatsDTO;
 
 /**
  * Service Implementation for managing {@link Department}.
@@ -55,6 +56,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final UserPerDepartmentMapper userPerDepartmentMapper;
 
     private final UserService userService;
+
+    @Autowired
+    private UserExtraService userExtraService;
 
     public DepartmentServiceImpl(
 	    final DepartmentRepository departmentRepository,
@@ -137,8 +141,30 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Page<UserPerDepartmentDTO> getDepartmentUsers(final Long id,
 	    final Pageable pageable) {
-	return this.userPerDepartmentRepository.findByDepatment(id, pageable)
+	Page<UserPerDepartmentDTO> res = this.userPerDepartmentRepository
+		.findByDepatment(id, pageable)
 		.map(this.userPerDepartmentMapper::toDto);
+	// todo maybe more effecient ways
+	res.map(upd -> overwriteFromDefault(upd));
+	return res;
+    }
+
+    UserPerDepartmentDTO overwriteFromDefault(UserPerDepartmentDTO upd) {
+	if (upd.getAvatar() != null && upd.getBio() != null
+		&& upd.getNickname() != null)
+	    return upd;
+	var ux = userExtraService.findOne(upd.getRealUser().getId()).get()
+		.getDefaultUserPerDepartment();
+	if (upd.getAvatar() == null) {
+	    upd.setAvatar(ux.getAvatar());
+	}
+	if (upd.getBio() == null) {
+	    upd.setBio(ux.getBio());
+	}
+	if (upd.getNickname() == null) {
+	    upd.setNickname(ux.getNickname());
+	}
+	return upd;
     }
 
     @Override
@@ -150,7 +176,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentDTO join(final Long departmentId, final String password,
-	    final UserPerDepartmentDTO u) {
+	    UserPerDepartmentDTO u) {
 	if (!this.findOne(departmentId).isPresent()) {
 	    throw new EntityNotFoundException("department not found");
 	}
@@ -158,7 +184,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 	if (!dep.getPassword().equals(password)) {
 	    throw new InvalidParameterException("department password is wrong");
 	}
-
+	// fuck
+	u = overwriteFromDefault(u);
 	this.userPerDepartmentService.save(u);
 	return this.findOne(departmentId).get();
     }

@@ -18,7 +18,7 @@
         "title": "User Per Department"
       },
       "id": "ID",
-      "nicName": "Nic Name",
+      "nickname": "Nickname",
       "bio": "Bio",
       "topicAssigneds": "Topic Assigneds",
       "avatar": "Avatar",

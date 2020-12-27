@@ -1,7 +1,7 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.MemorialUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.MemorialUDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

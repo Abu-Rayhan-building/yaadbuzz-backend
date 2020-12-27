@@ -1,7 +1,7 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentWithIdUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.CommentWithIdUDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

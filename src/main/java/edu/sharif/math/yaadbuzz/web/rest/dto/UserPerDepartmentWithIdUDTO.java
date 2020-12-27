@@ -1,4 +1,4 @@
-package edu.sharif.math.yaadbuzz.service.dto.helpers;
+package edu.sharif.math.yaadbuzz.web.rest.dto;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment}
  * entity.
  */
-public class UserPerDepartmentUDTO
+public class UserPerDepartmentWithIdUDTO
 	implements Serializable, UserInputDTO<UserPerDepartmentDTO> {
 
     public UserPerDepartmentDTO build() {
@@ -20,22 +20,33 @@ public class UserPerDepartmentUDTO
 	    res.setAvatar(ava);
 	}
 	res.setBio(this.getBio());
-	res.setNicName(this.getNicName());
+	res.setNickname(this.getnickname());
+	res.setId(id);
 	return res;
     }
 
-    private String nicName;
+    private Long id;
+
+    public Long getId() {
+	return id;
+    }
+
+    public void setId(Long id) {
+	this.id = id;
+    }
+
+    private String nickname;
 
     private String bio;
 
     private Long avatarId;
 
-    public String getNicName() {
-	return nicName;
+    public String getnickname() {
+	return nickname;
     }
 
-    public void setNicName(String nicName) {
-	this.nicName = nicName;
+    public void setnickname(String nickname) {
+	this.nickname = nickname;
     }
 
     public String getBio() {
@@ -62,7 +73,7 @@ public class UserPerDepartmentUDTO
     // prettier-ignore
     @Override
     public String toString() {
-	return "UserPerDepartmentDTO{" + ", nicName='" + getNicName() + "'"
+	return "UserPerDepartmentDTO{" + ", nickname='" + getnickname() + "'"
 		+ ", bio='" + getBio() + "'" + ", avatarId=" + getAvatarId()
 		+ "}";
     }

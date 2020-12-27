@@ -1,7 +1,7 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.TopicVoteUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.TopicVoteUDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

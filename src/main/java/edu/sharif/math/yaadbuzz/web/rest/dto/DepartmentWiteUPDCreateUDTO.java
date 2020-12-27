@@ -1,4 +1,4 @@
-package edu.sharif.math.yaadbuzz.service.dto.helpers;
+package edu.sharif.math.yaadbuzz.web.rest.dto;
 
 import java.io.Serializable;
 

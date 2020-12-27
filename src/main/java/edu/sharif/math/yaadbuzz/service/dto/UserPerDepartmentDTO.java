@@ -11,7 +11,7 @@ public class UserPerDepartmentDTO implements Serializable {
 
     private Long id;
 
-    private String nicName;
+    private String nickname;
 
     private String bio;
 
@@ -29,12 +29,12 @@ public class UserPerDepartmentDTO implements Serializable {
         this.id = id;
     }
 
-    public String getNicName() {
-        return nicName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNicName(String nicName) {
-        this.nicName = nicName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getBio() {
@@ -95,7 +95,7 @@ public class UserPerDepartmentDTO implements Serializable {
     public String toString() {
         return "UserPerDepartmentDTO{" +
             "id=" + getId() +
-            ", nicName='" + getNicName() + "'" +
+            ", nickname='" + getNickname() + "'" +
             ", bio='" + getBio() + "'" +
             ", avatar=" + getAvatar() +
             ", realUser=" + getRealUser() +

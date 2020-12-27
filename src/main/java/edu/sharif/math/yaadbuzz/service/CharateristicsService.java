@@ -1,11 +1,11 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.CharateristicsVoteDTO;
+
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import edu.sharif.math.yaadbuzz.service.dto.helpers.CharateristicsVoteDTO;
 
 /**
  * Service Interface for managing

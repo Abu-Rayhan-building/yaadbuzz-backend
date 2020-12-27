@@ -5,6 +5,7 @@ import edu.sharif.math.yaadbuzz.repository.UserPerDepartmentRepository;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.UserPerDepartmentMapper;
+import edu.sharif.math.yaadbuzz.web.rest.dto.MyUserPerDepartmentStatsDTO;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -28,7 +29,6 @@ import edu.sharif.math.yaadbuzz.service.dto.MemorialCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.TopicCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.TopicVoteCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.UserPerDepartmentMapper;
 import tech.jhipster.service.filter.LongFilter;
 
@@ -103,9 +103,9 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 	return userPerDepartmentRepository
 		.findById(userPerDepartmentDTO.getId())
 		.map(existingUserPerDepartment -> {
-		    if (userPerDepartmentDTO.getNicName() != null) {
+		    if (userPerDepartmentDTO.getNickname() != null) {
 			existingUserPerDepartment
-				.setNicName(userPerDepartmentDTO.getNicName());
+				.setNickname(userPerDepartmentDTO.getNickname());
 		    }
 
 		    if (userPerDepartmentDTO.getBio() != null) {

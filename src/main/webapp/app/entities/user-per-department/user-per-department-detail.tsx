@@ -26,11 +26,11 @@ export const UserPerDepartmentDetail = (props: IUserPerDepartmentDetailProps) =>
         </h2>
         <dl className="jh-entity-details">
           <dt>
-            <span id="nicName">
-              <Translate contentKey="yaadbuzzApp.userPerDepartment.nicName">Nic Name</Translate>
+            <span id="nickname">
+              <Translate contentKey="yaadbuzzApp.userPerDepartment.nickname">Nickname</Translate>
             </span>
           </dt>
-          <dd>{userPerDepartmentEntity.nicName}</dd>
+          <dd>{userPerDepartmentEntity.nickname}</dd>
           <dt>
             <span id="bio">
               <Translate contentKey="yaadbuzzApp.userPerDepartment.bio">Bio</Translate>

@@ -5,6 +5,8 @@ import edu.sharif.math.yaadbuzz.repository.CommentRepository;
 import edu.sharif.math.yaadbuzz.service.CommentService;
 import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.CommentMapper;
+import edu.sharif.math.yaadbuzz.web.rest.dto.CommentWithIdUDTO;
+
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,6 @@ import edu.sharif.math.yaadbuzz.service.MemoryService;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.CommentWithIdUDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.CommentMapper;
 
 /**
