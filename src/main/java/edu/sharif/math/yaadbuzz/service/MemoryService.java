@@ -1,12 +1,15 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
+
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.Memory}.
+ * Service Interface for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.Memory}.
  */
 public interface MemoryService extends ServiceWithCurrentUserCrudAccess {
 
@@ -68,4 +71,5 @@ public interface MemoryService extends ServiceWithCurrentUserCrudAccess {
     boolean currentuserHasAccessToComments(Long memid);
 
     boolean currentuserHasCreatAccess(Long depId);
+
 }

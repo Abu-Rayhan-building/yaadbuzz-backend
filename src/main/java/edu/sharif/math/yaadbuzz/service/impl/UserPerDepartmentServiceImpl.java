@@ -1,9 +1,11 @@
 package edu.sharif.math.yaadbuzz.service.impl;
 
 import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
+import edu.sharif.math.yaadbuzz.repository.PictureRepository;
 import edu.sharif.math.yaadbuzz.repository.UserPerDepartmentRepository;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.PictureMapper;
 import edu.sharif.math.yaadbuzz.service.mapper.UserPerDepartmentMapper;
 import edu.sharif.math.yaadbuzz.web.rest.dto.MyUserPerDepartmentStatsDTO;
 
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,7 @@ import edu.sharif.math.yaadbuzz.service.TopicVoteQueryService;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.MemorialCriteria;
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 import edu.sharif.math.yaadbuzz.service.dto.TopicCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.TopicVoteCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
@@ -104,8 +108,8 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 		.findById(userPerDepartmentDTO.getId())
 		.map(existingUserPerDepartment -> {
 		    if (userPerDepartmentDTO.getNickname() != null) {
-			existingUserPerDepartment
-				.setNickname(userPerDepartmentDTO.getNickname());
+			existingUserPerDepartment.setNickname(
+				userPerDepartmentDTO.getNickname());
 		    }
 
 		    if (userPerDepartmentDTO.getBio() != null) {
@@ -223,9 +227,71 @@ public class UserPerDepartmentServiceImpl implements UserPerDepartmentService {
 	this.departmentService = departmentService;
     }
 
+    UserPerDepartmentDTO overwriteFromDefault(final UserPerDepartmentDTO upd) {
+	if (upd.getAvatar() != null && upd.getBio() != null
+		&& upd.getNickname() != null) {
+	    return upd;
+	}
+	final var ux = this
+		.getDefaultUserPerDepartment(upd.getRealUser().getId());
+
+	if (upd.getAvatar() == null) {
+	    upd.setAvatar(ux.getAvatar());
+	}
+	if (upd.getBio() == null) {
+	    upd.setBio(ux.getBio());
+	}
+	if (upd.getNickname() == null) {
+	    upd.setNickname(ux.getNickname());
+	}
+	return upd;
+    }
+
+    private UserPerDepartmentDTO getDefaultUserPerDepartment(Long userId) {
+	return this.getUDPInDep(departmentService.getDefaultDepId(), userId);
+    }
+
+    private UserPerDepartmentDTO getUDPInDep(Long defaultDepId, Long userId) {
+	return this.userPerDepartmentMapper.toDto(
+		userPerDepartmentRepository.getUPDInDep(defaultDepId, userId));
+    }
+
+    @Override
+    public Page<UserPerDepartmentDTO> getDepartmentUsers(final Long id,
+	    final Pageable pageable) {
+	final Page<UserPerDepartmentDTO> res = this.userPerDepartmentRepository
+		.findByDepatment(id, pageable)
+		.map(this.userPerDepartmentMapper::toDto);
+	// todo maybe more effecient ways
+	res.map(this::overwriteFromDefault);
+	return res;
+    }
+
     @Override
     public UserPerDepartmentDTO getCurrentUserUserPerDepeartmentInDep(
 	    Long depId) {
 	return this.getCurrentUserInDep(depId);
+    }
+
+    @Autowired
+    private PictureRepository pictureRepository;
+
+    @Autowired
+    private PictureMapper pictureMapper;
+
+    @Override
+    public PictureDTO getUPDPicture(Long updId) {
+	var upd = this.findOne(updId).get();
+	upd = overwriteFromDefault(upd);
+	var pic = upd.getAvatar();
+
+	var picture = pictureRepository.getOne(pic.getId());
+	return pictureMapper.toDto(picture);
+    }
+
+    @Override
+    public void updateDefaultUPDAfterJoin(UserPerDepartmentDTO u) {
+	u = overwriteFromDefault(u);
+	this.save(u);
     }
 }

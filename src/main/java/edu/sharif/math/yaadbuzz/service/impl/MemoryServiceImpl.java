@@ -2,14 +2,20 @@ package edu.sharif.math.yaadbuzz.service.impl;
 
 import edu.sharif.math.yaadbuzz.domain.Memory;
 import edu.sharif.math.yaadbuzz.repository.MemoryRepository;
+import edu.sharif.math.yaadbuzz.repository.PictureRepository;
 import edu.sharif.math.yaadbuzz.service.MemoryService;
 import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.MemoryMapper;
+import edu.sharif.math.yaadbuzz.service.mapper.PictureMapper;
+
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +41,7 @@ public class MemoryServiceImpl implements MemoryService {
     private final MemoryRepository memoryRepository;
 
     private final UserPerDepartmentRepository userPerDepartmentRepository;
-    
+
     private final UserPerDepartmentService userPerDepartmentService;
 
     private final DepartmentService departmentService;
@@ -93,38 +99,33 @@ public class MemoryServiceImpl implements MemoryService {
 	return mem.get().getWriter().getId()
 		.equals(this.userService.getCurrentUserId());
     }
-    
+
     @Override
     public MemoryDTO save(MemoryDTO memoryDTO) {
-        log.debug("Request to save Memory : {}", memoryDTO);
-        Memory memory = memoryMapper.toEntity(memoryDTO);
-        memory = memoryRepository.save(memory);
-        return memoryMapper.toDto(memory);
+	log.debug("Request to save Memory : {}", memoryDTO);
+	Memory memory = memoryMapper.toEntity(memoryDTO);
+	memory = memoryRepository.save(memory);
+	return memoryMapper.toDto(memory);
     }
 
     @Override
     public Optional<MemoryDTO> partialUpdate(MemoryDTO memoryDTO) {
-        log.debug("Request to partially update Memory : {}", memoryDTO);
+	log.debug("Request to partially update Memory : {}", memoryDTO);
 
-        return memoryRepository
-            .findById(memoryDTO.getId())
-            .map(
-                existingMemory -> {
-                    if (memoryDTO.getTitle() != null) {
-                        existingMemory.setTitle(memoryDTO.getTitle());
-                    }
+	return memoryRepository.findById(memoryDTO.getId())
+		.map(existingMemory -> {
+		    if (memoryDTO.getTitle() != null) {
+			existingMemory.setTitle(memoryDTO.getTitle());
+		    }
 
-                    if (memoryDTO.getIsPrivate() != null) {
-                        existingMemory.setIsPrivate(memoryDTO.getIsPrivate());
-                    }
+		    if (memoryDTO.getIsPrivate() != null) {
+			existingMemory.setIsPrivate(memoryDTO.getIsPrivate());
+		    }
 
-                    return existingMemory;
-                }
-            )
-            .map(memoryRepository::save)
-            .map(memoryMapper::toDto);
+		    return existingMemory;
+		}).map(memoryRepository::save).map(memoryMapper::toDto);
     }
-    
+
     @Override
     public Page<MemoryDTO> findAllInDepartment(final Long depid,
 	    final Pageable pageable) {
@@ -147,17 +148,19 @@ public class MemoryServiceImpl implements MemoryService {
 		.findAllWithCurrentUserTagedIn(depid, cupd, pageable)
 		.map(this.memoryMapper::toDto);
     }
-    
+
     @Override
     @Transactional(readOnly = true)
     public Page<MemoryDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Memories");
-        return memoryRepository.findAll(pageable).map(memoryMapper::toDto);
+	log.debug("Request to get all Memories");
+	return memoryRepository.findAll(pageable).map(memoryMapper::toDto);
     }
 
     public Page<MemoryDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return memoryRepository.findAllWithEagerRelationships(pageable).map(memoryMapper::toDto);
+	return memoryRepository.findAllWithEagerRelationships(pageable)
+		.map(memoryMapper::toDto);
     }
+
     @Override
     public Page<MemoryDTO> findAllWithUserTagedIn(final Long depid,
 	    final Long userInDepId, final Pageable pageable) {
@@ -174,13 +177,21 @@ public class MemoryServiceImpl implements MemoryService {
     @Override
     @Transactional(readOnly = true)
     public Optional<MemoryDTO> findOne(Long id) {
-        log.debug("Request to get Memory : {}", id);
-        return memoryRepository.findOneWithEagerRelationships(id).map(memoryMapper::toDto);
+	log.debug("Request to get Memory : {}", id);
+	return memoryRepository.findOneWithEagerRelationships(id)
+		.map(memoryMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Memory : {}", id);
-        memoryRepository.deleteById(id);
+	log.debug("Request to delete Memory : {}", id);
+	memoryRepository.deleteById(id);
     }
+
+    @Autowired
+    private PictureRepository pictureRepository;
+
+    @Autowired
+    private PictureMapper pictureMapper;
+
 }

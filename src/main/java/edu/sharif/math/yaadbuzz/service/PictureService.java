@@ -6,7 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.Picture}.
+ * Service Interface for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.Picture}.
  */
 public interface PictureService extends ServiceWithCurrentUserCrudAccess {
 

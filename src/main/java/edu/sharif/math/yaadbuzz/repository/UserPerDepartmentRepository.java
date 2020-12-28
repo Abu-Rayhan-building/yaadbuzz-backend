@@ -16,11 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Spring Data  repository for the UserPerDepartment entity.
+ * Spring Data repository for the UserPerDepartment entity.
  */
 @SuppressWarnings("unused")
 @Repository
-public interface UserPerDepartmentRepository extends JpaRepository<UserPerDepartment, Long>, JpaSpecificationExecutor<UserPerDepartment> {
+public interface UserPerDepartmentRepository
+	extends JpaRepository<UserPerDepartment, Long>,
+	JpaSpecificationExecutor<UserPerDepartment> {
 
     @Query("select userPerDepartment from UserPerDepartment userPerDepartment where userPerDepartment.realUser.login = ?#{principal.username}")
     List<UserPerDepartment> findByRealUserIsCurrentUser();
@@ -31,9 +33,11 @@ public interface UserPerDepartmentRepository extends JpaRepository<UserPerDepart
 
     @Query("select userPerDepartment from UserPerDepartment userPerDepartment where userPerDepartment.department.id = :id")
     List<UserPerDepartment> findByDepatment(@Param("id") Long id);
-    
+
+    @Query("select userPerDepartment from UserPerDepartment userPerDepartment where userPerDepartment.department.id = :depid and userPerDepartment.realUser.id = :realUserId")
+    UserPerDepartment getUPDInDep(Long depid, Long realUserId);
+
     @Query("select userPerDepartment from UserPerDepartment userPerDepartment where userPerDepartment.department.id = :depid and userPerDepartment.realUser.login = ?#{principal.username}")
     UserPerDepartment getCurrentUserInDep(Long depid);
-
 
 }

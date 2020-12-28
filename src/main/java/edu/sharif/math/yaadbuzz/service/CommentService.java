@@ -1,6 +1,7 @@
 package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 import edu.sharif.math.yaadbuzz.web.rest.dto.CommentWithIdUDTO;
 
 import org.springframework.data.domain.Page;
@@ -9,9 +10,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.Comment}.
+ * Service Interface for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.Comment}.
  */
-public interface CommentService extends ServiceWithCurrentUserCrudAccess{
+public interface CommentService extends ServiceWithCurrentUserCrudAccess {
 
     /**
      * Save a comment.
@@ -51,13 +53,13 @@ public interface CommentService extends ServiceWithCurrentUserCrudAccess{
      * @param id the id of the entity.
      */
     void delete(Long id);
-    
+
     boolean currentuserHasCreateAccess(Long memid);
 
     Page<CommentDTO> findAllForMemory(Long memid, Pageable pageable);
 
     CommentDTO save(CommentWithIdUDTO commentUpdateReqDTO);
 
-
+    PictureDTO getPicture(Long comId, Long picId);
 
 }

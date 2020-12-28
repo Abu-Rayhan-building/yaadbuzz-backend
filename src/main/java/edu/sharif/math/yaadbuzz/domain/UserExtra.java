@@ -27,92 +27,75 @@ public class UserExtra implements Serializable {
     @JoinColumn(name = "id")
     private User user;
 
-    @JsonIgnoreProperties(
-        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
-        allowSetters = true
-    )
-    @OneToOne
-    @JoinColumn(unique = true)
-    private UserPerDepartment defaultUserPerDepartment;
+    @JsonIgnoreProperties(value = { "topicAssigneds", "avatar", "realUser",
+	    "department", "topicsVoteds",
+	    "tagedInMemoeries" }, allowSetters = true)
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
-        return id;
+	return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+	this.id = id;
     }
 
     public UserExtra id(Long id) {
-        this.id = id;
-        return this;
+	this.id = id;
+	return this;
     }
 
     public String getPhone() {
-        return this.phone;
+	return this.phone;
     }
 
     public UserExtra phone(String phone) {
-        this.phone = phone;
-        return this;
+	this.phone = phone;
+	return this;
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+	this.phone = phone;
     }
 
     public User getUser() {
-        return this.user;
+	return this.user;
     }
 
     public UserExtra user(User user) {
-        this.setUser(user);
-        return this;
+	this.setUser(user);
+	return this;
     }
 
     public void setUser(User user) {
-        this.user = user;
+	this.user = user;
     }
 
-    public UserPerDepartment getDefaultUserPerDepartment() {
-        return this.defaultUserPerDepartment;
-    }
-
-    public UserExtra defaultUserPerDepartment(UserPerDepartment userPerDepartment) {
-        this.setDefaultUserPerDepartment(userPerDepartment);
-        return this;
-    }
-
-    public void setDefaultUserPerDepartment(UserPerDepartment userPerDepartment) {
-        this.defaultUserPerDepartment = userPerDepartment;
-    }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters
+    // and setters here
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof UserExtra)) {
-            return false;
-        }
-        return id != null && id.equals(((UserExtra) o).id);
+	if (this == o) {
+	    return true;
+	}
+	if (!(o instanceof UserExtra)) {
+	    return false;
+	}
+	return id != null && id.equals(((UserExtra) o).id);
     }
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
+	// see
+	// https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+	return getClass().hashCode();
     }
 
     // prettier-ignore
     @Override
     public String toString() {
-        return "UserExtra{" +
-            "id=" + getId() +
-            ", phone='" + getPhone() + "'" +
-            "}";
+	return "UserExtra{" + "id=" + getId() + ", phone='" + getPhone() + "'"
+		+ "}";
     }
 }

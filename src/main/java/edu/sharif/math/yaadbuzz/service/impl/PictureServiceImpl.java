@@ -2,12 +2,14 @@ package edu.sharif.math.yaadbuzz.service.impl;
 
 import edu.sharif.math.yaadbuzz.domain.Picture;
 import edu.sharif.math.yaadbuzz.repository.PictureRepository;
+import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.PictureService;
 import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.PictureMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -82,4 +84,8 @@ public class PictureServiceImpl implements PictureService {
     public boolean currentuserHasGetAccess(Long id) {
 	return false;
     }
+
+    @Autowired
+    DepartmentService departmentService;
+
 }

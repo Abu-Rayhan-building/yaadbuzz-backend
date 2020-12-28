@@ -1,4 +1,4 @@
-package edu.sharif.math.yaadbuzz.service.dto;
+package edu.sharif.math.yaadbuzz.web.rest.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Picture} entity.
  */
-public class PictureDTO implements Serializable {
+public class PictureDTOWithoutAddress implements Serializable {
 
     /**
      *
@@ -14,26 +14,16 @@ public class PictureDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
 
-    private String address;
-
-    public String getAddress() {
-	return address;
-    }
-
-    public void setAddress(String address) {
-	this.address = address;
-    }
-
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
 	if (this == o) {
 	    return true;
 	}
-	if (!(o instanceof PictureDTO)) {
+	if (!(o instanceof PictureDTOWithoutAddress)) {
 	    return false;
 	}
 
-	PictureDTO pictureDTO = (PictureDTO) o;
+	final PictureDTOWithoutAddress pictureDTO = (PictureDTOWithoutAddress) o;
 	if (this.id == null) {
 	    return false;
 	}

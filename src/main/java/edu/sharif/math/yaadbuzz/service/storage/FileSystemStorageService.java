@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.sharif.math.yaadbuzz.config.StorageProperties;
+import edu.sharif.math.yaadbuzz.service.PictureService;
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.PictureDTOWithoutAddress;
 
 @Service
 @Transactional
@@ -32,13 +36,16 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public PictureDTOWithoutAddress store(MultipartFile file, Long depId) {
 	try {
 	    if (file.isEmpty()) {
 		throw new StorageException("Failed to store empty file.");
 	    }
-	    Path destinationFile = this.rootLocation
-		    .resolve(Paths.get(file.getOriginalFilename())).normalize()
+	    UUID uuid = UUID.randomUUID();
+
+	    var p = uuid.toString()
+		    + Paths.get(file.getOriginalFilename()).toString();
+	    Path destinationFile = this.rootLocation.resolve(p).normalize()
 		    .toAbsolutePath();
 	    if (!destinationFile.getParent()
 		    .equals(this.rootLocation.toAbsolutePath())) {
@@ -49,23 +56,20 @@ public class FileSystemStorageService implements StorageService {
 	    try (InputStream inputStream = file.getInputStream()) {
 		Files.copy(inputStream, destinationFile,
 			StandardCopyOption.REPLACE_EXISTING);
+		var result = new PictureDTO();
+		result.setAddress(p);
+		result = pictureService.save(result);
+		var res = new PictureDTOWithoutAddress();
+		res.setId(result.getId());
+		return res;
 	    }
 	} catch (IOException e) {
 	    throw new StorageException("Failed to store file.", e);
 	}
     }
 
-    @Override
-    public Stream<Path> loadAll() {
-	try {
-	    return Files.walk(this.rootLocation, 1)
-		    .filter(path -> !path.equals(this.rootLocation))
-		    .map(this.rootLocation::relativize);
-	} catch (IOException e) {
-	    throw new StorageException("Failed to read stored files", e);
-	}
-
-    }
+    @Autowired
+    private PictureService pictureService;
 
     @Override
     public Path load(String filename) {
@@ -88,11 +92,6 @@ public class FileSystemStorageService implements StorageService {
 	    throw new StorageFileNotFoundException(
 		    "Could not read file: " + filename, e);
 	}
-    }
-
-    @Override
-    public void deleteAll() {
-	FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
     @Override

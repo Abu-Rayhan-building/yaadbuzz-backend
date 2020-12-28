@@ -101,7 +101,8 @@ public class UserPerDepartmentNotCrudResource {
 	    final Pageable pageable, @PathVariable final Long depId) {
 
 	Page<UserPerDepartmentDTO> page;
-	page = this.departmentService.getDepartmentUsers(depId, pageable);
+	page = this.userPerDepartmentService.getDepartmentUsers(depId,
+		pageable);
 	final HttpHeaders headers = PaginationUtil
 		.generatePaginationHttpHeaders(
 			ServletUriComponentsBuilder.fromCurrentRequest(), page);
@@ -134,11 +135,12 @@ public class UserPerDepartmentNotCrudResource {
 		.currentuserHasUpdateAccess(departmentWithIdUDTO.getId())) {
 	    throw new AccessDeniedException("cant update upd");
 	}
-	var old = this.userPerDepartmentService.findOne(departmentWithIdUDTO.getId()).get();
+	var old = this.userPerDepartmentService
+		.findOne(departmentWithIdUDTO.getId()).get();
 	var newUPD = departmentWithIdUDTO.build();
 	newUPD.setDepartment(old.getDepartment());
 	newUPD.setRealUser(old.getRealUser());
-	
+
 	final UserPerDepartmentDTO result = this.userPerDepartmentService
 		.save(newUPD);
 	return ResponseEntity.ok()
@@ -148,7 +150,5 @@ public class UserPerDepartmentNotCrudResource {
 			newUPD.getId().toString()))
 		.body(result);
     }
-    
-
 
 }

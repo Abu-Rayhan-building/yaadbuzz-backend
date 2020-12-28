@@ -153,7 +153,6 @@ public class UserService {
 	UserExtra newUserExtra = new UserExtra();
 	newUserExtra.setUser(newUser);
 	newUserExtra.setPhone(phone);
-	newUserExtra.setDefaultUserPerDepartment(def);
 	userExtraRepository.save(newUserExtra);
 	log.debug("Created Information for UserExtra: {}", newUserExtra);
 
@@ -268,8 +267,6 @@ public class UserService {
 		    user.setImageUrl(imageUrl);
 		    // fuck
 		    var ue = userExtraRepository.getOne(user.getId());
-		    ue.setDefaultUserPerDepartment(userPerDepartmentMapper
-			    .toEntity(userPerDepartmentUDTO.build()));
 		    ue.setPhone(phone);
 		    this.clearUserCaches(user);
 		    log.debug("Changed Information for User: {}", user);
