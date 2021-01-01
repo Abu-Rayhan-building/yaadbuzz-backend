@@ -45,7 +45,7 @@ spring:
   liquibase:
     contexts: prod
   mail:
-    host: localhost
+    host: mail
     port: 25
     username:
     password:
