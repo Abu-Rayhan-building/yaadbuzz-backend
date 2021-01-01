@@ -36,7 +36,8 @@ services:
       - ../../../../yaadbuzz-frontend/out:/data/panel
     ports:
       - 80:80
-
+    depends_on:
+      - yaadbuzz-app
   mail:
     image: namshi/smtp
     restart: always
