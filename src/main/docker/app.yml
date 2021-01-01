@@ -36,3 +36,9 @@ services:
       - ../../../../yaadbuzz-frontend/out:/data/panel
     ports:
       - 80:80
+
+  mail:
+    image: namshi/smtp
+    restart: always
+    environment:
+      - DISABLE_IPV6=true
