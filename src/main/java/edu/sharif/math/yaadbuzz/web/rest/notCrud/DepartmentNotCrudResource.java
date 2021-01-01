@@ -193,10 +193,19 @@ public class DepartmentNotCrudResource {
 	log.debug("REST request to save Department : {}",
 		departmentWiteUPDCreateUDTO);
 	var input = departmentWiteUPDCreateUDTO.build();
-	DepartmentDTO res = departmentService.save(input.getDepartmentDTO());
-	input.getUserPerDepartmentDTO().setDepartment(res);
-	var res2 = userPerDepartmentService
-		.save(input.getUserPerDepartmentDTO());
+	var dep = input.getDepartmentDTO();
+	var udp = input.getUserPerDepartmentDTO();
+
+	{
+	    var user = new UserDTO();
+	    user.setId(userService.getCurrentUserId());
+	    dep.setOwner(user);
+	    udp.setRealUser(user);
+	}
+	DepartmentDTO res = departmentService.save(dep);
+	udp.setDepartment(res);
+
+	var res2 = userPerDepartmentService.save(udp);
 
 	var result = new DepartmentWithUserPerDepartmentDTO();
 	result.setDepartmentDTO(res);
