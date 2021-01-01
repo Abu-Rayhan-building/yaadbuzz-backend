@@ -1,12 +1,17 @@
 package edu.sharif.math.yaadbuzz.web.rest.vm;
 
+import edu.sharif.math.yaadbuzz.domain.UserExtra;
+import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
 import edu.sharif.math.yaadbuzz.service.dto.AdminUserDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.UserPerDepartmentUDTO;
+
 import javax.validation.constraints.Size;
 
 /**
- * View Model extending the AdminUserDTO, which is meant to be used in the user management UI.
+ * View Model extending the AdminUserDTO, which is meant to be used in the user
+ * management UI.
  */
-public class ManagedUserVM extends AdminUserDTO {
+public class ManagedUserVM extends ManagedUserVMWithoutPass {
 
     public static final int PASSWORD_MIN_LENGTH = 4;
 
@@ -16,20 +21,20 @@ public class ManagedUserVM extends AdminUserDTO {
     private String password;
 
     public ManagedUserVM() {
-        // Empty constructor needed for Jackson.
+	// Empty constructor needed for Jackson.
     }
 
     public String getPassword() {
-        return password;
+	return password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+	this.password = password;
     }
 
     // prettier-ignore
     @Override
     public String toString() {
-        return "ManagedUserVM{" + super.toString() + "} ";
+	return "ManagedUserVM{" + super.toString() + "} ";
     }
 }

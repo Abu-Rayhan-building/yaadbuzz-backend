@@ -22,7 +22,7 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
 
   const { pictureEntity, comments, loading, updating } = props;
 
-  const { image, imageContentType } = pictureEntity;
+  const { id, address } = pictureEntity;
 
   const handleClose = () => {
     props.history.push('/picture');
@@ -94,19 +94,13 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
                     <Translate contentKey="yaadbuzzApp.picture.image">Image</Translate>
                   </Label>
                   <br />
-                  {image ? (
+                  {address ? (
                     <div>
-                      {imageContentType ? (
-                        <a onClick={openFile(imageContentType, image)}>
-                          <img src={`data:${imageContentType};base64,${image}`} style={{ maxHeight: '100px' }} />
-                        </a>
-                      ) : null}
+                          <img crossOrigin="use-credentials" src={`${process.env.SERVER_API_URL}api/picture/${id}/file`} style={{ maxHeight: '100px' }} />
+                       
                       <br />
                       <Row>
                         <Col md="11">
-                          <span>
-                            {imageContentType}, {byteSize(image)}
-                          </span>
                         </Col>
                         <Col md="1">
                           <Button color="danger" onClick={clearBlob('image')}>
@@ -120,7 +114,6 @@ export const PictureUpdate = (props: IPictureUpdateProps) => {
                   <AvInput
                     type="hidden"
                     name="image"
-                    value={image}
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') },
                     }}

@@ -24,8 +24,8 @@ public class UserPerDepartment implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "nic_name", unique = true)
-    private String nicName;
+    @Column(name = "nickname", unique = true)
+    private String nickname;
 
     @Column(name = "bio")
     private String bio;
@@ -72,17 +72,17 @@ public class UserPerDepartment implements Serializable {
         return this;
     }
 
-    public String getNicName() {
-        return this.nicName;
+    public String getNickname() {
+        return this.nickname;
     }
 
-    public UserPerDepartment nicName(String nicName) {
-        this.nicName = nicName;
+    public UserPerDepartment nickname(String nickname) {
+        this.nickname = nickname;
         return this;
     }
 
-    public void setNicName(String nicName) {
-        this.nicName = nicName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getBio() {
@@ -254,7 +254,7 @@ public class UserPerDepartment implements Serializable {
     public String toString() {
         return "UserPerDepartment{" +
             "id=" + getId() +
-            ", nicName='" + getNicName() + "'" +
+            ", nickname='" + getNickname() + "'" +
             ", bio='" + getBio() + "'" +
             "}";
     }

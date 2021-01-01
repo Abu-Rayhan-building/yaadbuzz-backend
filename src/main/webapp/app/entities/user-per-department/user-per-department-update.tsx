@@ -95,10 +95,10 @@ export const UserPerDepartmentUpdate = (props: IUserPerDepartmentUpdateProps) =>
                 </AvGroup>
               ) : null}
               <AvGroup>
-                <Label id="nicNameLabel" for="user-per-department-nicName">
-                  <Translate contentKey="yaadbuzzApp.userPerDepartment.nicName">Nic Name</Translate>
+                <Label id="nicknameLabel" for="user-per-department-nickname">
+                  <Translate contentKey="yaadbuzzApp.userPerDepartment.nickname">Nickname</Translate>
                 </Label>
-                <AvField id="user-per-department-nicName" data-cy="nicName" type="text" name="nicName" validate={{}} />
+                <AvField id="user-per-department-nickname" data-cy="nickname" type="text" name="nickname" validate={{}} />
               </AvGroup>
               <AvGroup>
                 <Label id="bioLabel" for="user-per-department-bio">

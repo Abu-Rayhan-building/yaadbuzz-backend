@@ -26,7 +26,7 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
-    private StringFilter nicName;
+    private StringFilter nickname;
 
     private StringFilter bio;
 
@@ -46,7 +46,7 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
 
     public UserPerDepartmentCriteria(UserPerDepartmentCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.nicName = other.nicName == null ? null : other.nicName.copy();
+        this.nickname = other.nickname == null ? null : other.nickname.copy();
         this.bio = other.bio == null ? null : other.bio.copy();
         this.topicAssignedsId = other.topicAssignedsId == null ? null : other.topicAssignedsId.copy();
         this.avatarId = other.avatarId == null ? null : other.avatarId.copy();
@@ -69,12 +69,12 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
         this.id = id;
     }
 
-    public StringFilter getNicName() {
-        return nicName;
+    public StringFilter getNickname() {
+        return nickname;
     }
 
-    public void setNicName(StringFilter nicName) {
-        this.nicName = nicName;
+    public void setNickname(StringFilter nickname) {
+        this.nickname = nickname;
     }
 
     public StringFilter getBio() {
@@ -144,7 +144,7 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
         final UserPerDepartmentCriteria that = (UserPerDepartmentCriteria) o;
         return (
             Objects.equals(id, that.id) &&
-            Objects.equals(nicName, that.nicName) &&
+            Objects.equals(nickname, that.nickname) &&
             Objects.equals(bio, that.bio) &&
             Objects.equals(topicAssignedsId, that.topicAssignedsId) &&
             Objects.equals(avatarId, that.avatarId) &&
@@ -157,7 +157,7 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nicName, bio, topicAssignedsId, avatarId, realUserId, departmentId, topicsVotedId, tagedInMemoeriesId);
+        return Objects.hash(id, nickname, bio, topicAssignedsId, avatarId, realUserId, departmentId, topicsVotedId, tagedInMemoeriesId);
     }
 
     // prettier-ignore
@@ -165,7 +165,7 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
     public String toString() {
         return "UserPerDepartmentCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
-                (nicName != null ? "nicName=" + nicName + ", " : "") +
+                (nickname != null ? "nickname=" + nickname + ", " : "") +
                 (bio != null ? "bio=" + bio + ", " : "") +
                 (topicAssignedsId != null ? "topicAssignedsId=" + topicAssignedsId + ", " : "") +
                 (avatarId != null ? "avatarId=" + avatarId + ", " : "") +
@@ -175,4 +175,5 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
                 (tagedInMemoeriesId != null ? "tagedInMemoeriesId=" + tagedInMemoeriesId + ", " : "") +
             "}";
     }
+
 }

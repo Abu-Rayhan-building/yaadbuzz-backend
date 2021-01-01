@@ -1,3 +1,5 @@
+# caution: you should change password of admin and default department
+
 # yaadbuzz
 
 This application was generated using JHipster 7.0.0-beta.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.0.0-beta.0](https://www.jhipster.tech/documentation-archive/v7.0.0-beta.0).

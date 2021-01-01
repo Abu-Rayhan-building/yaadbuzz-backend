@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.sharif.math.yaadbuzz.service.CharateristicsService;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.CharateristicsVoteDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.CharateristicsVoteDTO;
 import tech.jhipster.web.util.HeaderUtil;
 
 /**

@@ -3,15 +3,18 @@ package edu.sharif.math.yaadbuzz.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.MyUserPerDepartmentStatsDTO;
 
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment}.
+ * Service Interface for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment}.
  */
-public interface UserPerDepartmentService extends ServiceWithCurrentUserCrudAccess {
+public interface UserPerDepartmentService
+	extends ServiceWithCurrentUserCrudAccess {
 
     /**
      * Save a userPerDepartment.
@@ -27,7 +30,8 @@ public interface UserPerDepartmentService extends ServiceWithCurrentUserCrudAcce
      * @param userPerDepartmentDTO the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<UserPerDepartmentDTO> partialUpdate(UserPerDepartmentDTO userPerDepartmentDTO);
+    Optional<UserPerDepartmentDTO> partialUpdate(
+	    UserPerDepartmentDTO userPerDepartmentDTO);
 
     /**
      * Get all the userPerDepartments.
@@ -54,9 +58,15 @@ public interface UserPerDepartmentService extends ServiceWithCurrentUserCrudAcce
 
     UserPerDepartmentDTO getCurrentUserInDep(Long depId);
 
-    Long getCurrentUserUserPerDepeartmentIdInDep(Long depId) ;
-    
+    Page<UserPerDepartmentDTO> getDepartmentUsers(Long id, Pageable pageable);
+
+    Long getCurrentUserUserPerDepeartmentIdInDep(Long depId);
+
     MyUserPerDepartmentStatsDTO getCurrentUserStatsInDep(Long depId);
 
     UserPerDepartmentDTO getCurrentUserUserPerDepeartmentInDep(Long depId);
+
+    PictureDTO getUPDPicture(Long updId);
+
+    void updateDefaultUPDAfterJoin(UserPerDepartmentDTO u);
 }

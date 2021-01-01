@@ -8,8 +8,8 @@ import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.domain.Memorial;
 import edu.sharif.math.yaadbuzz.repository.MemorialRepository;
 import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.MemorialUDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.MemorialMapper;
+import edu.sharif.math.yaadbuzz.web.rest.dto.MemorialUDTO;
 
 import java.util.Optional;
 

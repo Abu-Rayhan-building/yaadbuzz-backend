@@ -17,6 +17,7 @@
         "charateristicsRepetation": "Charateristics Repetation",
         "memorial": "Memorial",
         "topicVote": "Topic Vote",
+        "userExtra": "User Extra",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

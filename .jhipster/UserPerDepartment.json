@@ -2,7 +2,7 @@
   "name": "UserPerDepartment",
   "fields": [
     {
-      "fieldName": "nicName",
+      "fieldName": "nickname",
       "fieldType": "String",
       "fieldValidateRules": ["unique"]
     },

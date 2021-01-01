@@ -47,6 +47,18 @@
     "pages": [],
     "withAdminUi": true,
     "reactive": false,
-    "entities": ["Department", "UserPerDepartment", "Memory", "Comment", "Picture", "Topic", "TopicVote", "Charateristics", "Memorial"]
+    "entities": [
+      "Department",
+      "UserPerDepartment",
+      "Memory",
+      "Comment",
+      "Picture",
+      "Topic",
+      "TopicVote",
+      "Charateristics",
+      "Memorial",
+      "UserExtra"
+    ],
+    "lastLiquibaseTimestamp": 1608910498000
   }
 }

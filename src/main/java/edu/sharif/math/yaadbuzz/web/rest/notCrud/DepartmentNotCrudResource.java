@@ -34,11 +34,11 @@ import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.DepartmentCreateUDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.DepartmentWiteUPDCreateUDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.DepartmentWithUserPerDepartmentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.UserPerDepartmentUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.DepartmentCreateUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.DepartmentWiteUPDCreateUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.DepartmentWithUserPerDepartmentDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.MyUserPerDepartmentStatsDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.UserPerDepartmentUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -193,10 +193,19 @@ public class DepartmentNotCrudResource {
 	log.debug("REST request to save Department : {}",
 		departmentWiteUPDCreateUDTO);
 	var input = departmentWiteUPDCreateUDTO.build();
-	DepartmentDTO res = departmentService.save(input.getDepartmentDTO());
-	input.getUserPerDepartmentDTO().setDepartment(res);
-	var res2 = userPerDepartmentService
-		.save(input.getUserPerDepartmentDTO());
+	var dep = input.getDepartmentDTO();
+	var udp = input.getUserPerDepartmentDTO();
+
+	{
+	    var user = new UserDTO();
+	    user.setId(userService.getCurrentUserId());
+	    dep.setOwner(user);
+	    udp.setRealUser(user);
+	}
+	DepartmentDTO res = departmentService.save(dep);
+	udp.setDepartment(res);
+
+	var res2 = userPerDepartmentService.save(udp);
 
 	var result = new DepartmentWithUserPerDepartmentDTO();
 	result.setDepartmentDTO(res);

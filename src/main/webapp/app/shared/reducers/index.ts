@@ -49,6 +49,10 @@ import memorial, {
 import topicVote, {
   TopicVoteState
 } from 'app/entities/topic-vote/topic-vote.reducer';
+// prettier-ignore
+import userExtra, {
+  UserExtraState
+} from 'app/entities/user-extra/user-extra.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -71,6 +75,7 @@ export interface IRootState {
   readonly charateristics: CharateristicsState;
   readonly memorial: MemorialState;
   readonly topicVote: TopicVoteState;
+  readonly userExtra: UserExtraState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -95,6 +100,7 @@ const rootReducer = combineReducers<IRootState>({
   charateristics,
   memorial,
   topicVote,
+  userExtra,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

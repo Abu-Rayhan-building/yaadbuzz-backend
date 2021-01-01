@@ -29,6 +29,7 @@ plugins {
     //jhipster-needle-gradle-plugins - JHipster will add additional gradle plugins here
 }
 
+apply plugin: 'project-report'
 group = "edu.sharif.math.yaadbuzz"
 version = "0.3.0-SNAPSHOT"
 
@@ -146,7 +147,7 @@ liquibase {
     activities {
         main {
             driver "org.postgresql.Driver"
-            url "jdbc:postgresql://localhost:5432/oybg4j"
+            url "jdbc:postgresql://localhost:5432/oybg4j2"
             username "heartstonedb"
             password "heartstonedb"
             changeLogFile "src/main/resources/config/liquibase/master.xml"
@@ -157,7 +158,7 @@ liquibase {
         }
         diffLog {
             driver "org.postgresql.Driver"
-            url "jdbc:postgresql://localhost:5432/oybg4j"
+            url "jdbc:postgresql://localhost:5432/oybg4j2"
             username "heartstonedb"
             password "heartstonedb"
             changeLogFile project.ext.diffChangelogFile
@@ -260,6 +261,9 @@ dependencies {
         implementation "io.jsonwebtoken:jjwt-impl"
         implementation "io.jsonwebtoken:jjwt-jackson"
     }
+    // https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
+compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+    
     implementation ("io.springfox:springfox-oas")
     implementation ("io.springfox:springfox-swagger2")
     implementation "io.springfox:springfox-bean-validators"

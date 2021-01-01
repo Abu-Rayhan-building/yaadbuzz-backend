@@ -29,7 +29,7 @@ import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.MemorialCriteria;
 import edu.sharif.math.yaadbuzz.service.dto.MemorialDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.MemorialUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.MemorialUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.web.util.HeaderUtil;

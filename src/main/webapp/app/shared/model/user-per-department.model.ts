@@ -7,7 +7,7 @@ import { IMemory } from 'app/shared/model/memory.model';
 
 export interface IUserPerDepartment {
   id?: number;
-  nicName?: string;
+  nickname?: string;
   bio?: string;
   topicAssigneds?: ITopicVote[];
   avatar?: IPicture;

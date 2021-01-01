@@ -1,8 +1,6 @@
 export interface IPicture {
   id?: number;
-  imageContentType?: string;
-  image?: any;
-  commentId?: number;
+  address?: string;
 }
 
 export const defaultValue: Readonly<IPicture> = {};

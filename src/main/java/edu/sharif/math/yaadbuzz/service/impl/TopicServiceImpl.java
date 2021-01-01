@@ -5,6 +5,8 @@ import edu.sharif.math.yaadbuzz.repository.TopicRepository;
 import edu.sharif.math.yaadbuzz.service.TopicService;
 import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.TopicMapper;
+import edu.sharif.math.yaadbuzz.web.rest.dto.TopicVoteUDTO;
+
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +22,6 @@ import edu.sharif.math.yaadbuzz.service.TopicService;
 import edu.sharif.math.yaadbuzz.service.TopicVoteService;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.TopicVoteUDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.TopicMapper;
 
 /**

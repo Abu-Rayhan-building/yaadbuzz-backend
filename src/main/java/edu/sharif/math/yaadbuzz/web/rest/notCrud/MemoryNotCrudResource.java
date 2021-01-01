@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.sharif.math.yaadbuzz.domain.User;
 import edu.sharif.math.yaadbuzz.repository.UserRepository;
+import edu.sharif.math.yaadbuzz.service.CommentService;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.MailService;
 import edu.sharif.math.yaadbuzz.service.MemoryService;
@@ -36,8 +38,8 @@ import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
 import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.MemoryUDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.MemoryWithIdUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.MemoryUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.MemoryWithIdUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -88,6 +90,9 @@ public class MemoryNotCrudResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    @Autowired
+    private CommentService commentService;
+
     private final MemoryService memoryService;
 
     private final UserPerDepartmentService userPerDepartmentService;
@@ -118,16 +123,23 @@ public class MemoryNotCrudResource {
 	if (!this.memoryService.currentuserHasCreatAccess(depId)) {
 	    throw new AccessDeniedException("cant create memory");
 	}
-	final var input = memoryUDTO.build();
 
+	final var input = memoryUDTO.build();
+	var com = input.getBaseComment();
+	{
+	    var curUDP = this.userPerDepartmentService
+		    .getCurrentUserUserPerDepeartmentInDep(depId);
+	    com.setWriter(curUDP);
+	    input.setWriter(curUDP);
+	}
 	{
 	    var dep = new DepartmentDTO();
 	    dep.setId(depId);
 	    input.setDepartment(dep);
 	}
-	input.setWriter(this.userPerDepartmentService
-		.getCurrentUserUserPerDepeartmentInDep(depId));
 
+	com = this.commentService.save(com);
+	input.setBaseComment(com);
 	final MemoryDTO result = this.memoryService.save(input);
 	return ResponseEntity
 		.created(new URI("/api/memories/" + result.getId()))

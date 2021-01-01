@@ -37,8 +37,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class UserPerDepartmentResourceIT {
 
-    private static final String DEFAULT_NIC_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_NIC_NAME = "BBBBBBBBBB";
+    private static final String DEFAULT_NICKNAME = "AAAAAAAAAA";
+    private static final String UPDATED_NICKNAME = "BBBBBBBBBB";
 
     private static final String DEFAULT_BIO = "AAAAAAAAAA";
     private static final String UPDATED_BIO = "BBBBBBBBBB";
@@ -67,7 +67,7 @@ class UserPerDepartmentResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static UserPerDepartment createEntity(EntityManager em) {
-        UserPerDepartment userPerDepartment = new UserPerDepartment().nicName(DEFAULT_NIC_NAME).bio(DEFAULT_BIO);
+        UserPerDepartment userPerDepartment = new UserPerDepartment().nickname(DEFAULT_NICKNAME).bio(DEFAULT_BIO);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -93,7 +93,7 @@ class UserPerDepartmentResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static UserPerDepartment createUpdatedEntity(EntityManager em) {
-        UserPerDepartment userPerDepartment = new UserPerDepartment().nicName(UPDATED_NIC_NAME).bio(UPDATED_BIO);
+        UserPerDepartment userPerDepartment = new UserPerDepartment().nickname(UPDATED_NICKNAME).bio(UPDATED_BIO);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -135,7 +135,7 @@ class UserPerDepartmentResourceIT {
         List<UserPerDepartment> userPerDepartmentList = userPerDepartmentRepository.findAll();
         assertThat(userPerDepartmentList).hasSize(databaseSizeBeforeCreate + 1);
         UserPerDepartment testUserPerDepartment = userPerDepartmentList.get(userPerDepartmentList.size() - 1);
-        assertThat(testUserPerDepartment.getNicName()).isEqualTo(DEFAULT_NIC_NAME);
+        assertThat(testUserPerDepartment.getNickname()).isEqualTo(DEFAULT_NICKNAME);
         assertThat(testUserPerDepartment.getBio()).isEqualTo(DEFAULT_BIO);
     }
 
@@ -174,7 +174,7 @@ class UserPerDepartmentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userPerDepartment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].nicName").value(hasItem(DEFAULT_NIC_NAME)))
+            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME)))
             .andExpect(jsonPath("$.[*].bio").value(hasItem(DEFAULT_BIO)));
     }
 
@@ -190,7 +190,7 @@ class UserPerDepartmentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(userPerDepartment.getId().intValue()))
-            .andExpect(jsonPath("$.nicName").value(DEFAULT_NIC_NAME))
+            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME))
             .andExpect(jsonPath("$.bio").value(DEFAULT_BIO));
     }
 
@@ -214,80 +214,80 @@ class UserPerDepartmentResourceIT {
 
     @Test
     @Transactional
-    void getAllUserPerDepartmentsByNicNameIsEqualToSomething() throws Exception {
+    void getAllUserPerDepartmentsByNicknameIsEqualToSomething() throws Exception {
         // Initialize the database
         userPerDepartmentRepository.saveAndFlush(userPerDepartment);
 
-        // Get all the userPerDepartmentList where nicName equals to DEFAULT_NIC_NAME
-        defaultUserPerDepartmentShouldBeFound("nicName.equals=" + DEFAULT_NIC_NAME);
+        // Get all the userPerDepartmentList where nickname equals to DEFAULT_NICKNAME
+        defaultUserPerDepartmentShouldBeFound("nickname.equals=" + DEFAULT_NICKNAME);
 
-        // Get all the userPerDepartmentList where nicName equals to UPDATED_NIC_NAME
-        defaultUserPerDepartmentShouldNotBeFound("nicName.equals=" + UPDATED_NIC_NAME);
+        // Get all the userPerDepartmentList where nickname equals to UPDATED_NICKNAME
+        defaultUserPerDepartmentShouldNotBeFound("nickname.equals=" + UPDATED_NICKNAME);
     }
 
     @Test
     @Transactional
-    void getAllUserPerDepartmentsByNicNameIsNotEqualToSomething() throws Exception {
+    void getAllUserPerDepartmentsByNicknameIsNotEqualToSomething() throws Exception {
         // Initialize the database
         userPerDepartmentRepository.saveAndFlush(userPerDepartment);
 
-        // Get all the userPerDepartmentList where nicName not equals to DEFAULT_NIC_NAME
-        defaultUserPerDepartmentShouldNotBeFound("nicName.notEquals=" + DEFAULT_NIC_NAME);
+        // Get all the userPerDepartmentList where nickname not equals to DEFAULT_NICKNAME
+        defaultUserPerDepartmentShouldNotBeFound("nickname.notEquals=" + DEFAULT_NICKNAME);
 
-        // Get all the userPerDepartmentList where nicName not equals to UPDATED_NIC_NAME
-        defaultUserPerDepartmentShouldBeFound("nicName.notEquals=" + UPDATED_NIC_NAME);
+        // Get all the userPerDepartmentList where nickname not equals to UPDATED_NICKNAME
+        defaultUserPerDepartmentShouldBeFound("nickname.notEquals=" + UPDATED_NICKNAME);
     }
 
     @Test
     @Transactional
-    void getAllUserPerDepartmentsByNicNameIsInShouldWork() throws Exception {
+    void getAllUserPerDepartmentsByNicknameIsInShouldWork() throws Exception {
         // Initialize the database
         userPerDepartmentRepository.saveAndFlush(userPerDepartment);
 
-        // Get all the userPerDepartmentList where nicName in DEFAULT_NIC_NAME or UPDATED_NIC_NAME
-        defaultUserPerDepartmentShouldBeFound("nicName.in=" + DEFAULT_NIC_NAME + "," + UPDATED_NIC_NAME);
+        // Get all the userPerDepartmentList where nickname in DEFAULT_NICKNAME or UPDATED_NICKNAME
+        defaultUserPerDepartmentShouldBeFound("nickname.in=" + DEFAULT_NICKNAME + "," + UPDATED_NICKNAME);
 
-        // Get all the userPerDepartmentList where nicName equals to UPDATED_NIC_NAME
-        defaultUserPerDepartmentShouldNotBeFound("nicName.in=" + UPDATED_NIC_NAME);
+        // Get all the userPerDepartmentList where nickname equals to UPDATED_NICKNAME
+        defaultUserPerDepartmentShouldNotBeFound("nickname.in=" + UPDATED_NICKNAME);
     }
 
     @Test
     @Transactional
-    void getAllUserPerDepartmentsByNicNameIsNullOrNotNull() throws Exception {
+    void getAllUserPerDepartmentsByNicknameIsNullOrNotNull() throws Exception {
         // Initialize the database
         userPerDepartmentRepository.saveAndFlush(userPerDepartment);
 
-        // Get all the userPerDepartmentList where nicName is not null
-        defaultUserPerDepartmentShouldBeFound("nicName.specified=true");
+        // Get all the userPerDepartmentList where nickname is not null
+        defaultUserPerDepartmentShouldBeFound("nickname.specified=true");
 
-        // Get all the userPerDepartmentList where nicName is null
-        defaultUserPerDepartmentShouldNotBeFound("nicName.specified=false");
+        // Get all the userPerDepartmentList where nickname is null
+        defaultUserPerDepartmentShouldNotBeFound("nickname.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllUserPerDepartmentsByNicNameContainsSomething() throws Exception {
+    void getAllUserPerDepartmentsByNicknameContainsSomething() throws Exception {
         // Initialize the database
         userPerDepartmentRepository.saveAndFlush(userPerDepartment);
 
-        // Get all the userPerDepartmentList where nicName contains DEFAULT_NIC_NAME
-        defaultUserPerDepartmentShouldBeFound("nicName.contains=" + DEFAULT_NIC_NAME);
+        // Get all the userPerDepartmentList where nickname contains DEFAULT_NICKNAME
+        defaultUserPerDepartmentShouldBeFound("nickname.contains=" + DEFAULT_NICKNAME);
 
-        // Get all the userPerDepartmentList where nicName contains UPDATED_NIC_NAME
-        defaultUserPerDepartmentShouldNotBeFound("nicName.contains=" + UPDATED_NIC_NAME);
+        // Get all the userPerDepartmentList where nickname contains UPDATED_NICKNAME
+        defaultUserPerDepartmentShouldNotBeFound("nickname.contains=" + UPDATED_NICKNAME);
     }
 
     @Test
     @Transactional
-    void getAllUserPerDepartmentsByNicNameNotContainsSomething() throws Exception {
+    void getAllUserPerDepartmentsByNicknameNotContainsSomething() throws Exception {
         // Initialize the database
         userPerDepartmentRepository.saveAndFlush(userPerDepartment);
 
-        // Get all the userPerDepartmentList where nicName does not contain DEFAULT_NIC_NAME
-        defaultUserPerDepartmentShouldNotBeFound("nicName.doesNotContain=" + DEFAULT_NIC_NAME);
+        // Get all the userPerDepartmentList where nickname does not contain DEFAULT_NICKNAME
+        defaultUserPerDepartmentShouldNotBeFound("nickname.doesNotContain=" + DEFAULT_NICKNAME);
 
-        // Get all the userPerDepartmentList where nicName does not contain UPDATED_NIC_NAME
-        defaultUserPerDepartmentShouldBeFound("nicName.doesNotContain=" + UPDATED_NIC_NAME);
+        // Get all the userPerDepartmentList where nickname does not contain UPDATED_NICKNAME
+        defaultUserPerDepartmentShouldBeFound("nickname.doesNotContain=" + UPDATED_NICKNAME);
     }
 
     @Test
@@ -491,7 +491,7 @@ class UserPerDepartmentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userPerDepartment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].nicName").value(hasItem(DEFAULT_NIC_NAME)))
+            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME)))
             .andExpect(jsonPath("$.[*].bio").value(hasItem(DEFAULT_BIO)));
 
         // Check, that the count call also returns 1
@@ -540,7 +540,7 @@ class UserPerDepartmentResourceIT {
         UserPerDepartment updatedUserPerDepartment = userPerDepartmentRepository.findById(userPerDepartment.getId()).get();
         // Disconnect from session so that the updates on updatedUserPerDepartment are not directly saved in db
         em.detach(updatedUserPerDepartment);
-        updatedUserPerDepartment.nicName(UPDATED_NIC_NAME).bio(UPDATED_BIO);
+        updatedUserPerDepartment.nickname(UPDATED_NICKNAME).bio(UPDATED_BIO);
         UserPerDepartmentDTO userPerDepartmentDTO = userPerDepartmentMapper.toDto(updatedUserPerDepartment);
 
         restUserPerDepartmentMockMvc
@@ -555,7 +555,7 @@ class UserPerDepartmentResourceIT {
         List<UserPerDepartment> userPerDepartmentList = userPerDepartmentRepository.findAll();
         assertThat(userPerDepartmentList).hasSize(databaseSizeBeforeUpdate);
         UserPerDepartment testUserPerDepartment = userPerDepartmentList.get(userPerDepartmentList.size() - 1);
-        assertThat(testUserPerDepartment.getNicName()).isEqualTo(UPDATED_NIC_NAME);
+        assertThat(testUserPerDepartment.getNickname()).isEqualTo(UPDATED_NICKNAME);
         assertThat(testUserPerDepartment.getBio()).isEqualTo(UPDATED_BIO);
     }
 
@@ -605,7 +605,7 @@ class UserPerDepartmentResourceIT {
         List<UserPerDepartment> userPerDepartmentList = userPerDepartmentRepository.findAll();
         assertThat(userPerDepartmentList).hasSize(databaseSizeBeforeUpdate);
         UserPerDepartment testUserPerDepartment = userPerDepartmentList.get(userPerDepartmentList.size() - 1);
-        assertThat(testUserPerDepartment.getNicName()).isEqualTo(DEFAULT_NIC_NAME);
+        assertThat(testUserPerDepartment.getNickname()).isEqualTo(DEFAULT_NICKNAME);
         assertThat(testUserPerDepartment.getBio()).isEqualTo(DEFAULT_BIO);
     }
 
@@ -621,7 +621,7 @@ class UserPerDepartmentResourceIT {
         UserPerDepartment partialUpdatedUserPerDepartment = new UserPerDepartment();
         partialUpdatedUserPerDepartment.setId(userPerDepartment.getId());
 
-        partialUpdatedUserPerDepartment.nicName(UPDATED_NIC_NAME).bio(UPDATED_BIO);
+        partialUpdatedUserPerDepartment.nickname(UPDATED_NICKNAME).bio(UPDATED_BIO);
 
         restUserPerDepartmentMockMvc
             .perform(
@@ -635,7 +635,7 @@ class UserPerDepartmentResourceIT {
         List<UserPerDepartment> userPerDepartmentList = userPerDepartmentRepository.findAll();
         assertThat(userPerDepartmentList).hasSize(databaseSizeBeforeUpdate);
         UserPerDepartment testUserPerDepartment = userPerDepartmentList.get(userPerDepartmentList.size() - 1);
-        assertThat(testUserPerDepartment.getNicName()).isEqualTo(UPDATED_NIC_NAME);
+        assertThat(testUserPerDepartment.getNickname()).isEqualTo(UPDATED_NICKNAME);
         assertThat(testUserPerDepartment.getBio()).isEqualTo(UPDATED_BIO);
     }
 

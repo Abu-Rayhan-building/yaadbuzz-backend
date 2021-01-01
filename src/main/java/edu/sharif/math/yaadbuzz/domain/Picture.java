@@ -22,79 +22,56 @@ public class Picture implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Lob
-    @Column(name = "image", nullable = false)
-    private byte[] image;
-
-    @Column(name = "image_content_type", nullable = false)
-    private String imageContentType;
+    @Column(name = "address", nullable = false)
+    private String address;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
-        return id;
+	return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+	this.id = id;
     }
 
     public Picture id(Long id) {
-        this.id = id;
-        return this;
+	this.id = id;
+	return this;
     }
 
-    public byte[] getImage() {
-        return this.image;
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters
+    // and setters here
+
+    public String getAddress() {
+	return address;
     }
 
-    public Picture image(byte[] image) {
-        this.image = image;
-        return this;
+    public void setAddress(String address) {
+	this.address = address;
     }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public String getImageContentType() {
-        return this.imageContentType;
-    }
-
-    public Picture imageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
-        return this;
-    }
-
-    public void setImageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
-    }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Picture)) {
-            return false;
-        }
-        return id != null && id.equals(((Picture) o).id);
+	if (this == o) {
+	    return true;
+	}
+	if (!(o instanceof Picture)) {
+	    return false;
+	}
+	return id != null && id.equals(((Picture) o).id);
     }
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
+	// see
+	// https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+	return getClass().hashCode();
     }
 
     // prettier-ignore
     @Override
     public String toString() {
-        return "Picture{" +
-            "id=" + getId() +
-            ", image='" + getImage() + "'" +
-            ", imageContentType='" + getImageContentType() + "'" +
-            "}";
+	return "Picture{" + "id=" + getId() + ", address='" + getAddress() + "'"
+		+ "}";
     }
 }

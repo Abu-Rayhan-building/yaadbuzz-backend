@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+    <!--
+        Added the constraints for entity UserExtra.
+    -->
+    <changeSet id="20201225153458-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="id"
+                                 baseTableName="user_extra"
+                                 constraintName="fk_user_extra__user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="default_user_per_department_id"
+                                 baseTableName="user_extra"
+                                 constraintName="fk_user_extra__default_user_per_department_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_per_department"/>
+
+    </changeSet>
+</databaseChangeLog>

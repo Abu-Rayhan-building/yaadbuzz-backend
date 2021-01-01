@@ -3,16 +3,18 @@ package edu.sharif.math.yaadbuzz.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.MyUserPerDepartmentStatsDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.MyUserPerDepartmentStatsDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.Department}.
+ * Service Interface for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.Department}.
  */
-public interface DepartmentService extends ServiceWithCurrentUserCrudAccess{
+public interface DepartmentService extends ServiceWithCurrentUserCrudAccess {
 
     /**
      * Save a department.
@@ -58,9 +60,11 @@ public interface DepartmentService extends ServiceWithCurrentUserCrudAccess{
 
     List<DepartmentDTO> getMyDeps();
 
-    Page<UserPerDepartmentDTO> getDepartmentUsers(Long id, Pageable pageable);
-
     MyUserPerDepartmentStatsDTO getMyStatsInDep(Long depId);
 
     List<UserPerDepartmentDTO> getAllDepartmentUsers(Long depid);
+
+    PictureDTO getDepartmentPicture(Long depId);
+
+    Long getDefaultDepId();
 }

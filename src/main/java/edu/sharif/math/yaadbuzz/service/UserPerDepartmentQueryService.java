@@ -89,8 +89,8 @@ public class UserPerDepartmentQueryService extends QueryService<UserPerDepartmen
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), UserPerDepartment_.id));
             }
-            if (criteria.getNicName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getNicName(), UserPerDepartment_.nicName));
+            if (criteria.getNickname() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getNickname(), UserPerDepartment_.nickname));
             }
             if (criteria.getBio() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getBio(), UserPerDepartment_.bio));

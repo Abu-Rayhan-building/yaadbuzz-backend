@@ -27,7 +27,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import edu.sharif.math.yaadbuzz.service.TopicService;
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
-import edu.sharif.math.yaadbuzz.service.dto.helpers.TopicVoteUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.TopicVoteUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;

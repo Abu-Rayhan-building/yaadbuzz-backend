@@ -30,203 +30,162 @@ public class Memory implements Serializable {
     @Column(name = "is_private")
     private Boolean isPrivate;
 
-    @OneToMany(mappedBy = "memory")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "pictures", "writer", "memory" }, allowSetters = true)
-    private Set<Comment> comments = new HashSet<>();
-
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "pictures", "writer", "memory" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "pictures", "writer",
+	    "memory" }, allowSetters = true)
     private Comment baseComment;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(
-        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
-        allowSetters = true
-    )
+    @JsonIgnoreProperties(value = { "topicAssigneds", "avatar", "realUser",
+	    "department", "topicsVoteds",
+	    "tagedInMemoeries" }, allowSetters = true)
     private UserPerDepartment writer;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JoinTable(
-        name = "rel_memory__taged",
-        joinColumns = @JoinColumn(name = "memory_id"),
-        inverseJoinColumns = @JoinColumn(name = "taged_id")
-    )
-    @JsonIgnoreProperties(
-        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
-        allowSetters = true
-    )
+    @JoinTable(name = "rel_memory__taged", joinColumns = @JoinColumn(name = "memory_id"), inverseJoinColumns = @JoinColumn(name = "taged_id"))
+    @JsonIgnoreProperties(value = { "topicAssigneds", "avatar", "realUser",
+	    "department", "topicsVoteds",
+	    "tagedInMemoeries" }, allowSetters = true)
     private Set<UserPerDepartment> tageds = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "userPerDepartments", "memories", "avatar", "owner" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "userPerDepartments", "memories", "avatar",
+	    "owner" }, allowSetters = true)
     private Department department;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
-        return id;
+	return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+	this.id = id;
     }
 
     public Memory id(Long id) {
-        this.id = id;
-        return this;
+	this.id = id;
+	return this;
     }
 
     public String getTitle() {
-        return this.title;
+	return this.title;
     }
 
     public Memory title(String title) {
-        this.title = title;
-        return this;
+	this.title = title;
+	return this;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+	this.title = title;
     }
 
     public Boolean getIsPrivate() {
-        return this.isPrivate;
+	return this.isPrivate;
     }
 
     public Memory isPrivate(Boolean isPrivate) {
-        this.isPrivate = isPrivate;
-        return this;
+	this.isPrivate = isPrivate;
+	return this;
     }
 
     public void setIsPrivate(Boolean isPrivate) {
-        this.isPrivate = isPrivate;
-    }
-
-    public Set<Comment> getComments() {
-        return this.comments;
-    }
-
-    public Memory comments(Set<Comment> comments) {
-        this.setComments(comments);
-        return this;
-    }
-
-    public Memory addComments(Comment comment) {
-        this.comments.add(comment);
-        comment.setMemory(this);
-        return this;
-    }
-
-    public Memory removeComments(Comment comment) {
-        this.comments.remove(comment);
-        comment.setMemory(null);
-        return this;
-    }
-
-    public void setComments(Set<Comment> comments) {
-        if (this.comments != null) {
-            this.comments.forEach(i -> i.setMemory(null));
-        }
-        if (comments != null) {
-            comments.forEach(i -> i.setMemory(this));
-        }
-        this.comments = comments;
+	this.isPrivate = isPrivate;
     }
 
     public Comment getBaseComment() {
-        return this.baseComment;
+	return this.baseComment;
     }
 
     public Memory baseComment(Comment comment) {
-        this.setBaseComment(comment);
-        return this;
+	this.setBaseComment(comment);
+	return this;
     }
 
     public void setBaseComment(Comment comment) {
-        this.baseComment = comment;
+	this.baseComment = comment;
     }
 
     public UserPerDepartment getWriter() {
-        return this.writer;
+	return this.writer;
     }
 
     public Memory writer(UserPerDepartment userPerDepartment) {
-        this.setWriter(userPerDepartment);
-        return this;
+	this.setWriter(userPerDepartment);
+	return this;
     }
 
     public void setWriter(UserPerDepartment userPerDepartment) {
-        this.writer = userPerDepartment;
+	this.writer = userPerDepartment;
     }
 
     public Set<UserPerDepartment> getTageds() {
-        return this.tageds;
+	return this.tageds;
     }
 
     public Memory tageds(Set<UserPerDepartment> userPerDepartments) {
-        this.setTageds(userPerDepartments);
-        return this;
+	this.setTageds(userPerDepartments);
+	return this;
     }
 
     public Memory addTaged(UserPerDepartment userPerDepartment) {
-        this.tageds.add(userPerDepartment);
-        userPerDepartment.getTagedInMemoeries().add(this);
-        return this;
+	this.tageds.add(userPerDepartment);
+	userPerDepartment.getTagedInMemoeries().add(this);
+	return this;
     }
 
     public Memory removeTaged(UserPerDepartment userPerDepartment) {
-        this.tageds.remove(userPerDepartment);
-        userPerDepartment.getTagedInMemoeries().remove(this);
-        return this;
+	this.tageds.remove(userPerDepartment);
+	userPerDepartment.getTagedInMemoeries().remove(this);
+	return this;
     }
 
     public void setTageds(Set<UserPerDepartment> userPerDepartments) {
-        this.tageds = userPerDepartments;
+	this.tageds = userPerDepartments;
     }
 
     public Department getDepartment() {
-        return this.department;
+	return this.department;
     }
 
     public Memory department(Department department) {
-        this.setDepartment(department);
-        return this;
+	this.setDepartment(department);
+	return this;
     }
 
     public void setDepartment(Department department) {
-        this.department = department;
+	this.department = department;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters
+    // and setters here
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Memory)) {
-            return false;
-        }
-        return id != null && id.equals(((Memory) o).id);
+	if (this == o) {
+	    return true;
+	}
+	if (!(o instanceof Memory)) {
+	    return false;
+	}
+	return id != null && id.equals(((Memory) o).id);
     }
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
+	// see
+	// https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+	return getClass().hashCode();
     }
 
     // prettier-ignore
     @Override
     public String toString() {
-        return "Memory{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", isPrivate='" + getIsPrivate() + "'" +
-            "}";
+	return "Memory{" + "id=" + getId() + ", title='" + getTitle() + "'"
+		+ ", isPrivate='" + getIsPrivate() + "'" + "}";
     }
 }
