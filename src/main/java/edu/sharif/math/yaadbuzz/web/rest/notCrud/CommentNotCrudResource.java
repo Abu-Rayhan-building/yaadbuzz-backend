@@ -129,7 +129,6 @@ public class CommentNotCrudResource {
 	{
 	    var mem = new MemoryDTO();
 	    mem.setId(memId);
-	    dto.setMemory(mem);
 	}
 	dto.setPictures(commentCreateReqDTO.getPictures());
 	dto.setText(commentCreateReqDTO.getText());
@@ -183,8 +182,8 @@ public class CommentNotCrudResource {
 	}
 
 	this.log.debug("REST request to get a page of Comments");
-	final Page<CommentDTO> page = this.commentService
-		.findAllForMemory(memId, pageable);
+	final Page<CommentDTO> page = this.memoryService.findAllForMemory(memId,
+		pageable);
 	final HttpHeaders headers = PaginationUtil
 		.generatePaginationHttpHeaders(
 			ServletUriComponentsBuilder.fromCurrentRequest(), page);

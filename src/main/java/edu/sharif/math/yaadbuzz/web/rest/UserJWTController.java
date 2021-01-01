@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.sharif.math.yaadbuzz.security.jwt.JWTFilter;
 import edu.sharif.math.yaadbuzz.security.jwt.TokenProvider;
 import edu.sharif.math.yaadbuzz.web.rest.vm.LoginVM;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,44 +28,50 @@ public class UserJWTController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
-        this.tokenProvider = tokenProvider;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
+    public UserJWTController(TokenProvider tokenProvider,
+	    AuthenticationManagerBuilder authenticationManagerBuilder) {
+	this.tokenProvider = tokenProvider;
+	this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-            loginVM.getUsername(),
-            loginVM.getPassword()
-        );
+    public ResponseEntity<JWTToken> authorize(
+	    @Valid @RequestBody LoginVM loginVM, HttpServletResponse response) {
+	UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+		loginVM.getUsername(), loginVM.getPassword());
 
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.createToken(authentication, loginVM.isRememberMe());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+	Authentication authentication = authenticationManagerBuilder.getObject()
+		.authenticate(authenticationToken);
+	SecurityContextHolder.getContext().setAuthentication(authentication);
+	String jwt = tokenProvider.createToken(authentication,
+		loginVM.isRememberMe());
+	Cookie sessionCookie = new Cookie("someSessionId", jwt);
+	response.addCookie(sessionCookie);
+	HttpHeaders httpHeaders = new HttpHeaders();
+	httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+	return new ResponseEntity<>(new JWTToken(jwt), httpHeaders,
+		HttpStatus.OK);
     }
 
     /**
      * Object to return as body in JWT Authentication.
      */
-    static class JWTToken {
+    public static class JWTToken {
 
-        private String idToken;
+	private String idToken;
 
-        JWTToken(String idToken) {
-            this.idToken = idToken;
-        }
+	JWTToken(String idToken) {
+	    this.idToken = idToken;
+	}
 
-        @JsonProperty("id_token")
-        String getIdToken() {
-            return idToken;
-        }
+	@JsonProperty("id_token")
+	public String getIdToken() {
+	    return idToken;
+	}
 
-        void setIdToken(String idToken) {
-            this.idToken = idToken;
-        }
+	void setIdToken(String idToken) {
+	    this.idToken = idToken;
+	}
     }
 }

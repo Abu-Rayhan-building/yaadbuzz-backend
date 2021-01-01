@@ -43,7 +43,6 @@ public class PictureServiceImpl implements PictureService {
 	return pictureMapper.toDto(picture);
     }
 
-    // fuck
     @Override
     public Optional<PictureDTO> partialUpdate(PictureDTO pictureDTO) {
 	log.debug("Request to partially update Picture : {}", pictureDTO);

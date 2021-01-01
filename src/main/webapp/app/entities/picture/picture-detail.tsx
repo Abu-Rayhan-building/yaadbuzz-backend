@@ -30,16 +30,9 @@ export const PictureDetail = (props: IPictureDetailProps) => {
             </span>
           </dt>
           <dd>
-            {pictureEntity.image ? (
+            {pictureEntity.address ? (
               <div>
-                {pictureEntity.imageContentType ? (
-                  <a onClick={openFile(pictureEntity.imageContentType, pictureEntity.image)}>
-                    <img src={`data:${pictureEntity.imageContentType};base64,${pictureEntity.image}`} style={{ maxHeight: '30px' }} />
-                  </a>
-                ) : null}
-                <span>
-                  {pictureEntity.imageContentType}, {byteSize(pictureEntity.image)}
-                </span>
+                    <img src={`${process.env.SERVER_API_URL}api/picture/${pictureEntity.id}/file`} style={{ maxHeight: '30px' }} />
               </div>
             ) : null}
           </dd>

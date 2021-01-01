@@ -2,10 +2,12 @@ package edu.sharif.math.yaadbuzz.service;
 
 import edu.sharif.math.yaadbuzz.config.Constants;
 import edu.sharif.math.yaadbuzz.domain.Authority;
+import edu.sharif.math.yaadbuzz.domain.Department;
 import edu.sharif.math.yaadbuzz.domain.User;
 import edu.sharif.math.yaadbuzz.domain.UserExtra;
 import edu.sharif.math.yaadbuzz.repository.AuthorityRepository;
 import edu.sharif.math.yaadbuzz.repository.UserExtraRepository;
+import edu.sharif.math.yaadbuzz.repository.UserPerDepartmentRepository;
 import edu.sharif.math.yaadbuzz.repository.UserRepository;
 import edu.sharif.math.yaadbuzz.security.AuthoritiesConstants;
 import edu.sharif.math.yaadbuzz.security.SecurityUtils;
@@ -48,6 +50,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
+
+    @Autowired
+    private UserPerDepartmentRepository userPerDepartmentRepository;
 
     private final CacheManager cacheManager;
 
@@ -105,6 +110,9 @@ public class UserService {
     private UserPerDepartmentService userPerDepartmentService;
 
     @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
     private UserPerDepartmentMapper userPerDepartmentMapper;
 
     public User registerUser(AdminUserDTO userDTO, String password,
@@ -148,13 +156,20 @@ public class UserService {
 	log.debug("Created Information for User: {}", newUser);
 
 	// Create and save the UserExtra entity
-	var def = userPerDepartmentMapper.toEntity(userPerDepartmentService
-		.save(defaultUserPerDepartment.build()));
+
 	UserExtra newUserExtra = new UserExtra();
 	newUserExtra.setUser(newUser);
 	newUserExtra.setPhone(phone);
 	userExtraRepository.save(newUserExtra);
 	log.debug("Created Information for UserExtra: {}", newUserExtra);
+
+	var def = userPerDepartmentMapper.toEntity(userPerDepartmentService
+		.save(defaultUserPerDepartment.build()));
+	def.setRealUser(newUser);
+	var dep = new Department();
+	dep.setId(departmentService.getDefaultDepId());
+	def.setDepartment(dep);
+	userPerDepartmentRepository.save(def);
 
 	return newUser;
     }
@@ -268,6 +283,7 @@ public class UserService {
 		    // fuck
 		    var ue = userExtraRepository.getOne(user.getId());
 		    ue.setPhone(phone);
+		    userExtraRepository.save(ue);
 		    this.clearUserCaches(user);
 		    log.debug("Changed Information for User: {}", user);
 		});

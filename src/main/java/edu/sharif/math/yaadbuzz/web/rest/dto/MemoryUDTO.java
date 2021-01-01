@@ -22,7 +22,7 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 
     private Boolean isPrivate;
 
-    private Long baseCommentId;
+    private CommentCreateUDTO baseComment;
 
     private Set<UserPerDepartmentDTO> tageds = new HashSet<>();
 
@@ -32,8 +32,7 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 	res.setIsPrivate(this.isPrivate);
 	res.setTageds(this.tageds);
 	{
-	    var com = new CommentDTO();
-	    com.setId(this.getBaseCommentId());
+	    var com = this.getBaseComment().build();
 	    res.setBaseComment(com);
 	}
 	res.setTitle(this.title);
@@ -44,8 +43,8 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 	return this.tageds;
     }
 
-    public Long getBaseCommentId() {
-	return this.baseCommentId;
+    public CommentCreateUDTO getBaseComment() {
+	return this.baseComment;
     }
 
     public String getTitle() {
@@ -69,8 +68,8 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
 	this.tageds = userPerDepartments;
     }
 
-    public void setBaseCommentId(final Long commentId) {
-	this.baseCommentId = commentId;
+    public void setBaseComment(final CommentCreateUDTO comment) {
+	this.baseComment = comment;
     }
 
     public void setTitle(final String title) {
@@ -82,7 +81,7 @@ public class MemoryUDTO implements Serializable, UserInputDTO<MemoryDTO> {
     public String toString() {
 	return "MemoryDTO{" + ", title='" + this.getTitle() + "'"
 		+ ", isPrivate='" + this.isIsPrivate() + "'" + ", textId="
-		+ this.getBaseCommentId() + ", tageds='" + this.getTageds() + "'"
+		+ this.getBaseComment() + ", tageds='" + this.getTageds() + "'"
 		+ "}";
     }
 }

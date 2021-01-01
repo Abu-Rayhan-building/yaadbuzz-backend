@@ -130,17 +130,11 @@ export const Picture = (props: IPictureProps) => {
                       </Button>
                     </td>
                     <td>
-                      {picture.image ? (
+                      {picture.address ? (
                         <div>
-                          {picture.imageContentType ? (
-                            <a onClick={openFile(picture.imageContentType, picture.image)}>
-                              <img src={`data:${picture.imageContentType};base64,${picture.image}`} style={{ maxHeight: '30px' }} />
+
+                              <img crossOrigin="use-credentials" src={`${process.env.SERVER_API_URL}api/picture/${picture.id}/file`} style={{ maxHeight: '30px' }} />
                               &nbsp;
-                            </a>
-                          ) : null}
-                          <span>
-                            {picture.imageContentType}, {byteSize(picture.image)}
-                          </span>
                         </div>
                       ) : null}
                     </td>

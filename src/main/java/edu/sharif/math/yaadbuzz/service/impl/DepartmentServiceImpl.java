@@ -155,8 +155,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	if (!dep.getPassword().equals(password)) {
 	    throw new InvalidParameterException("department password is wrong");
 	}
-	// fuck
-
+	this.userPerDepartmentService.save(u);
 	this.userPerDepartmentService.updateDefaultUPDAfterJoin(u);
 	return this.findOne(departmentId).get();
     }

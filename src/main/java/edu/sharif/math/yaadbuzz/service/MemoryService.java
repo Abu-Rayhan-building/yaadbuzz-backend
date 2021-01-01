@@ -1,5 +1,6 @@
 package edu.sharif.math.yaadbuzz.service;
 
+import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
 import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 
@@ -71,5 +72,7 @@ public interface MemoryService extends ServiceWithCurrentUserCrudAccess {
     boolean currentuserHasAccessToComments(Long memid);
 
     boolean currentuserHasCreatAccess(Long depId);
+
+    Page<CommentDTO> findAllForMemory(Long memId, Pageable pageable);
 
 }

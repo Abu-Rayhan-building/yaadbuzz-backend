@@ -21,8 +21,6 @@ public class CommentDTO implements Serializable {
 
     private Set<PictureDTO> pictures = new HashSet<>();
 
-    private MemoryDTO memory;
-
     public Long getId() {
 	return id;
     }
@@ -51,16 +49,8 @@ public class CommentDTO implements Serializable {
 	this.writer = writer;
     }
 
-    public MemoryDTO getMemory() {
-	return memory;
-    }
-
     public void setPictures(final Set<PictureDTO> pictures) {
 	this.pictures = pictures;
-    }
-
-    public void setMemory(MemoryDTO memory) {
-	this.memory = memory;
     }
 
     @Override
@@ -88,6 +78,6 @@ public class CommentDTO implements Serializable {
     @Override
     public String toString() {
 	return "CommentDTO{" + "id=" + getId() + ", text='" + getText() + "'"
-		+ ", writer=" + getWriter() + ", memory=" + getMemory() + "}";
+		+ ", writer=" + getWriter() + "}";
     }
 }

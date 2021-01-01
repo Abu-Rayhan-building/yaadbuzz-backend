@@ -31,124 +31,143 @@ public class Comment implements Serializable {
     @OneToMany()
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(name = "comment_picture", joinColumns = @JoinColumn(name = "comment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "picture_id", referencedColumnName = "id"))
-    // fuck
-    @JsonIgnoreProperties(value = { "comment" }, allowSetters = true)
     private Set<Picture> pictures = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(
-        value = { "topicAssigneds", "avatar", "realUser", "department", "topicsVoteds", "tagedInMemoeries" },
-        allowSetters = true
-    )
+    @JsonIgnoreProperties(value = { "topicAssigneds", "avatar", "realUser",
+	    "department", "topicsVoteds",
+	    "tagedInMemoeries" }, allowSetters = true)
     private UserPerDepartment writer;
 
-    @ManyToOne(optional = false)
-    @NotNull
-    @JsonIgnoreProperties(value = { "comments", "text", "writer", "tageds", "department" }, allowSetters = true)
-    private Memory memory;
+    @ManyToOne(optional = true)
+    @JsonIgnoreProperties(value = { "topicAssigneds", "avatar", "realUser",
+	    "department", "topicsVoteds",
+	    "tagedInMemoeries" }, allowSetters = true)
+    private Comment parent;
+
+    @OneToMany(mappedBy = "parent")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "pictures", "writer" }, allowSetters = true)
+    private Set<Comment> comments = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
-        return id;
+	return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+	this.id = id;
     }
 
     public Comment id(Long id) {
-        this.id = id;
-        return this;
+	this.id = id;
+	return this;
     }
 
     public String getText() {
-        return this.text;
+	return this.text;
     }
 
     public Comment text(String text) {
-        this.text = text;
-        return this;
+	this.text = text;
+	return this;
     }
 
     public void setText(String text) {
-        this.text = text;
+	this.text = text;
     }
 
     public Set<Picture> getPictures() {
-        return this.pictures;
+	return this.pictures;
     }
 
     public Comment pictures(Set<Picture> pictures) {
-        this.setPictures(pictures);
-        return this;
+	this.setPictures(pictures);
+	return this;
     }
 
     public Comment addPictures(Picture picture) {
-        this.pictures.add(picture);
-        return this;
+	this.pictures.add(picture);
+	return this;
     }
 
     public Comment removePictures(Picture picture) {
-        this.pictures.remove(picture);
-        return this;
+	this.pictures.remove(picture);
+	return this;
     }
 
     public void setPictures(Set<Picture> pictures) {
-        this.pictures = pictures;
+	this.pictures = pictures;
     }
 
     public UserPerDepartment getWriter() {
-        return this.writer;
+	return this.writer;
     }
 
     public Comment writer(UserPerDepartment userPerDepartment) {
-        this.setWriter(userPerDepartment);
-        return this;
+	this.setWriter(userPerDepartment);
+	return this;
     }
 
     public void setWriter(UserPerDepartment userPerDepartment) {
-        this.writer = userPerDepartment;
+	this.writer = userPerDepartment;
     }
 
-    public Memory getMemory() {
-        return this.memory;
+    public Set<Comment> getComments() {
+	return this.comments;
     }
 
-    public Comment memory(Memory memory) {
-        this.setMemory(memory);
-        return this;
+    public Comment comments(Set<Comment> comments) {
+	this.setComments(comments);
+	return this;
     }
 
-    public void setMemory(Memory memory) {
-        this.memory = memory;
+    public Comment addComments(Comment comment) {
+	this.comments.add(comment);
+	return this;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public Comment removeComments(Comment comment) {
+	this.comments.remove(comment);
+	return this;
+    }
+
+    public void setComments(Set<Comment> comments) {
+//	if (this.comments != null) {
+//	    this.comments.forEach(i -> i.setMemory(null));
+//	}
+//	if (comments != null) {
+//	    comments.forEach(i -> i.setMemory(this));
+//	}
+	this.comments = comments;
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters
+    // and setters here
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Comment)) {
-            return false;
-        }
-        return id != null && id.equals(((Comment) o).id);
+	if (this == o) {
+	    return true;
+	}
+	if (!(o instanceof Comment)) {
+	    return false;
+	}
+	return id != null && id.equals(((Comment) o).id);
     }
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
+	// see
+	// https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+	return getClass().hashCode();
     }
 
     // prettier-ignore
     @Override
     public String toString() {
-        return "Comment{" +
-            "id=" + getId() +
-            ", text='" + getText() + "'" +
-            "}";
+	return "Comment{" + "id=" + getId() + ", text='" + getText() + "'"
+		+ "}";
     }
 }

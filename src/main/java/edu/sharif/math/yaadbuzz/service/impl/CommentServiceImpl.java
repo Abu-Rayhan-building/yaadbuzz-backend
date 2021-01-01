@@ -40,19 +40,19 @@ public class CommentServiceImpl implements CommentService {
     private final Logger log = LoggerFactory
 	    .getLogger(CommentServiceImpl.class);
 
-    private final CommentRepository commentRepository;
-    private final MemoryService memoryService;
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private MemoryService memoryService;
+
     private final UserPerDepartmentService userPerDepartmentService;
 
     private final CommentMapper commentMapper;
 
-    public CommentServiceImpl(final CommentRepository commentRepository,
-	    final CommentMapper commentMapper,
+    public CommentServiceImpl(final CommentMapper commentMapper,
 	    final DepartmentService departmentService,
-	    final MemoryService memoryService,
 	    final UserPerDepartmentService userPerDepartmentService) {
-	this.commentRepository = commentRepository;
-	this.memoryService = memoryService;
 	this.userPerDepartmentService = userPerDepartmentService;
 	this.commentMapper = commentMapper;
     }
@@ -62,21 +62,19 @@ public class CommentServiceImpl implements CommentService {
 	return this.memoryService.currentuserHasGetAccess(memid);
     }
 
-    @Override
-    public boolean currentuserHasGetAccess(final Long id) {
-	final var comment = this.commentRepository.getOne(id);
-	final var mem = comment.getMemory();
-	return this.memoryService.currentuserHasGetAccess(mem.getId());
+    public boolean currentuserHasGetAccess(Long memId, final Long id) {
+	return this.memoryService.currentuserHasGetAccess(memId);
     }
 
     @Override
     public boolean currentuserHasUpdateAccess(final Long id) {
-	final var comment = this.commentRepository.getOne(id);
-
-	final var currentUserId = this.userPerDepartmentService
-		.getCurrentUserInDep(
-			comment.getMemory().getDepartment().getId());
-	return comment.getWriter().getId().equals(currentUserId);
+	return false;
+//	final var comment = this.commentRepository.getOne(id);
+//
+//	final var currentUserId = this.userPerDepartmentService
+//		.getCurrentUserInDep(
+//			comment.getMemory().getDepartment().getId());
+//	return comment.getWriter().getId().equals(currentUserId);
     }
 
     @Override
@@ -101,10 +99,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Page<CommentDTO> findAllForMemory(final Long memid,
-	    final Pageable pageable) {
+    public Page<CommentDTO> findAllForChildrenComments(
+	    final Long parentCommentId, final Pageable pageable) {
 	this.log.debug("Request to get all Comments for post");
-	return this.commentRepository.findAllForMemory(memid, pageable)
+
+	return this.commentRepository
+		.findAllForChildrenComments(parentCommentId, pageable)
 		.map(this.commentMapper::toDto);
     }
 
@@ -120,9 +120,6 @@ public class CommentServiceImpl implements CommentService {
 	this.log.debug("Request to save Comment : {}", commentDTO);
 	if (commentDTO.getId() != null) {
 	    final var com = this.findOne(commentDTO.getId());
-	    if (!com.get().getMemory().equals(commentDTO.getMemory())) {
-		throw new RuntimeException("bad req in CommentDTO save");
-	    }
 	    if (!com.get().getWriter().equals(commentDTO.getWriter())) {
 		throw new RuntimeException("bad req in CommentDTO save");
 	    }

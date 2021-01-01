@@ -42,4 +42,7 @@
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
     <include file="config/liquibase/changelog/20201227233708_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201227233709_add_default_department.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201227233710_add_default_UDP.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210101151925_changelog.xml" relativeToChangelogFile="false"/>
+    
 </databaseChangeLog>

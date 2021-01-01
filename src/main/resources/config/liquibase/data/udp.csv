@@ -1,0 +1,3 @@
+id;nickname;bio;real_user_id;department_id
+1;adminUDP;admin bio;1;1
+2;userUDP;user bio;2;1

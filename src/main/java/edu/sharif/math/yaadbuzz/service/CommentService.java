@@ -13,7 +13,7 @@ import java.util.Optional;
  * Service Interface for managing
  * {@link edu.sharif.math.yaadbuzz.domain.Comment}.
  */
-public interface CommentService extends ServiceWithCurrentUserCrudAccess {
+public interface CommentService {
 
     /**
      * Save a comment.
@@ -56,10 +56,19 @@ public interface CommentService extends ServiceWithCurrentUserCrudAccess {
 
     boolean currentuserHasCreateAccess(Long memid);
 
-    Page<CommentDTO> findAllForMemory(Long memid, Pageable pageable);
-
     CommentDTO save(CommentWithIdUDTO commentUpdateReqDTO);
 
     PictureDTO getPicture(Long comId, Long picId);
+
+    Page<CommentDTO> findAllForChildrenComments(Long parentCommentId,
+	    Pageable pageable);
+
+    boolean currentuserHasUpdateAccess(Long id);
+
+    boolean currentuserHasGetAccess(Long memId, Long id);
+
+    default boolean currentuserHasDeleteAccess(Long id) {
+	return currentuserHasUpdateAccess(id);
+    }
 
 }

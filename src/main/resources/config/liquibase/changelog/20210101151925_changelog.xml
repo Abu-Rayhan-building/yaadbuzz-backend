@@ -1,0 +1,21 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+   	<changeSet author="hosseinmp76 (generated)"
+		id="1609490117834">
+		<dropColumn tableName="comment" columnName="memory_id"></dropColumn>
+
+
+		<addColumn tableName="comment">
+			<column name="parent_id" type="bigint">
+			</column>
+		</addColumn>
+
+		<addForeignKeyConstraint
+			baseColumnNames="parent_id" baseTableName="comment"
+			constraintName="fk_rel_comment__comment__parent_id"
+			referencedColumnNames="id" referencedTableName="comment" />
+	</changeSet>
+	  <changeSet author="hosseinmp76 (generated)" id="1609501772609-7">
+        <dropColumn columnName="default_user_per_department_id" tableName="user_extra"/>
+    </changeSet>
+</databaseChangeLog>

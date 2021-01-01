@@ -4,6 +4,7 @@ import edu.sharif.math.yaadbuzz.domain.Memory;
 import edu.sharif.math.yaadbuzz.repository.MemoryRepository;
 import edu.sharif.math.yaadbuzz.repository.PictureRepository;
 import edu.sharif.math.yaadbuzz.service.MemoryService;
+import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.MemoryDTO;
 import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 import edu.sharif.math.yaadbuzz.service.mapper.MemoryMapper;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.sharif.math.yaadbuzz.domain.Memory;
 import edu.sharif.math.yaadbuzz.repository.MemoryRepository;
 import edu.sharif.math.yaadbuzz.repository.UserPerDepartmentRepository;
+import edu.sharif.math.yaadbuzz.service.CommentService;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
 import edu.sharif.math.yaadbuzz.service.MemoryService;
 import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
@@ -38,7 +40,8 @@ public class MemoryServiceImpl implements MemoryService {
 
     private final Logger log = LoggerFactory.getLogger(MemoryServiceImpl.class);
 
-    private final MemoryRepository memoryRepository;
+    @Autowired
+    private MemoryRepository memoryRepository;
 
     private final UserPerDepartmentRepository userPerDepartmentRepository;
 
@@ -50,13 +53,11 @@ public class MemoryServiceImpl implements MemoryService {
 
     private final UserService userService;
 
-    public MemoryServiceImpl(final MemoryRepository memoryRepository,
-	    final MemoryMapper memoryMapper,
+    public MemoryServiceImpl(final MemoryMapper memoryMapper,
 	    final UserPerDepartmentService userPerDepartmentService,
 	    final UserPerDepartmentRepository userPerDepartmentRepository,
 	    final UserService userService,
 	    final DepartmentService departmentService) {
-	this.memoryRepository = memoryRepository;
 	this.userPerDepartmentRepository = userPerDepartmentRepository;
 	this.userPerDepartmentService = userPerDepartmentService;
 	this.departmentService = departmentService;
@@ -193,5 +194,15 @@ public class MemoryServiceImpl implements MemoryService {
 
     @Autowired
     private PictureMapper pictureMapper;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Override
+    public Page<CommentDTO> findAllForMemory(Long memId, Pageable pageable) {
+	var commentId = this.findOne(memId).get().getBaseComment().getId();
+	return this.commentService.findAllForChildrenComments(commentId,
+		pageable);
+    }
 
 }

@@ -46,7 +46,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
 
   const saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
-      const entity = {
+      const entity: IDepartment = {
         ...departmentEntity,
         ...values,
       };
@@ -129,7 +129,7 @@ export const DepartmentUpdate = (props: IDepartmentUpdateProps) => {
                 <Label for="department-owner">
                   <Translate contentKey="yaadbuzzApp.department.owner">Owner</Translate>
                 </Label>
-                <AvInput id="department-owner" data-cy="owner" type="select" className="form-control" name="ownerId" required>
+                <AvInput id="department-owner" data-cy="owner" type="select" className="form-control" name="owner.id" required>
                   {users
                     ? users.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
