@@ -163,13 +163,16 @@ public class UserService {
 	userExtraRepository.save(newUserExtra);
 	log.debug("Created Information for UserExtra: {}", newUserExtra);
 
-	var def = userPerDepartmentMapper.toEntity(userPerDepartmentService
-		.save(defaultUserPerDepartment.build()));
-	def.setRealUser(newUser);
-	var dep = new Department();
-	dep.setId(departmentService.getDefaultDepId());
-	def.setDepartment(dep);
-	userPerDepartmentRepository.save(def);
+	// fuck maybe a empty model is better
+	if (defaultUserPerDepartment != null) {
+	    var def = userPerDepartmentMapper.toEntity(userPerDepartmentService
+		    .save(defaultUserPerDepartment.build()));
+	    def.setRealUser(newUser);
+	    var dep = new Department();
+	    dep.setId(departmentService.getDefaultDepId());
+	    def.setDepartment(dep);
+	    userPerDepartmentRepository.save(def);
+	}
 
 	return newUser;
     }
