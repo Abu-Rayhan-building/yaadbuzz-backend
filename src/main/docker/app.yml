@@ -38,3 +38,9 @@ services:
       - 80:80
     depends_on:
       - yaadbuzz-app
+  mail:
+    image: namshi/smtp
+    restart: always
+    environment:
+      - DISABLE_IPV6=true
+#      - MAILNAME:"noreply@yaadbuzz.ir"
