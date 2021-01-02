@@ -4,6 +4,7 @@ services:
   mail:
     image: namshi/smtp
     restart: always
+    MAILNAME: noreply@yaadbuzz.ir
     ports:
       - 25:25
     environment:

@@ -40,6 +40,7 @@ services:
       - yaadbuzz-app
   mail:
     image: namshi/smtp
+    MAILNAME: noreply@yaadbuzz.ir
     restart: always
     environment:
       - DISABLE_IPV6=true
