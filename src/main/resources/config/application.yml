@@ -148,7 +148,7 @@ jhipster:
        allow-credentials: true
        max-age: 1800
   mail:
-    from: yaadbuzz@localhost
+    from: noreply@yaadbuzz.ir
   api-docs:
     default-include-pattern: /api/.*
     title: yaadbuzz API
