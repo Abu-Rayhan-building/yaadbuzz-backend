@@ -9,4 +9,4 @@ services:
       - 25:25
     environment:
       - DISABLE_IPV6=true
-      - MAILNAME: "noreply@yaadbuzz.ir"
+      - MAILNAME: 'noreply@yaadbuzz.ir'
