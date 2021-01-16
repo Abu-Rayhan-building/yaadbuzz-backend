@@ -35,6 +35,11 @@ version = "0.3.0-SNAPSHOT"
 
 description = ""
 
+java {
+    toolchain {
+            languageVersion.set(JavaLanguageVersion.of(15))
+    }
+}
 sourceCompatibility=15
 targetCompatibility=15
 assert System.properties["java.specification.version"] == "15"
