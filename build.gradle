@@ -35,9 +35,9 @@ version = "0.3.0-SNAPSHOT"
 
 description = ""
 
-sourceCompatibility=14
-targetCompatibility=14
-assert System.properties["java.specification.version"] == "14"
+sourceCompatibility=15
+targetCompatibility=15
+assert System.properties["java.specification.version"] == "15"
 
 apply from: "gradle/docker.gradle"
 apply from: "gradle/sonar.gradle"

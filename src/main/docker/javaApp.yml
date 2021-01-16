@@ -1,0 +1,18 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+version: '3.8'
+services:
+  yaadbuzz-app:
+    image: yaadbuzz
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://yaadbuzz-postgresql:5432/yaadbuzz
+      - JHIPSTER_SLEEP=3 # gives time for other services to boot before the application
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    volumes:
+      - /data/yaadbuzz/files:/data/files
+    ports:
+      - 127.0.0.1:8080:8080
+
