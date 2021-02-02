@@ -1,58 +1,127 @@
 package edu.sharif.math.yaadbuzz.service;
 
+import edu.sharif.math.yaadbuzz.domain.TopicVote;
+import edu.sharif.math.yaadbuzz.repository.TopicVoteRepository;
+import edu.sharif.math.yaadbuzz.service.DepartmentService;
+import edu.sharif.math.yaadbuzz.service.ServiceWithCurrentUserCrudAccess;
+import edu.sharif.math.yaadbuzz.service.UserPerDepartmentService;
+import edu.sharif.math.yaadbuzz.service.dto.TopicDTO;
 import edu.sharif.math.yaadbuzz.service.dto.TopicVoteDTO;
+import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
+import edu.sharif.math.yaadbuzz.service.mapper.TopicVoteMapper;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Optional;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Interface for managing {@link edu.sharif.math.yaadbuzz.domain.TopicVote}.
+ * Service Implementation for managing {@link TopicVote}.
  */
-public interface TopicVoteService extends ServiceWithCurrentUserCrudAccess {
+@Service
+@Transactional
+public class TopicVoteService implements ServiceWithCurrentUserCrudAccess {
 
-    /**
-     * Save a topicVote.
-     *
-     * @param topicVoteDTO the entity to save.
-     * @return the persisted entity.
-     */
-    TopicVoteDTO save(TopicVoteDTO topicVoteDTO);
+    private final Logger log = LoggerFactory.getLogger(TopicVoteService.class);
 
-    /**
-     * Partially updates a topicVote.
-     *
-     * @param topicVoteDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<TopicVoteDTO> partialUpdate(TopicVoteDTO topicVoteDTO);
+    private final TopicVoteRepository topicVoteRepository;
 
-    /**
-     * Get all the topicVotes.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<TopicVoteDTO> findAll(Pageable pageable);
+    private final TopicVoteMapper topicVoteMapper;
 
-    /**
-     * Get the "id" topicVote.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
-    Optional<TopicVoteDTO> findOne(Long id);
+    public TopicVoteService(
+        TopicVoteRepository topicVoteRepository,
+        TopicVoteMapper topicVoteMapper,
+        UserPerDepartmentService userPerDepartmentService,
+        DepartmentService departmentService
+    ) {
+        this.topicVoteRepository = topicVoteRepository;
+        this.topicVoteMapper = topicVoteMapper;
+        this.departmentService = departmentService;
+        this.userPerDepartmentService = userPerDepartmentService;
+    }
 
-    /**
-     * Delete the "id" topicVote.
-     *
-     * @param id the id of the entity.
-     */
-    void delete(Long id);
+    public TopicVoteDTO save(TopicVoteDTO topicVoteDTO) {
+        log.debug("Request to save TopicVote : {}", topicVoteDTO);
+        TopicVote topicVote = topicVoteMapper.toEntity(topicVoteDTO);
+        topicVote = topicVoteRepository.save(topicVote);
+        return topicVoteMapper.toDto(topicVote);
+    }
 
-    TopicVoteDTO addBallot(Long topicId, Long ballotForUPD);
+    public Optional<TopicVoteDTO> partialUpdate(TopicVoteDTO topicVoteDTO) {
+        log.debug("Request to partially update TopicVote : {}", topicVoteDTO);
 
-    Optional<TopicVoteDTO> findOne(Long topicId, Long ballotForUPD);
+        return topicVoteRepository
+            .findById(topicVoteDTO.getId())
+            .map(
+                existingTopicVote -> {
+                    if (topicVoteDTO.getRepetitions() != null) {
+                        existingTopicVote.setRepetitions(topicVoteDTO.getRepetitions());
+                    }
 
+                    return existingTopicVote;
+                }
+            )
+            .map(topicVoteRepository::save)
+            .map(topicVoteMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<TopicVoteDTO> findAll(Pageable pageable) {
+        log.debug("Request to get all TopicVotes");
+        return topicVoteRepository.findAll(pageable).map(topicVoteMapper::toDto);
+    }
+
+    private final DepartmentService departmentService;
+
+    private final UserPerDepartmentService userPerDepartmentService;
+
+    @Override
+    public boolean currentuserHasGetAccess(final Long id) {
+        return this.departmentService.currentuserHasGetAccess(
+                this.userPerDepartmentService.findOne(this.findOne(id).get().getUser().getId()).get().getDepartment().getId()
+            );
+    }
+
+    @Override
+    public boolean currentuserHasUpdateAccess(final Long id) {
+        return false;
+    }
+
+    public TopicVoteDTO addBallot(Long topicId, Long ballotForUPD) {
+        TopicVoteDTO old = this.findOne(topicId, ballotForUPD).orElseGet(() -> null);
+        if (old == null) {
+            old = new TopicVoteDTO();
+            {
+                var topic = new TopicDTO();
+                topic.setId(topicId);
+                old.setTopic(topic);
+            }
+            {
+                var upd = new UserPerDepartmentDTO();
+                upd.setId(ballotForUPD);
+                old.setUser(upd);
+            }
+            old.setRepetitions(0);
+        }
+        old.setRepetitions(old.getRepetitions() + 1);
+        return this.save(old);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<TopicVoteDTO> findOne(Long id) {
+        log.debug("Request to get TopicVote : {}", id);
+        return topicVoteRepository.findById(id).map(topicVoteMapper::toDto);
+    }
+
+    public void delete(Long id) {
+        log.debug("Request to delete TopicVote : {}", id);
+        topicVoteRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<TopicVoteDTO> findOne(Long topicId, Long ballotForUPD) {
+        return this.topicVoteRepository.findOne(topicId, ballotForUPD).map(this.topicVoteMapper::toDto);
+    }
 }

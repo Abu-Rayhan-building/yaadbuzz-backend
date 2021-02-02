@@ -1,30 +1,5 @@
 package edu.sharif.math.yaadbuzz.web.rest.notCrud;
 
-import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import edu.sharif.math.yaadbuzz.domain.User;
 import edu.sharif.math.yaadbuzz.repository.DepartmentRepository;
 import edu.sharif.math.yaadbuzz.service.DepartmentService;
@@ -40,6 +15,28 @@ import edu.sharif.math.yaadbuzz.web.rest.dto.DepartmentWithUserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.web.rest.dto.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadbuzz.web.rest.dto.UserPerDepartmentUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
+import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -76,12 +73,12 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class DepartmentNotCrudResource {
-    private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections
-	    .unmodifiableList(Arrays.asList("id", "login", "firstName",
-		    "lastName", "email", "activated", "langKey"));
 
-    private final Logger log = LoggerFactory
-	    .getLogger(DepartmentNotCrudResource.class);
+    private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(
+        Arrays.asList("id", "login", "firstName", "lastName", "email", "activated", "langKey")
+    );
+
+    private final Logger log = LoggerFactory.getLogger(DepartmentNotCrudResource.class);
 
     private static final String ENTITY_NAME = "department";
 
@@ -96,14 +93,17 @@ public class DepartmentNotCrudResource {
 
     private final UserPerDepartmentService userPerDepartmentService;
 
-    public DepartmentNotCrudResource(final DepartmentService departmentService,
-	    final UserService userService, final MailService mailService,
-	    UserPerDepartmentService userPerDepartmentService,
-	    DepartmentRepository departmentRepository) {
-	this.userService = userService;
-	this.departmentRepository = departmentRepository;
-	this.departmentService = departmentService;
-	this.userPerDepartmentService = userPerDepartmentService;
+    public DepartmentNotCrudResource(
+        final DepartmentService departmentService,
+        final UserService userService,
+        final MailService mailService,
+        UserPerDepartmentService userPerDepartmentService,
+        DepartmentRepository departmentRepository
+    ) {
+        this.userService = userService;
+        this.departmentRepository = departmentRepository;
+        this.departmentService = departmentService;
+        this.userPerDepartmentService = userPerDepartmentService;
     }
 
     /**
@@ -111,70 +111,65 @@ public class DepartmentNotCrudResource {
      *
      * @param departmentDTO the departmentDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
-     *         body the updated departmentDTO, or with status
-     *         {@code 400 (Bad Request)} if the departmentDTO is not valid, or
-     *         with status {@code 500 (Internal Server Error)} if the
-     *         departmentDTO couldn't be updated.
+     * body the updated departmentDTO, or with status
+     * {@code 400 (Bad Request)} if the departmentDTO is not valid, or
+     * with status {@code 500 (Internal Server Error)} if the
+     * departmentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/department/{id}/edit")
-    public ResponseEntity<DepartmentDTO> updateDepartment(
-	    @Valid @RequestBody DepartmentDTO departmentDTO)
-	    throws URISyntaxException {
-	log.debug("REST request to update Department : {}", departmentDTO);
-	if (departmentDTO.getId() == null) {
-	    throw new BadRequestAlertException("Invalid id", ENTITY_NAME,
-		    "idnull");
-	}
+    public ResponseEntity<DepartmentDTO> updateDepartment(@Valid @RequestBody DepartmentDTO departmentDTO) throws URISyntaxException {
+        log.debug("REST request to update Department : {}", departmentDTO);
+        if (departmentDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
 
-	var oid = departmentRepository.getOne(departmentDTO.getId()).getOwner()
-		.getId();
-	if (!userService.getCurrentUserId().equals(oid))
-	    throw new AccessDeniedException("dd");
+        var oid = departmentRepository.getOne(departmentDTO.getId()).getOwner().getId();
+        if (!userService.getCurrentUserId().equals(oid)) throw new AccessDeniedException("dd");
 
-	DepartmentDTO result = departmentService.save(departmentDTO);
-	return ResponseEntity.ok()
-		.headers(HeaderUtil.createEntityUpdateAlert(applicationName,
-			true, ENTITY_NAME, departmentDTO.getId().toString()))
-		.body(result);
+        DepartmentDTO result = departmentService.save(departmentDTO);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, departmentDTO.getId().toString()))
+            .body(result);
     }
 
     @GetMapping("/department/me")
-    public ResponseEntity<List<DepartmentDTO>> getMyDeps(
-	    final Pageable pageable) {
-	final var d = this.departmentService.getMyDeps();
-	return new ResponseEntity<>(d, HttpStatus.OK);
+    public ResponseEntity<List<DepartmentDTO>> getMyDeps(final Pageable pageable) {
+        final var d = this.departmentService.getMyDeps();
+        return new ResponseEntity<>(d, HttpStatus.OK);
     }
 
     @GetMapping("department/{departmentId}/my-stats")
-    public ResponseEntity<MyUserPerDepartmentStatsDTO> getMyUPDWithStats(
-	    @PathVariable final Long departmentId) {
-	final var d = this.departmentService.getMyStatsInDep(departmentId);
-	return new ResponseEntity<>(d, HttpStatus.OK);
+    public ResponseEntity<MyUserPerDepartmentStatsDTO> getMyUPDWithStats(@PathVariable final Long departmentId) {
+        final var d = this.departmentService.getMyStatsInDep(departmentId);
+        return new ResponseEntity<>(d, HttpStatus.OK);
+    }
+
+    class test {
+
+        public String password;
+        public UserPerDepartmentUDTO userPerDepartmentDepJoinReqDTO;
     }
 
     @PostMapping("department/{departmentId}/join")
-    public ResponseEntity<DepartmentDTO> join(
-	    @PathVariable final Long departmentId,
-	    @RequestBody final String password,
-	    @RequestBody final UserPerDepartmentUDTO userPerDepartmentDepJoinReqDTO) {
-	UserPerDepartmentDTO userPerDepartmentDTO = userPerDepartmentDepJoinReqDTO
-		.build();
-	{
-	    var department = new DepartmentDTO();
-	    department.setId(departmentId);
-	    userPerDepartmentDTO.setDepartment(department);
-	}
-	{
-	    final Optional<User> isUser = this.userService
-		    .getUserWithAuthorities();
-	    var userDto = new UserDTO();
-	    userDto.setId(isUser.get().getId());
-	    userPerDepartmentDTO.setRealUser(userDto);
-	}
-	final DepartmentDTO departmentDTO = this.departmentService
-		.join(departmentId, password, userPerDepartmentDTO);
-	return ResponseUtil.wrapOrNotFound(Optional.of(departmentDTO));
+    public ResponseEntity<DepartmentDTO> join(@PathVariable final Long departmentId, @RequestBody test test) {
+        var userPerDepartmentDepJoinReqDTO = test.userPerDepartmentDepJoinReqDTO;
+        var password = test.password;
+        UserPerDepartmentDTO userPerDepartmentDTO = userPerDepartmentDepJoinReqDTO.build();
+        {
+            var department = new DepartmentDTO();
+            department.setId(departmentId);
+            userPerDepartmentDTO.setDepartment(department);
+        }
+        {
+            final Optional<User> isUser = this.userService.getUserWithAuthorities();
+            var userDto = new UserDTO();
+            userDto.setId(isUser.get().getId());
+            userPerDepartmentDTO.setRealUser(userDto);
+        }
+        final DepartmentDTO departmentDTO = this.departmentService.join(departmentId, password, userPerDepartmentDTO);
+        return ResponseUtil.wrapOrNotFound(Optional.of(departmentDTO));
     }
 
     /**
@@ -182,41 +177,36 @@ public class DepartmentNotCrudResource {
      *
      * @param departmentDTO the departmentDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
-     *         with body the new departmentDTO, or with status
-     *         {@code 400 (Bad Request)} if the department has already an ID.
+     * with body the new departmentDTO, or with status
+     * {@code 400 (Bad Request)} if the department has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/department/create")
     public ResponseEntity<DepartmentWithUserPerDepartmentDTO> createDepartment(
-	    @Valid @RequestBody DepartmentWiteUPDCreateUDTO departmentWiteUPDCreateUDTO)
-	    throws URISyntaxException {
-	log.debug("REST request to save Department : {}",
-		departmentWiteUPDCreateUDTO);
-	var input = departmentWiteUPDCreateUDTO.build();
-	var dep = input.getDepartmentDTO();
-	var udp = input.getUserPerDepartmentDTO();
+        @Valid @RequestBody DepartmentWiteUPDCreateUDTO departmentWiteUPDCreateUDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to save Department : {}", departmentWiteUPDCreateUDTO);
+        var input = departmentWiteUPDCreateUDTO.build();
+        var dep = input.getDepartmentDTO();
+        var udp = input.getUserPerDepartmentDTO();
 
-	{
-	    var user = new UserDTO();
-	    user.setId(userService.getCurrentUserId());
-	    dep.setOwner(user);
-	    udp.setRealUser(user);
-	}
-	DepartmentDTO res = departmentService.save(dep);
-	udp.setDepartment(res);
+        {
+            var user = new UserDTO();
+            user.setId(userService.getCurrentUserId());
+            dep.setOwner(user);
+            udp.setRealUser(user);
+        }
+        DepartmentDTO res = departmentService.save(dep);
+        udp.setDepartment(res);
 
-	var res2 = userPerDepartmentService.save(udp);
+        var res2 = userPerDepartmentService.save(udp);
 
-	var result = new DepartmentWithUserPerDepartmentDTO();
-	result.setDepartmentDTO(res);
-	result.setUserPerDepartmentDTO(res2);
-	return ResponseEntity
-		.created(new URI("/api/departments/"
-			+ result.getDepartmentDTO().getId()))
-		.headers(HeaderUtil.createEntityCreationAlert(applicationName,
-			true, ENTITY_NAME,
-			result.getDepartmentDTO().getId().toString()))
-		.body(result);
+        var result = new DepartmentWithUserPerDepartmentDTO();
+        result.setDepartmentDTO(res);
+        result.setUserPerDepartmentDTO(res2);
+        return ResponseEntity
+            .created(new URI("/api/departments/" + result.getDepartmentDTO().getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getDepartmentDTO().getId().toString()))
+            .body(result);
     }
-
 }

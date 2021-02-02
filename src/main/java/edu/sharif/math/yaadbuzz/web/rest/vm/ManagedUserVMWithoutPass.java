@@ -3,8 +3,8 @@ package edu.sharif.math.yaadbuzz.web.rest.vm;
 import edu.sharif.math.yaadbuzz.domain.UserExtra;
 import edu.sharif.math.yaadbuzz.domain.UserPerDepartment;
 import edu.sharif.math.yaadbuzz.service.dto.AdminUserDTO;
+import edu.sharif.math.yaadbuzz.service.dto.UserExtraDTO;
 import edu.sharif.math.yaadbuzz.web.rest.dto.UserPerDepartmentUDTO;
-
 import javax.validation.constraints.Size;
 
 /**
@@ -18,24 +18,23 @@ public class ManagedUserVMWithoutPass extends AdminUserDTO {
     private UserPerDepartmentUDTO defaultUserPerDepartment;
 
     public String getPhone() {
-	return phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
-	this.phone = phone;
+        this.phone = phone;
     }
 
     public UserPerDepartmentUDTO getDefaultUserPerDepartment() {
-	return defaultUserPerDepartment;
+        return defaultUserPerDepartment;
     }
 
-    public void setDefaultUserPerDepartment(
-	    UserPerDepartmentUDTO defaultUserPerDepartment) {
-	this.defaultUserPerDepartment = defaultUserPerDepartment;
+    public void setDefaultUserPerDepartment(UserPerDepartmentUDTO defaultUserPerDepartment) {
+        this.defaultUserPerDepartment = defaultUserPerDepartment;
     }
 
     public ManagedUserVMWithoutPass() {
-	// Empty constructor needed for Jackson.
+        // Empty constructor needed for Jackson.
     }
 
     // prettier-ignore

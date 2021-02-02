@@ -8,10 +8,9 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Memory} and its DTO {@link MemoryDTO}.
  */
-@Mapper(componentModel = "spring", uses = { CommentMapper.class,
-	UserPerDepartmentMapper.class, DepartmentMapper.class })
+@Mapper(componentModel = "spring", uses = { CommentMapper.class, UserPerDepartmentMapper.class, DepartmentMapper.class })
 public interface MemoryMapper extends EntityMapper<MemoryDTO, Memory> {
-    @Mapping(target = "baseComment", source = "baseComment", qualifiedByName = "id")
+    @Mapping(target = "baseComment", source = "baseComment")
     @Mapping(target = "writer", source = "writer", qualifiedByName = "id")
     @Mapping(target = "tageds", source = "tageds", qualifiedByName = "idSet")
     @Mapping(target = "department", source = "department", qualifiedByName = "id")

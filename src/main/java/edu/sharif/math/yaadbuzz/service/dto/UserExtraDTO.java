@@ -15,54 +15,54 @@ public class UserExtraDTO implements Serializable {
     private UserDTO user;
 
     public Long getId() {
-	return id;
+        return id;
     }
 
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public String getPhone() {
-	return phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
-	this.phone = phone;
+        this.phone = phone;
     }
 
     public UserDTO getUser() {
-	return user;
+        return user;
     }
 
     public void setUser(UserDTO user) {
-	this.user = user;
+        this.user = user;
     }
 
     @Override
     public boolean equals(Object o) {
-	if (this == o) {
-	    return true;
-	}
-	if (!(o instanceof UserExtraDTO)) {
-	    return false;
-	}
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserExtraDTO)) {
+            return false;
+        }
 
-	UserExtraDTO userExtraDTO = (UserExtraDTO) o;
-	if (this.id == null) {
-	    return false;
-	}
-	return Objects.equals(this.id, userExtraDTO.id);
+        UserExtraDTO userExtraDTO = (UserExtraDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, userExtraDTO.id);
     }
 
     @Override
     public int hashCode() {
-	return Objects.hash(this.id);
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
 	return "UserExtraDTO{" + "id=" + getId() + ", phone='" + getPhone()
-		+ "'" + ", user=" + getUser() + "}";
+		+ "'" + "}";
     }
 }
