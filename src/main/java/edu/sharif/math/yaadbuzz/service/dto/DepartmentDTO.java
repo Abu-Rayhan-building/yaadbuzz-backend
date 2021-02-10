@@ -85,12 +85,8 @@ public class DepartmentDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "DepartmentDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", password='" + getPassword() + "'" +
-            ", avatar=" + getAvatar() +
-            ", owner=" + getOwner() +
-            "}";
+	return "DepartmentDTO{" + "id=" + getId() + ", name='" + getName() + "'"
+		+ ", password='" + getPassword() + "'" + ", avatar="
+		+ getAvatar() + ", owner=" + getOwner() + "}";
     }
 }

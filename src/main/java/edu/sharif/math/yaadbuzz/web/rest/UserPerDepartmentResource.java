@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -29,7 +28,8 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment}.
+ * REST controller for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment}.
  */
 @RestController
 @RequestMapping("/api")
@@ -59,7 +59,10 @@ public class UserPerDepartmentResource {
      * {@code POST  /user-per-departments} : Create a new userPerDepartment.
      *
      * @param userPerDepartmentDTO the userPerDepartmentDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new userPerDepartmentDTO, or with status {@code 400 (Bad Request)} if the userPerDepartment has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
+     *         with body the new userPerDepartmentDTO, or with status
+     *         {@code 400 (Bad Request)} if the userPerDepartment has already an
+     *         ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/user-per-departments")
@@ -77,12 +80,15 @@ public class UserPerDepartmentResource {
     }
 
     /**
-     * {@code PUT  /user-per-departments} : Updates an existing userPerDepartment.
+     * {@code PUT  /user-per-departments} : Updates an existing
+     * userPerDepartment.
      *
      * @param userPerDepartmentDTO the userPerDepartmentDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userPerDepartmentDTO,
-     * or with status {@code 400 (Bad Request)} if the userPerDepartmentDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the userPerDepartmentDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated userPerDepartmentDTO, or with status
+     *         {@code 400 (Bad Request)} if the userPerDepartmentDTO is not
+     *         valid, or with status {@code 500 (Internal Server Error)} if the
+     *         userPerDepartmentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/user-per-departments")
@@ -100,13 +106,17 @@ public class UserPerDepartmentResource {
     }
 
     /**
-     * {@code PATCH  /user-per-departments} : Updates given fields of an existing userPerDepartment.
+     * {@code PATCH  /user-per-departments} : Updates given fields of an
+     * existing userPerDepartment.
      *
      * @param userPerDepartmentDTO the userPerDepartmentDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userPerDepartmentDTO,
-     * or with status {@code 400 (Bad Request)} if the userPerDepartmentDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the userPerDepartmentDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the userPerDepartmentDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated userPerDepartmentDTO, or with status
+     *         {@code 400 (Bad Request)} if the userPerDepartmentDTO is not
+     *         valid, or with status {@code 404 (Not Found)} if the
+     *         userPerDepartmentDTO is not found, or with status
+     *         {@code 500 (Internal Server Error)} if the userPerDepartmentDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/user-per-departments", consumes = "application/merge-patch+json")
@@ -131,7 +141,8 @@ public class UserPerDepartmentResource {
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userPerDepartments in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         list of userPerDepartments in body.
      */
     @GetMapping("/user-per-departments")
     public ResponseEntity<List<UserPerDepartmentDTO>> getAllUserPerDepartments(UserPerDepartmentCriteria criteria, Pageable pageable) {
@@ -142,10 +153,12 @@ public class UserPerDepartmentResource {
     }
 
     /**
-     * {@code GET  /user-per-departments/count} : count all the userPerDepartments.
+     * {@code GET  /user-per-departments/count} : count all the
+     * userPerDepartments.
      *
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         count in body.
      */
     @GetMapping("/user-per-departments/count")
     public ResponseEntity<Long> countUserPerDepartments(UserPerDepartmentCriteria criteria) {
@@ -157,7 +170,9 @@ public class UserPerDepartmentResource {
      * {@code GET  /user-per-departments/:id} : get the "id" userPerDepartment.
      *
      * @param id the id of the userPerDepartmentDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userPerDepartmentDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the userPerDepartmentDTO, or with status
+     *         {@code 404 (Not Found)}.
      */
     @GetMapping("/user-per-departments/{id}")
     public ResponseEntity<UserPerDepartmentDTO> getUserPerDepartment(@PathVariable Long id) {
@@ -167,7 +182,8 @@ public class UserPerDepartmentResource {
     }
 
     /**
-     * {@code DELETE  /user-per-departments/:id} : delete the "id" userPerDepartment.
+     * {@code DELETE  /user-per-departments/:id} : delete the "id"
+     * userPerDepartment.
      *
      * @param id the id of the userPerDepartmentDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.

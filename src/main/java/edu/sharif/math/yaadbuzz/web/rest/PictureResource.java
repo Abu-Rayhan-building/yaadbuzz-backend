@@ -8,7 +8,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -51,7 +50,9 @@ public class PictureResource {
      * {@code POST  /pictures} : Create a new picture.
      *
      * @param pictureDTO the pictureDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new pictureDTO, or with status {@code 400 (Bad Request)} if the picture has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
+     *         with body the new pictureDTO, or with status
+     *         {@code 400 (Bad Request)} if the picture has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/pictures")
@@ -71,9 +72,11 @@ public class PictureResource {
      * {@code PUT  /pictures} : Updates an existing picture.
      *
      * @param pictureDTO the pictureDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated pictureDTO,
-     * or with status {@code 400 (Bad Request)} if the pictureDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the pictureDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated pictureDTO, or with status
+     *         {@code 400 (Bad Request)} if the pictureDTO is not valid, or with
+     *         status {@code 500 (Internal Server Error)} if the pictureDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/pictures")
@@ -93,10 +96,12 @@ public class PictureResource {
      * {@code PATCH  /pictures} : Updates given fields of an existing picture.
      *
      * @param pictureDTO the pictureDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated pictureDTO,
-     * or with status {@code 400 (Bad Request)} if the pictureDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the pictureDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the pictureDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated pictureDTO, or with status
+     *         {@code 400 (Bad Request)} if the pictureDTO is not valid, or with
+     *         status {@code 404 (Not Found)} if the pictureDTO is not found, or
+     *         with status {@code 500 (Internal Server Error)} if the pictureDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/pictures", consumes = "application/merge-patch+json")
@@ -118,7 +123,8 @@ public class PictureResource {
      * {@code GET  /pictures} : get all the pictures.
      *
      * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of pictures in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         list of pictures in body.
      */
     @GetMapping("/pictures")
     public ResponseEntity<List<PictureDTO>> getAllPictures(Pageable pageable) {
@@ -132,7 +138,8 @@ public class PictureResource {
      * {@code GET  /pictures/:id} : get the "id" picture.
      *
      * @param id the id of the pictureDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the pictureDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the pictureDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/pictures/{id}")
     public ResponseEntity<PictureDTO> getPicture(@PathVariable Long id) {

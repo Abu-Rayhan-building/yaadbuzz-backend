@@ -12,13 +12,14 @@ import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
 
 /**
- * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.UserExtra} entity. This class is used
- * in {@link edu.sharif.math.yaadbuzz.web.rest.UserExtraResource} to receive all the possible filtering options from
- * the Http GET request parameters.
- * For example the following could be a valid request:
+ * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.UserExtra}
+ * entity. This class is used in
+ * {@link edu.sharif.math.yaadbuzz.web.rest.UserExtraResource} to receive all
+ * the possible filtering options from the Http GET request parameters. For
+ * example the following could be a valid request:
  * {@code /user-extras?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
- * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
- * fix type specific filters.
+ * As Spring is unable to properly convert the types, unless specific
+ * {@link Filter} class are used, we need to use fix type specific filters.
  */
 public class UserExtraCriteria implements Serializable, Criteria {
 
@@ -103,11 +104,13 @@ public class UserExtraCriteria implements Serializable, Criteria {
     // prettier-ignore
     @Override
     public String toString() {
-        return "UserExtraCriteria{" +
-                (id != null ? "id=" + id + ", " : "") +
-                (phone != null ? "phone=" + phone + ", " : "") +
-                (userId != null ? "userId=" + userId + ", " : "") +
-                (defaultUserPerDepartmentId != null ? "defaultUserPerDepartmentId=" + defaultUserPerDepartmentId + ", " : "") +
-            "}";
+	return "UserExtraCriteria{" + (id != null ? "id=" + id + ", " : "")
+		+ (phone != null ? "phone=" + phone + ", " : "")
+		+ (userId != null ? "userId=" + userId + ", " : "")
+		+ (defaultUserPerDepartmentId != null
+			? "defaultUserPerDepartmentId="
+				+ defaultUserPerDepartmentId + ", "
+			: "")
+		+ "}";
     }
 }

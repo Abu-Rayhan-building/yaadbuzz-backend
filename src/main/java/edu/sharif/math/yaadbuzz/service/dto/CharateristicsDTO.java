@@ -74,11 +74,8 @@ public class CharateristicsDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "CharateristicsDTO{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", repetation=" + getRepetation() +
-            ", userPerDepartment=" + getUserPerDepartment() +
-            "}";
+	return "CharateristicsDTO{" + "id=" + getId() + ", title='" + getTitle()
+		+ "'" + ", repetation=" + getRepetation()
+		+ ", userPerDepartment=" + getUserPerDepartment() + "}";
     }
 }

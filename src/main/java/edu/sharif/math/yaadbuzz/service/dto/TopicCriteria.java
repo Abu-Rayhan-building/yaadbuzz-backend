@@ -12,13 +12,13 @@ import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
 
 /**
- * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Topic} entity. This class is used
- * in {@link edu.sharif.math.yaadbuzz.web.rest.TopicResource} to receive all the possible filtering options from
- * the Http GET request parameters.
- * For example the following could be a valid request:
+ * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Topic} entity.
+ * This class is used in {@link edu.sharif.math.yaadbuzz.web.rest.TopicResource}
+ * to receive all the possible filtering options from the Http GET request
+ * parameters. For example the following could be a valid request:
  * {@code /topics?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
- * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
- * fix type specific filters.
+ * As Spring is unable to properly convert the types, unless specific
+ * {@link Filter} class are used, we need to use fix type specific filters.
  */
 public class TopicCriteria implements Serializable, Criteria {
 
@@ -115,12 +115,11 @@ public class TopicCriteria implements Serializable, Criteria {
     // prettier-ignore
     @Override
     public String toString() {
-        return "TopicCriteria{" +
-                (id != null ? "id=" + id + ", " : "") +
-                (title != null ? "title=" + title + ", " : "") +
-                (votesId != null ? "votesId=" + votesId + ", " : "") +
-                (departmentId != null ? "departmentId=" + departmentId + ", " : "") +
-                (votersId != null ? "votersId=" + votersId + ", " : "") +
-            "}";
+	return "TopicCriteria{" + (id != null ? "id=" + id + ", " : "")
+		+ (title != null ? "title=" + title + ", " : "")
+		+ (votesId != null ? "votesId=" + votesId + ", " : "")
+		+ (departmentId != null ? "departmentId=" + departmentId + ", "
+			: "")
+		+ (votersId != null ? "votersId=" + votersId + ", " : "") + "}";
     }
 }

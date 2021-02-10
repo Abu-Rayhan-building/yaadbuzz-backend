@@ -12,13 +12,14 @@ import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
 
 /**
- * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Comment} entity. This class is used
- * in {@link edu.sharif.math.yaadbuzz.web.rest.CommentResource} to receive all the possible filtering options from
- * the Http GET request parameters.
- * For example the following could be a valid request:
+ * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Comment}
+ * entity. This class is used in
+ * {@link edu.sharif.math.yaadbuzz.web.rest.CommentResource} to receive all the
+ * possible filtering options from the Http GET request parameters. For example
+ * the following could be a valid request:
  * {@code /comments?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
- * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
- * fix type specific filters.
+ * As Spring is unable to properly convert the types, unless specific
+ * {@link Filter} class are used, we need to use fix type specific filters.
  */
 public class CommentCriteria implements Serializable, Criteria {
 
@@ -115,12 +116,10 @@ public class CommentCriteria implements Serializable, Criteria {
     // prettier-ignore
     @Override
     public String toString() {
-        return "CommentCriteria{" +
-                (id != null ? "id=" + id + ", " : "") +
-                (text != null ? "text=" + text + ", " : "") +
-                (picturesId != null ? "picturesId=" + picturesId + ", " : "") +
-                (writerId != null ? "writerId=" + writerId + ", " : "") +
-                (memoryId != null ? "memoryId=" + memoryId + ", " : "") +
-            "}";
+	return "CommentCriteria{" + (id != null ? "id=" + id + ", " : "")
+		+ (text != null ? "text=" + text + ", " : "")
+		+ (picturesId != null ? "picturesId=" + picturesId + ", " : "")
+		+ (writerId != null ? "writerId=" + writerId + ", " : "")
+		+ (memoryId != null ? "memoryId=" + memoryId + ", " : "") + "}";
     }
 }

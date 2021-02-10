@@ -1,18 +1,17 @@
 package edu.sharif.math.yaadbuzz.web.rest.dto;
 
+import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.validation.constraints.NotNull;
-
-import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Comment} entity.
  */
 public class CommentCreateUDTO implements Serializable, UserInputDTO<CommentDTO> {
+
     /**
      *
      */
@@ -24,24 +23,24 @@ public class CommentCreateUDTO implements Serializable, UserInputDTO<CommentDTO>
     private Set<PictureDTO> pictures = new HashSet<>();
 
     public Set<PictureDTO> getPictures() {
-	return this.pictures;
+        return this.pictures;
     }
 
     public String getText() {
-	return this.text;
+        return this.text;
     }
 
     @Override
     public int hashCode() {
-	return 31;
+        return 31;
     }
 
     public void setPictures(final Set<PictureDTO> pictures) {
-	this.pictures = pictures;
+        this.pictures = pictures;
     }
 
     public void setText(final String text) {
-	this.text = text;
+        this.text = text;
     }
 
     // prettier-ignore
@@ -53,9 +52,9 @@ public class CommentCreateUDTO implements Serializable, UserInputDTO<CommentDTO>
 
     @Override
     public CommentDTO build() {
-	CommentDTO res = new CommentDTO();
-	res.setPictures(this.getPictures());
-	res.setText(this.getText());
-	return res;
+        CommentDTO res = new CommentDTO();
+        res.setPictures(this.getPictures());
+        res.setText(this.getText());
+        return res;
     }
 }

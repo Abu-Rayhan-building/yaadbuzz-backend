@@ -12,13 +12,15 @@ import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
 
 /**
- * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment} entity. This class is used
- * in {@link edu.sharif.math.yaadbuzz.web.rest.UserPerDepartmentResource} to receive all the possible filtering options from
- * the Http GET request parameters.
- * For example the following could be a valid request:
+ * Criteria class for the
+ * {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment} entity. This class
+ * is used in
+ * {@link edu.sharif.math.yaadbuzz.web.rest.UserPerDepartmentResource} to
+ * receive all the possible filtering options from the Http GET request
+ * parameters. For example the following could be a valid request:
  * {@code /user-per-departments?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
- * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
- * fix type specific filters.
+ * As Spring is unable to properly convert the types, unless specific
+ * {@link Filter} class are used, we need to use fix type specific filters.
  */
 public class UserPerDepartmentCriteria implements Serializable, Criteria {
 
@@ -163,17 +165,23 @@ public class UserPerDepartmentCriteria implements Serializable, Criteria {
     // prettier-ignore
     @Override
     public String toString() {
-        return "UserPerDepartmentCriteria{" +
-                (id != null ? "id=" + id + ", " : "") +
-                (nickname != null ? "nickname=" + nickname + ", " : "") +
-                (bio != null ? "bio=" + bio + ", " : "") +
-                (topicAssignedsId != null ? "topicAssignedsId=" + topicAssignedsId + ", " : "") +
-                (avatarId != null ? "avatarId=" + avatarId + ", " : "") +
-                (realUserId != null ? "realUserId=" + realUserId + ", " : "") +
-                (departmentId != null ? "departmentId=" + departmentId + ", " : "") +
-                (topicsVotedId != null ? "topicsVotedId=" + topicsVotedId + ", " : "") +
-                (tagedInMemoeriesId != null ? "tagedInMemoeriesId=" + tagedInMemoeriesId + ", " : "") +
-            "}";
+	return "UserPerDepartmentCriteria{"
+		+ (id != null ? "id=" + id + ", " : "")
+		+ (nickname != null ? "nickname=" + nickname + ", " : "")
+		+ (bio != null ? "bio=" + bio + ", " : "")
+		+ (topicAssignedsId != null
+			? "topicAssignedsId=" + topicAssignedsId + ", "
+			: "")
+		+ (avatarId != null ? "avatarId=" + avatarId + ", " : "")
+		+ (realUserId != null ? "realUserId=" + realUserId + ", " : "")
+		+ (departmentId != null ? "departmentId=" + departmentId + ", "
+			: "")
+		+ (topicsVotedId != null
+			? "topicsVotedId=" + topicsVotedId + ", "
+			: "")
+		+ (tagedInMemoeriesId != null
+			? "tagedInMemoeriesId=" + tagedInMemoeriesId + ", "
+			: "")
+		+ "}";
     }
-
 }

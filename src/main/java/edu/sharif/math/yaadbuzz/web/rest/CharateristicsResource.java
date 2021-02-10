@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -26,9 +27,9 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
-import javax.annotation.security.RolesAllowed;
 /**
- * REST controller for managing {@link edu.sharif.math.yaadbuzz.domain.Charateristics}.
+ * REST controller for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.Charateristics}.
  */
 @RestController
 @RequestMapping("/api")
@@ -55,7 +56,10 @@ public class CharateristicsResource {
      * {@code POST  /charateristics} : Create a new charateristics.
      *
      * @param charateristicsDTO the charateristicsDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new charateristicsDTO, or with status {@code 400 (Bad Request)} if the charateristics has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
+     *         with body the new charateristicsDTO, or with status
+     *         {@code 400 (Bad Request)} if the charateristics has already an
+     *         ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/charateristics")
@@ -76,9 +80,11 @@ public class CharateristicsResource {
      * {@code PUT  /charateristics} : Updates an existing charateristics.
      *
      * @param charateristicsDTO the charateristicsDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated charateristicsDTO,
-     * or with status {@code 400 (Bad Request)} if the charateristicsDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the charateristicsDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated charateristicsDTO, or with status
+     *         {@code 400 (Bad Request)} if the charateristicsDTO is not valid,
+     *         or with status {@code 500 (Internal Server Error)} if the
+     *         charateristicsDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/charateristics")
@@ -96,13 +102,16 @@ public class CharateristicsResource {
     }
 
     /**
-     * {@code PATCH  /charateristics} : Updates given fields of an existing charateristics.
+     * {@code PATCH  /charateristics} : Updates given fields of an existing
+     * charateristics.
      *
      * @param charateristicsDTO the charateristicsDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated charateristicsDTO,
-     * or with status {@code 400 (Bad Request)} if the charateristicsDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the charateristicsDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the charateristicsDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated charateristicsDTO, or with status
+     *         {@code 400 (Bad Request)} if the charateristicsDTO is not valid,
+     *         or with status {@code 404 (Not Found)} if the charateristicsDTO
+     *         is not found, or with status {@code 500 (Internal Server Error)}
+     *         if the charateristicsDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/charateristics", consumes = "application/merge-patch+json")
@@ -126,7 +135,8 @@ public class CharateristicsResource {
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of charateristics in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         list of charateristics in body.
      */
     @GetMapping("/charateristics")
     public ResponseEntity<List<CharateristicsDTO>> getAllCharateristics(CharateristicsCriteria criteria, Pageable pageable) {
@@ -140,7 +150,8 @@ public class CharateristicsResource {
      * {@code GET  /charateristics/count} : count all the charateristics.
      *
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         count in body.
      */
     @GetMapping("/charateristics/count")
     public ResponseEntity<Long> countCharateristics(CharateristicsCriteria criteria) {
@@ -152,7 +163,9 @@ public class CharateristicsResource {
      * {@code GET  /charateristics/:id} : get the "id" charateristics.
      *
      * @param id the id of the charateristicsDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the charateristicsDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the charateristicsDTO, or with status
+     *         {@code 404 (Not Found)}.
      */
     @GetMapping("/charateristics/{id}")
     public ResponseEntity<CharateristicsDTO> getCharateristics(@PathVariable Long id) {

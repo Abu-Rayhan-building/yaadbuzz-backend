@@ -1,21 +1,20 @@
 package edu.sharif.math.yaadbuzz.web.rest.dto;
 
+import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
+import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.validation.constraints.NotNull;
-
-import edu.sharif.math.yaadbuzz.service.dto.CommentDTO;
-import edu.sharif.math.yaadbuzz.service.dto.PictureDTO;
 
 /**
  * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.Comment} entity.
  */
 public class CommentWithIdUDTO implements Serializable, UserInputDTO<CommentDTO> {
+
     /**
-    *
-    */
+     *
+     */
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -27,43 +26,43 @@ public class CommentWithIdUDTO implements Serializable, UserInputDTO<CommentDTO>
 
     @Override
     public boolean equals(final Object o) {
-	if (this == o) {
-	    return true;
-	}
-	if (!(o instanceof CommentWithIdUDTO)) {
-	    return false;
-	}
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CommentWithIdUDTO)) {
+            return false;
+        }
 
-	return this.id != null && this.id.equals(((CommentWithIdUDTO) o).id);
+        return this.id != null && this.id.equals(((CommentWithIdUDTO) o).id);
     }
 
     public Long getId() {
-	return this.id;
+        return this.id;
     }
 
     public Set<PictureDTO> getPictures() {
-	return this.pictures;
+        return this.pictures;
     }
 
     public String getText() {
-	return this.text;
+        return this.text;
     }
 
     @Override
     public int hashCode() {
-	return 31;
+        return 31;
     }
 
     public void setId(final Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public void setPictures(final Set<PictureDTO> pictures) {
-	this.pictures = pictures;
+        this.pictures = pictures;
     }
 
     public void setText(final String text) {
-	this.text = text;
+        this.text = text;
     }
 
     // prettier-ignore
@@ -76,10 +75,10 @@ public class CommentWithIdUDTO implements Serializable, UserInputDTO<CommentDTO>
 
     @Override
     public CommentDTO build() {
-	CommentDTO res = new CommentDTO();
-	res.setPictures(this.getPictures());
-	res.setText(this.getText());
-	res.setId(this.getId());
-	return res;
+        CommentDTO res = new CommentDTO();
+        res.setPictures(this.getPictures());
+        res.setText(this.getText());
+        res.setId(this.getId());
+        return res;
     }
 }

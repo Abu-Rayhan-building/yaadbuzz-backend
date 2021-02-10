@@ -1,16 +1,15 @@
 package edu.sharif.math.yaadbuzz.web.rest.dto;
 
 import java.io.Serializable;
-
 import javax.validation.constraints.NotNull;
 
 public class CharateristicsVoteDTO implements Serializable {
-    
+
     @NotNull
     private String title;
 
     private Long userPerDepartmentId;
-    
+
     public String getTitle() {
         return title;
     }
@@ -18,7 +17,6 @@ public class CharateristicsVoteDTO implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-
 
     public Long getUserPerDepartmentId() {
         return userPerDepartmentId;
@@ -36,9 +34,7 @@ public class CharateristicsVoteDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "CharateristicsDTO{" +
-            ", title='" + getTitle() + "'" +
-            ", userPerDepartmentId=" + getUserPerDepartmentId() +
-            "}";
+	return "CharateristicsDTO{" + ", title='" + getTitle() + "'"
+		+ ", userPerDepartmentId=" + getUserPerDepartmentId() + "}";
     }
 }

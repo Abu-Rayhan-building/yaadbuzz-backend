@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -29,7 +28,8 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link edu.sharif.math.yaadbuzz.domain.Department}.
+ * REST controller for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.Department}.
  */
 @RestController
 @RequestMapping("/api")
@@ -56,7 +56,9 @@ public class DepartmentResource {
      * {@code POST  /departments} : Create a new department.
      *
      * @param departmentDTO the departmentDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new departmentDTO, or with status {@code 400 (Bad Request)} if the department has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
+     *         with body the new departmentDTO, or with status
+     *         {@code 400 (Bad Request)} if the department has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/departments")
@@ -76,9 +78,11 @@ public class DepartmentResource {
      * {@code PUT  /departments} : Updates an existing department.
      *
      * @param departmentDTO the departmentDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated departmentDTO,
-     * or with status {@code 400 (Bad Request)} if the departmentDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the departmentDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated departmentDTO, or with status
+     *         {@code 400 (Bad Request)} if the departmentDTO is not valid, or
+     *         with status {@code 500 (Internal Server Error)} if the
+     *         departmentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/departments")
@@ -95,13 +99,16 @@ public class DepartmentResource {
     }
 
     /**
-     * {@code PATCH  /departments} : Updates given fields of an existing department.
+     * {@code PATCH  /departments} : Updates given fields of an existing
+     * department.
      *
      * @param departmentDTO the departmentDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated departmentDTO,
-     * or with status {@code 400 (Bad Request)} if the departmentDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the departmentDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the departmentDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated departmentDTO, or with status
+     *         {@code 400 (Bad Request)} if the departmentDTO is not valid, or
+     *         with status {@code 404 (Not Found)} if the departmentDTO is not
+     *         found, or with status {@code 500 (Internal Server Error)} if the
+     *         departmentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/departments", consumes = "application/merge-patch+json")
@@ -125,7 +132,8 @@ public class DepartmentResource {
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of departments in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         list of departments in body.
      */
     @GetMapping("/departments")
     public ResponseEntity<List<DepartmentDTO>> getAllDepartments(DepartmentCriteria criteria, Pageable pageable) {
@@ -139,7 +147,8 @@ public class DepartmentResource {
      * {@code GET  /departments/count} : count all the departments.
      *
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         count in body.
      */
     @GetMapping("/departments/count")
     public ResponseEntity<Long> countDepartments(DepartmentCriteria criteria) {
@@ -151,7 +160,8 @@ public class DepartmentResource {
      * {@code GET  /departments/:id} : get the "id" department.
      *
      * @param id the id of the departmentDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the departmentDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the departmentDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/departments/{id}")
     public ResponseEntity<DepartmentDTO> getDepartment(@PathVariable Long id) {

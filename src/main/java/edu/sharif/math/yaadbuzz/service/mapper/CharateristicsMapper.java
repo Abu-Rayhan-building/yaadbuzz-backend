@@ -5,7 +5,8 @@ import edu.sharif.math.yaadbuzz.service.dto.CharateristicsDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity {@link Charateristics} and its DTO {@link CharateristicsDTO}.
+ * Mapper for the entity {@link Charateristics} and its DTO
+ * {@link CharateristicsDTO}.
  */
 @Mapper(componentModel = "spring", uses = { UserPerDepartmentMapper.class })
 public interface CharateristicsMapper extends EntityMapper<CharateristicsDTO, Charateristics> {

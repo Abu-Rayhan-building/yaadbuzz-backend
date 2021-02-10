@@ -93,13 +93,10 @@ public class MemorialDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "MemorialDTO{" +
-            "id=" + getId() +
-            ", anonymousComment=" + getAnonymousComment() +
-            ", notAnonymousComment=" + getNotAnonymousComment() +
-            ", writer=" + getWriter() +
-            ", recipient=" + getRecipient() +
-            ", department=" + getDepartment() +
-            "}";
+	return "MemorialDTO{" + "id=" + getId() + ", anonymousComment="
+		+ getAnonymousComment() + ", notAnonymousComment="
+		+ getNotAnonymousComment() + ", writer=" + getWriter()
+		+ ", recipient=" + getRecipient() + ", department="
+		+ getDepartment() + "}";
     }
 }

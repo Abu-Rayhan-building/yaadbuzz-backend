@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -56,7 +55,9 @@ public class TopicResource {
      * {@code POST  /topics} : Create a new topic.
      *
      * @param topicDTO the topicDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new topicDTO, or with status {@code 400 (Bad Request)} if the topic has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
+     *         with body the new topicDTO, or with status
+     *         {@code 400 (Bad Request)} if the topic has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/topics")
@@ -76,9 +77,11 @@ public class TopicResource {
      * {@code PUT  /topics} : Updates an existing topic.
      *
      * @param topicDTO the topicDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated topicDTO,
-     * or with status {@code 400 (Bad Request)} if the topicDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the topicDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated topicDTO, or with status
+     *         {@code 400 (Bad Request)} if the topicDTO is not valid, or with
+     *         status {@code 500 (Internal Server Error)} if the topicDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/topics")
@@ -98,10 +101,12 @@ public class TopicResource {
      * {@code PATCH  /topics} : Updates given fields of an existing topic.
      *
      * @param topicDTO the topicDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated topicDTO,
-     * or with status {@code 400 (Bad Request)} if the topicDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the topicDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the topicDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated topicDTO, or with status
+     *         {@code 400 (Bad Request)} if the topicDTO is not valid, or with
+     *         status {@code 404 (Not Found)} if the topicDTO is not found, or
+     *         with status {@code 500 (Internal Server Error)} if the topicDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/topics", consumes = "application/merge-patch+json")
@@ -124,7 +129,8 @@ public class TopicResource {
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of topics in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         list of topics in body.
      */
     @GetMapping("/topics")
     public ResponseEntity<List<TopicDTO>> getAllTopics(TopicCriteria criteria, Pageable pageable) {
@@ -138,7 +144,8 @@ public class TopicResource {
      * {@code GET  /topics/count} : count all the topics.
      *
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         count in body.
      */
     @GetMapping("/topics/count")
     public ResponseEntity<Long> countTopics(TopicCriteria criteria) {
@@ -150,7 +157,8 @@ public class TopicResource {
      * {@code GET  /topics/:id} : get the "id" topic.
      *
      * @param id the id of the topicDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the topicDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the topicDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/topics/{id}")
     public ResponseEntity<TopicDTO> getTopic(@PathVariable Long id) {

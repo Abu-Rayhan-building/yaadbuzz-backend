@@ -1,46 +1,48 @@
 {
-  "name": "Comment",
-  "fields": [
-    {
-      "fieldName": "text",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    }
-  ],
-  "relationships": [
-    {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "picture",
-      "otherEntityRelationshipName": "comment",
-      "relationshipValidateRules": "required",
-      "relationshipName": "pictures"
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "userPerDepartment",
-      "otherEntityRelationshipName": "comment",
-      "relationshipValidateRules": "required",
-      "relationshipName": "writer",
-      "otherEntityField": "id"
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "memory",
-      "otherEntityRelationshipName": "comments",
-      "relationshipValidateRules": "required",
-      "relationshipName": "memory",
-      "otherEntityField": "id"
-    }
-  ],
-  "changelogDate": "20201114203902",
-  "entityTableName": "comment",
-  "dto": "mapstruct",
-  "pagination": "infinite-scroll",
-  "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "clientRootFolder": "",
-  "applications": "*"
+	"name": "Comment",
+	"fields": [
+		{
+			"fieldName": "text",
+			"fieldType": "String",
+			"fieldValidateRules": [
+				"required"
+			]
+		}
+	],
+	"relationships": [
+		{
+			"relationshipType": "one-to-many",
+			"otherEntityName": "picture",
+			"otherEntityRelationshipName": "comment",
+			"relationshipValidateRules": "required",
+			"relationshipName": "pictures"
+		},
+		{
+			"relationshipType": "many-to-one",
+			"otherEntityName": "userPerDepartment",
+			"otherEntityRelationshipName": "comment",
+			"relationshipValidateRules": "required",
+			"relationshipName": "writer",
+			"otherEntityField": "id"
+		},
+		{
+			"relationshipType": "many-to-one",
+			"otherEntityName": "memory",
+			"otherEntityRelationshipName": "comments",
+			"relationshipValidateRules": "required",
+			"relationshipName": "memory",
+			"otherEntityField": "id"
+		}
+	],
+	"changelogDate": "20201114203902",
+	"entityTableName": "comment",
+	"dto": "mapstruct",
+	"pagination": "infinite-scroll",
+	"service": "serviceImpl",
+	"jpaMetamodelFiltering": true,
+	"fluentMethods": true,
+	"readOnly": false,
+	"embedded": false,
+	"clientRootFolder": "",
+	"applications": "*"
 }

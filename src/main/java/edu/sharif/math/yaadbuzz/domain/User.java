@@ -211,22 +211,18 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        // see
+        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
     // prettier-ignore
     @Override
     public String toString() {
-        return "User{" +
-            "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated='" + activated + '\'' +
-            ", langKey='" + langKey + '\'' +
-            ", activationKey='" + activationKey + '\'' +
-            "}";
+	return "User{" + "login='" + login + '\'' + ", firstName='" + firstName
+		+ '\'' + ", lastName='" + lastName + '\'' + ", email='" + email
+		+ '\'' + ", imageUrl='" + imageUrl + '\'' + ", activated='"
+		+ activated + '\'' + ", langKey='" + langKey + '\''
+		+ ", activationKey='" + activationKey + '\'' + "}";
     }
 }

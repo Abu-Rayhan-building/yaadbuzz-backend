@@ -6,7 +6,8 @@ import java.util.Set;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity {@link UserPerDepartment} and its DTO {@link UserPerDepartmentDTO}.
+ * Mapper for the entity {@link UserPerDepartment} and its DTO
+ * {@link UserPerDepartmentDTO}.
  */
 @Mapper(componentModel = "spring", uses = { PictureMapper.class, UserMapper.class, DepartmentMapper.class })
 public interface UserPerDepartmentMapper extends EntityMapper<UserPerDepartmentDTO, UserPerDepartment> {

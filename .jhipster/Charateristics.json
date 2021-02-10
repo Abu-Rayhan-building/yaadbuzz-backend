@@ -1,35 +1,37 @@
 {
-  "name": "Charateristics",
-  "fields": [
-    {
-      "fieldName": "title",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "repetation",
-      "fieldType": "Integer"
-    }
-  ],
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "userPerDepartment",
-      "otherEntityRelationshipName": "charateristics",
-      "relationshipValidateRules": "required",
-      "relationshipName": "userPerDepartment",
-      "otherEntityField": "id"
-    }
-  ],
-  "changelogDate": "20201115102020",
-  "entityTableName": "charateristics",
-  "dto": "mapstruct",
-  "pagination": "infinite-scroll",
-  "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "clientRootFolder": "",
-  "applications": "*"
+	"name": "Charateristics",
+	"fields": [
+		{
+			"fieldName": "title",
+			"fieldType": "String",
+			"fieldValidateRules": [
+				"required"
+			]
+		},
+		{
+			"fieldName": "repetation",
+			"fieldType": "Integer"
+		}
+	],
+	"relationships": [
+		{
+			"relationshipType": "many-to-one",
+			"otherEntityName": "userPerDepartment",
+			"otherEntityRelationshipName": "charateristics",
+			"relationshipValidateRules": "required",
+			"relationshipName": "userPerDepartment",
+			"otherEntityField": "id"
+		}
+	],
+	"changelogDate": "20201115102020",
+	"entityTableName": "charateristics",
+	"dto": "mapstruct",
+	"pagination": "infinite-scroll",
+	"service": "serviceImpl",
+	"jpaMetamodelFiltering": true,
+	"fluentMethods": true,
+	"readOnly": false,
+	"embedded": false,
+	"clientRootFolder": "",
+	"applications": "*"
 }

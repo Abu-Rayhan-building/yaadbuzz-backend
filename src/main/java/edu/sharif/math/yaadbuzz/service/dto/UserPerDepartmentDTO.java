@@ -5,7 +5,8 @@ import java.util.Objects;
 import javax.validation.constraints.*;
 
 /**
- * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment} entity.
+ * A DTO for the {@link edu.sharif.math.yaadbuzz.domain.UserPerDepartment}
+ * entity.
  */
 public class UserPerDepartmentDTO implements Serializable {
 
@@ -93,13 +94,9 @@ public class UserPerDepartmentDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "UserPerDepartmentDTO{" +
-            "id=" + getId() +
-            ", nickname='" + getNickname() + "'" +
-            ", bio='" + getBio() + "'" +
-            ", avatar=" + getAvatar() +
-            ", realUser=" + getRealUser() +
-            ", department=" + getDepartment() +
-            "}";
+	return "UserPerDepartmentDTO{" + "id=" + getId() + ", nickname='"
+		+ getNickname() + "'" + ", bio='" + getBio() + "'" + ", avatar="
+		+ getAvatar() + ", realUser=" + getRealUser() + ", department="
+		+ getDepartment() + "}";
     }
 }

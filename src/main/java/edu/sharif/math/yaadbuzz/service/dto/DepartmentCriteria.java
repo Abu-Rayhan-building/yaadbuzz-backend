@@ -12,13 +12,14 @@ import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
 
 /**
- * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Department} entity. This class is used
- * in {@link edu.sharif.math.yaadbuzz.web.rest.DepartmentResource} to receive all the possible filtering options from
- * the Http GET request parameters.
- * For example the following could be a valid request:
+ * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Department}
+ * entity. This class is used in
+ * {@link edu.sharif.math.yaadbuzz.web.rest.DepartmentResource} to receive all
+ * the possible filtering options from the Http GET request parameters. For
+ * example the following could be a valid request:
  * {@code /departments?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
- * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
- * fix type specific filters.
+ * As Spring is unable to properly convert the types, unless specific
+ * {@link Filter} class are used, we need to use fix type specific filters.
  */
 public class DepartmentCriteria implements Serializable, Criteria {
 
@@ -139,14 +140,14 @@ public class DepartmentCriteria implements Serializable, Criteria {
     // prettier-ignore
     @Override
     public String toString() {
-        return "DepartmentCriteria{" +
-                (id != null ? "id=" + id + ", " : "") +
-                (name != null ? "name=" + name + ", " : "") +
-                (password != null ? "password=" + password + ", " : "") +
-                (userPerDepartmentId != null ? "userPerDepartmentId=" + userPerDepartmentId + ", " : "") +
-                (memoryId != null ? "memoryId=" + memoryId + ", " : "") +
-                (avatarId != null ? "avatarId=" + avatarId + ", " : "") +
-                (ownerId != null ? "ownerId=" + ownerId + ", " : "") +
-            "}";
+	return "DepartmentCriteria{" + (id != null ? "id=" + id + ", " : "")
+		+ (name != null ? "name=" + name + ", " : "")
+		+ (password != null ? "password=" + password + ", " : "")
+		+ (userPerDepartmentId != null
+			? "userPerDepartmentId=" + userPerDepartmentId + ", "
+			: "")
+		+ (memoryId != null ? "memoryId=" + memoryId + ", " : "")
+		+ (avatarId != null ? "avatarId=" + avatarId + ", " : "")
+		+ (ownerId != null ? "ownerId=" + ownerId + ", " : "") + "}";
     }
 }

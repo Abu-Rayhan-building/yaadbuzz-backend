@@ -36,11 +36,13 @@ public class LoggingAspect {
         " || within(@org.springframework.web.bind.annotation.RestController *)"
     )
     public void springBeanPointcut() {
-        // Method is empty as this is just a Pointcut, the implementations are in the advices.
+        // Method is empty as this is just a Pointcut, the implementations are
+        // in the advices.
     }
 
     /**
-     * Pointcut that matches all Spring beans in the application's main packages.
+     * Pointcut that matches all Spring beans in the application's main
+     * packages.
      */
     @Pointcut(
         "within(edu.sharif.math.yaadbuzz.repository..*)" +
@@ -48,7 +50,8 @@ public class LoggingAspect {
         " || within(edu.sharif.math.yaadbuzz.web.rest..*)"
     )
     public void applicationPackagePointcut() {
-        // Method is empty as this is just a Pointcut, the implementations are in the advices.
+        // Method is empty as this is just a Pointcut, the implementations are
+        // in the advices.
     }
 
     /**
@@ -65,7 +68,7 @@ public class LoggingAspect {
      * Advice that logs methods throwing exceptions.
      *
      * @param joinPoint join point for advice.
-     * @param e exception.
+     * @param e         exception.
      */
     @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {

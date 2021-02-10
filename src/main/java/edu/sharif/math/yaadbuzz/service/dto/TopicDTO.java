@@ -76,11 +76,8 @@ public class TopicDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "TopicDTO{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", department=" + getDepartment() +
-            ", voters=" + getVoters() +
-            "}";
+	return "TopicDTO{" + "id=" + getId() + ", title='" + getTitle() + "'"
+		+ ", department=" + getDepartment() + ", voters=" + getVoters()
+		+ "}";
     }
 }

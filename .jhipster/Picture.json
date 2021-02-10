@@ -1,31 +1,33 @@
 {
-  "name": "Picture",
-  "fields": [
-    {
-      "fieldName": "image",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "image",
-      "fieldValidateRules": ["required"]
-    }
-  ],
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "comment",
-      "otherEntityRelationshipName": "pictures",
-      "relationshipName": "comment",
-      "otherEntityField": "id"
-    }
-  ],
-  "changelogDate": "20201114204002",
-  "entityTableName": "picture",
-  "dto": "mapstruct",
-  "pagination": "infinite-scroll",
-  "service": "serviceImpl",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "clientRootFolder": "",
-  "applications": "*"
+	"name": "Picture",
+	"fields": [
+		{
+			"fieldName": "image",
+			"fieldType": "byte[]",
+			"fieldTypeBlobContent": "image",
+			"fieldValidateRules": [
+				"required"
+			]
+		}
+	],
+	"relationships": [
+		{
+			"relationshipType": "many-to-one",
+			"otherEntityName": "comment",
+			"otherEntityRelationshipName": "pictures",
+			"relationshipName": "comment",
+			"otherEntityField": "id"
+		}
+	],
+	"changelogDate": "20201114204002",
+	"entityTableName": "picture",
+	"dto": "mapstruct",
+	"pagination": "infinite-scroll",
+	"service": "serviceImpl",
+	"jpaMetamodelFiltering": false,
+	"fluentMethods": true,
+	"readOnly": false,
+	"embedded": false,
+	"clientRootFolder": "",
+	"applications": "*"
 }

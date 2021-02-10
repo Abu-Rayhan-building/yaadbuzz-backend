@@ -1,38 +1,38 @@
 {
-  "name": "TopicVote",
-  "fields": [
-    {
-      "fieldName": "repetitions",
-      "fieldType": "Integer"
-    }
-  ],
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "topic",
-      "otherEntityRelationshipName": "votes",
-      "relationshipValidateRules": "required",
-      "relationshipName": "topic",
-      "otherEntityField": "id"
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "userPerDepartment",
-      "otherEntityRelationshipName": "topicAssigneds",
-      "relationshipValidateRules": "required",
-      "relationshipName": "user",
-      "otherEntityField": "id"
-    }
-  ],
-  "changelogDate": "20201115101920",
-  "entityTableName": "topic_vote",
-  "dto": "mapstruct",
-  "pagination": "infinite-scroll",
-  "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "clientRootFolder": "",
-  "applications": "*"
+	"name": "TopicVote",
+	"fields": [
+		{
+			"fieldName": "repetitions",
+			"fieldType": "Integer"
+		}
+	],
+	"relationships": [
+		{
+			"relationshipType": "many-to-one",
+			"otherEntityName": "topic",
+			"otherEntityRelationshipName": "votes",
+			"relationshipValidateRules": "required",
+			"relationshipName": "topic",
+			"otherEntityField": "id"
+		},
+		{
+			"relationshipType": "many-to-one",
+			"otherEntityName": "userPerDepartment",
+			"otherEntityRelationshipName": "topicAssigneds",
+			"relationshipValidateRules": "required",
+			"relationshipName": "user",
+			"otherEntityField": "id"
+		}
+	],
+	"changelogDate": "20201115101920",
+	"entityTableName": "topic_vote",
+	"dto": "mapstruct",
+	"pagination": "infinite-scroll",
+	"service": "serviceImpl",
+	"jpaMetamodelFiltering": true,
+	"fluentMethods": true,
+	"readOnly": false,
+	"embedded": false,
+	"clientRootFolder": "",
+	"applications": "*"
 }

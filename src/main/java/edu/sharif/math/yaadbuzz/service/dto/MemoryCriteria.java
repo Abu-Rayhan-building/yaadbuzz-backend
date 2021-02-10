@@ -12,13 +12,14 @@ import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
 
 /**
- * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Memory} entity. This class is used
- * in {@link edu.sharif.math.yaadbuzz.web.rest.MemoryResource} to receive all the possible filtering options from
- * the Http GET request parameters.
- * For example the following could be a valid request:
+ * Criteria class for the {@link edu.sharif.math.yaadbuzz.domain.Memory} entity.
+ * This class is used in
+ * {@link edu.sharif.math.yaadbuzz.web.rest.MemoryResource} to receive all the
+ * possible filtering options from the Http GET request parameters. For example
+ * the following could be a valid request:
  * {@code /memories?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
- * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
- * fix type specific filters.
+ * As Spring is unable to properly convert the types, unless specific
+ * {@link Filter} class are used, we need to use fix type specific filters.
  */
 public class MemoryCriteria implements Serializable, Criteria {
 
@@ -151,15 +152,17 @@ public class MemoryCriteria implements Serializable, Criteria {
     // prettier-ignore
     @Override
     public String toString() {
-        return "MemoryCriteria{" +
-                (id != null ? "id=" + id + ", " : "") +
-                (title != null ? "title=" + title + ", " : "") +
-                (isPrivate != null ? "isPrivate=" + isPrivate + ", " : "") +
-                (commentsId != null ? "commentsId=" + commentsId + ", " : "") +
-                (baseCommentId != null ? "baseCommentId=" + baseCommentId + ", " : "") +
-                (writerId != null ? "writerId=" + writerId + ", " : "") +
-                (tagedId != null ? "tagedId=" + tagedId + ", " : "") +
-                (departmentId != null ? "departmentId=" + departmentId + ", " : "") +
-            "}";
+	return "MemoryCriteria{" + (id != null ? "id=" + id + ", " : "")
+		+ (title != null ? "title=" + title + ", " : "")
+		+ (isPrivate != null ? "isPrivate=" + isPrivate + ", " : "")
+		+ (commentsId != null ? "commentsId=" + commentsId + ", " : "")
+		+ (baseCommentId != null
+			? "baseCommentId=" + baseCommentId + ", "
+			: "")
+		+ (writerId != null ? "writerId=" + writerId + ", " : "")
+		+ (tagedId != null ? "tagedId=" + tagedId + ", " : "")
+		+ (departmentId != null ? "departmentId=" + departmentId + ", "
+			: "")
+		+ "}";
     }
 }

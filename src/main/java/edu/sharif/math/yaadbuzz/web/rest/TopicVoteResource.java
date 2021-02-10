@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -29,7 +28,8 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link edu.sharif.math.yaadbuzz.domain.TopicVote}.
+ * REST controller for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.TopicVote}.
  */
 @RestController
 @RequestMapping("/api")
@@ -56,7 +56,9 @@ public class TopicVoteResource {
      * {@code POST  /topic-votes} : Create a new topicVote.
      *
      * @param topicVoteDTO the topicVoteDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new topicVoteDTO, or with status {@code 400 (Bad Request)} if the topicVote has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
+     *         with body the new topicVoteDTO, or with status
+     *         {@code 400 (Bad Request)} if the topicVote has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/topic-votes")
@@ -76,9 +78,11 @@ public class TopicVoteResource {
      * {@code PUT  /topic-votes} : Updates an existing topicVote.
      *
      * @param topicVoteDTO the topicVoteDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated topicVoteDTO,
-     * or with status {@code 400 (Bad Request)} if the topicVoteDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the topicVoteDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated topicVoteDTO, or with status
+     *         {@code 400 (Bad Request)} if the topicVoteDTO is not valid, or
+     *         with status {@code 500 (Internal Server Error)} if the
+     *         topicVoteDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/topic-votes")
@@ -95,13 +99,16 @@ public class TopicVoteResource {
     }
 
     /**
-     * {@code PATCH  /topic-votes} : Updates given fields of an existing topicVote.
+     * {@code PATCH  /topic-votes} : Updates given fields of an existing
+     * topicVote.
      *
      * @param topicVoteDTO the topicVoteDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated topicVoteDTO,
-     * or with status {@code 400 (Bad Request)} if the topicVoteDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the topicVoteDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the topicVoteDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated topicVoteDTO, or with status
+     *         {@code 400 (Bad Request)} if the topicVoteDTO is not valid, or
+     *         with status {@code 404 (Not Found)} if the topicVoteDTO is not
+     *         found, or with status {@code 500 (Internal Server Error)} if the
+     *         topicVoteDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/topic-votes", consumes = "application/merge-patch+json")
@@ -124,7 +131,8 @@ public class TopicVoteResource {
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of topicVotes in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         list of topicVotes in body.
      */
     @GetMapping("/topic-votes")
     public ResponseEntity<List<TopicVoteDTO>> getAllTopicVotes(TopicVoteCriteria criteria, Pageable pageable) {
@@ -138,7 +146,8 @@ public class TopicVoteResource {
      * {@code GET  /topic-votes/count} : count all the topicVotes.
      *
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         count in body.
      */
     @GetMapping("/topic-votes/count")
     public ResponseEntity<Long> countTopicVotes(TopicVoteCriteria criteria) {
@@ -150,7 +159,8 @@ public class TopicVoteResource {
      * {@code GET  /topic-votes/:id} : get the "id" topicVote.
      *
      * @param id the id of the topicVoteDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the topicVoteDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the topicVoteDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/topic-votes/{id}")
     public ResponseEntity<TopicVoteDTO> getTopicVote(@PathVariable Long id) {

@@ -1,36 +1,36 @@
 {
-  "fields": [
-    {
-      "fieldName": "phone",
-      "fieldType": "String"
-    }
-  ],
-  "relationships": [
-    {
-      "relationshipName": "user",
-      "otherEntityName": "user",
-      "relationshipType": "one-to-one",
-      "relationshipValidateRules": [],
-      "otherEntityField": "login",
-      "ownerSide": true,
-      "useJPADerivedIdentifier": true,
-      "otherEntityRelationshipName": "userExtra"
-    },
-    {
-      "relationshipName": "defaultUserPerDepartment",
-      "otherEntityName": "userPerDepartment",
-      "relationshipType": "one-to-one",
-      "otherEntityField": "id",
-      "ownerSide": true,
-      "useJPADerivedIdentifier": false,
-      "otherEntityRelationshipName": "userExtra"
-    }
-  ],
-  "service": "serviceImpl",
-  "dto": "mapstruct",
-  "jpaMetamodelFiltering": true,
-  "readOnly": false,
-  "pagination": "pagination",
-  "name": "UserExtra",
-  "changelogDate": "20201225153458"
+	"fields": [
+		{
+			"fieldName": "phone",
+			"fieldType": "String"
+		}
+	],
+	"relationships": [
+		{
+			"relationshipName": "user",
+			"otherEntityName": "user",
+			"relationshipType": "one-to-one",
+			"relationshipValidateRules": [],
+			"otherEntityField": "login",
+			"ownerSide": true,
+			"useJPADerivedIdentifier": true,
+			"otherEntityRelationshipName": "userExtra"
+		},
+		{
+			"relationshipName": "defaultUserPerDepartment",
+			"otherEntityName": "userPerDepartment",
+			"relationshipType": "one-to-one",
+			"otherEntityField": "id",
+			"ownerSide": true,
+			"useJPADerivedIdentifier": false,
+			"otherEntityRelationshipName": "userExtra"
+		}
+	],
+	"service": "serviceImpl",
+	"dto": "mapstruct",
+	"jpaMetamodelFiltering": true,
+	"readOnly": false,
+	"pagination": "pagination",
+	"name": "UserExtra",
+	"changelogDate": "20201225153458"
 }

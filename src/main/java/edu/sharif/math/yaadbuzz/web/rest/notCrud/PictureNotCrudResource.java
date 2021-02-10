@@ -89,7 +89,7 @@ public class PictureNotCrudResource {
      *
      * @param depId the depId of the pictureDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
-     * body the pictureDTO, or with status {@code 404 (Not Found)}.
+     *         body the pictureDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/memory/{memId}/comment/{comId}/picture/{picId}")
     @ResponseBody
@@ -115,7 +115,7 @@ public class PictureNotCrudResource {
      *
      * @param depId the depId of the pictureDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
-     * body the pictureDTO, or with status {@code 404 (Not Found)}.
+     *         body the pictureDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping(path = "/picture")
     @ResponseBody
@@ -139,7 +139,7 @@ public class PictureNotCrudResource {
      *
      * @param depId the depId of the pictureDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
-     * body the pictureDTO, or with status {@code 404 (Not Found)}.
+     *         body the pictureDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/memory/{memId}/picture/{picId}")
     @ResponseBody
@@ -164,7 +164,7 @@ public class PictureNotCrudResource {
      *
      * @param depId the depId of the pictureDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
-     * body the pictureDTO, or with status {@code 404 (Not Found)}.
+     *         body the pictureDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/userPerDepartment/{updId}/picture")
     @ResponseBody

@@ -3,4 +3,4 @@
 cd ../../yaadbuzz-frontend
 git pull
 yarn
-yarn buildAndExport
+yarn build

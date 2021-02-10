@@ -73,11 +73,8 @@ public class TopicVoteDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "TopicVoteDTO{" +
-            "id=" + getId() +
-            ", repetitions=" + getRepetitions() +
-            ", topic=" + getTopic() +
-            ", user=" + getUser() +
-            "}";
+	return "TopicVoteDTO{" + "id=" + getId() + ", repetitions="
+		+ getRepetitions() + ", topic=" + getTopic() + ", user="
+		+ getUser() + "}";
     }
 }

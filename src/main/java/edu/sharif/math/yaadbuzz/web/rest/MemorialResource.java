@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -29,7 +28,8 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link edu.sharif.math.yaadbuzz.domain.Memorial}.
+ * REST controller for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.Memorial}.
  */
 @RestController
 @RequestMapping("/api")
@@ -56,7 +56,9 @@ public class MemorialResource {
      * {@code POST  /memorials} : Create a new memorial.
      *
      * @param memorialDTO the memorialDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new memorialDTO, or with status {@code 400 (Bad Request)} if the memorial has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
+     *         with body the new memorialDTO, or with status
+     *         {@code 400 (Bad Request)} if the memorial has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/memorials")
@@ -76,9 +78,11 @@ public class MemorialResource {
      * {@code PUT  /memorials} : Updates an existing memorial.
      *
      * @param memorialDTO the memorialDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated memorialDTO,
-     * or with status {@code 400 (Bad Request)} if the memorialDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the memorialDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated memorialDTO, or with status
+     *         {@code 400 (Bad Request)} if the memorialDTO is not valid, or
+     *         with status {@code 500 (Internal Server Error)} if the
+     *         memorialDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/memorials")
@@ -98,10 +102,12 @@ public class MemorialResource {
      * {@code PATCH  /memorials} : Updates given fields of an existing memorial.
      *
      * @param memorialDTO the memorialDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated memorialDTO,
-     * or with status {@code 400 (Bad Request)} if the memorialDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the memorialDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the memorialDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated memorialDTO, or with status
+     *         {@code 400 (Bad Request)} if the memorialDTO is not valid, or
+     *         with status {@code 404 (Not Found)} if the memorialDTO is not
+     *         found, or with status {@code 500 (Internal Server Error)} if the
+     *         memorialDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/memorials", consumes = "application/merge-patch+json")
@@ -124,7 +130,8 @@ public class MemorialResource {
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of memorials in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         list of memorials in body.
      */
     @GetMapping("/memorials")
     public ResponseEntity<List<MemorialDTO>> getAllMemorials(MemorialCriteria criteria, Pageable pageable) {
@@ -138,7 +145,8 @@ public class MemorialResource {
      * {@code GET  /memorials/count} : count all the memorials.
      *
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         count in body.
      */
     @GetMapping("/memorials/count")
     public ResponseEntity<Long> countMemorials(MemorialCriteria criteria) {
@@ -150,7 +158,8 @@ public class MemorialResource {
      * {@code GET  /memorials/:id} : get the "id" memorial.
      *
      * @param id the id of the memorialDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the memorialDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the memorialDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/memorials/{id}")
     public ResponseEntity<MemorialDTO> getMemorial(@PathVariable Long id) {

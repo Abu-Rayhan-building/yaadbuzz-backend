@@ -50,8 +50,9 @@ public class DataLoader extends YaadbuzzApp {
             log.info("starting data loader");
 
             WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-            //for spring boot apps
-            //ApplicationContext context = SpringApplication.run(Application.class, args)
+            // for spring boot apps
+            // ApplicationContext context =
+            // SpringApplication.run(Application.class, args)
             UserService userService = (UserService) context.getBean("userService");
             MailService mailService = (MailService) context.getBean("mailService");
             MemorialService memorialService = (MemorialService) context.getBean("memorialService");

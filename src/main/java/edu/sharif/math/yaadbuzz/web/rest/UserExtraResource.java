@@ -11,9 +11,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 import javax.annotation.security.RolesAllowed;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +27,8 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link edu.sharif.math.yaadbuzz.domain.UserExtra}.
+ * REST controller for managing
+ * {@link edu.sharif.math.yaadbuzz.domain.UserExtra}.
  */
 @RestController
 @RequestMapping("/api")
@@ -56,7 +55,9 @@ public class UserExtraResource {
      * {@code POST  /user-extras} : Create a new userExtra.
      *
      * @param userExtraDTO the userExtraDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new userExtraDTO, or with status {@code 400 (Bad Request)} if the userExtra has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
+     *         with body the new userExtraDTO, or with status
+     *         {@code 400 (Bad Request)} if the userExtra has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/user-extras")
@@ -79,9 +80,11 @@ public class UserExtraResource {
      * {@code PUT  /user-extras} : Updates an existing userExtra.
      *
      * @param userExtraDTO the userExtraDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userExtraDTO,
-     * or with status {@code 400 (Bad Request)} if the userExtraDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the userExtraDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated userExtraDTO, or with status
+     *         {@code 400 (Bad Request)} if the userExtraDTO is not valid, or
+     *         with status {@code 500 (Internal Server Error)} if the
+     *         userExtraDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/user-extras")
@@ -98,13 +101,16 @@ public class UserExtraResource {
     }
 
     /**
-     * {@code PATCH  /user-extras} : Updates given fields of an existing userExtra.
+     * {@code PATCH  /user-extras} : Updates given fields of an existing
+     * userExtra.
      *
      * @param userExtraDTO the userExtraDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userExtraDTO,
-     * or with status {@code 400 (Bad Request)} if the userExtraDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the userExtraDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the userExtraDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated userExtraDTO, or with status
+     *         {@code 400 (Bad Request)} if the userExtraDTO is not valid, or
+     *         with status {@code 404 (Not Found)} if the userExtraDTO is not
+     *         found, or with status {@code 500 (Internal Server Error)} if the
+     *         userExtraDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/user-extras", consumes = "application/merge-patch+json")
@@ -127,7 +133,8 @@ public class UserExtraResource {
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userExtras in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         list of userExtras in body.
      */
     @GetMapping("/user-extras")
     public ResponseEntity<List<UserExtraDTO>> getAllUserExtras(UserExtraCriteria criteria, Pageable pageable) {
@@ -141,7 +148,8 @@ public class UserExtraResource {
      * {@code GET  /user-extras/count} : count all the userExtras.
      *
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         count in body.
      */
     @GetMapping("/user-extras/count")
     public ResponseEntity<Long> countUserExtras(UserExtraCriteria criteria) {
@@ -153,7 +161,8 @@ public class UserExtraResource {
      * {@code GET  /user-extras/:id} : get the "id" userExtra.
      *
      * @param id the id of the userExtraDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userExtraDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the userExtraDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/user-extras/{id}")
     public ResponseEntity<UserExtraDTO> getUserExtra(@PathVariable Long id) {

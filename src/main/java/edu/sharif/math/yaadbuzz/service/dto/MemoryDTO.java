@@ -105,14 +105,9 @@ public class MemoryDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "MemoryDTO{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", isPrivate='" + getIsPrivate() + "'" +
-            ", baseComment=" + getBaseComment() +
-            ", writer=" + getWriter() +
-            ", tageds=" + getTageds() +
-            ", department=" + getDepartment() +
-            "}";
+	return "MemoryDTO{" + "id=" + getId() + ", title='" + getTitle() + "'"
+		+ ", isPrivate='" + getIsPrivate() + "'" + ", baseComment="
+		+ getBaseComment() + ", writer=" + getWriter() + ", tageds="
+		+ getTageds() + ", department=" + getDepartment() + "}";
     }
 }

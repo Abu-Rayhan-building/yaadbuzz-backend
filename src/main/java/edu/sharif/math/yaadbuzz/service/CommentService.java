@@ -69,12 +69,12 @@ public class CommentService implements ServiceWithCurrentUserCrudAccess {
 
     public boolean currentuserHasUpdateAccess(final Long id) {
         return false;
-        //	final var comment = this.commentRepository.getOne(id);
+        // final var comment = this.commentRepository.getOne(id);
         //
-        //	final var currentUserId = this.userPerDepartmentService
-        //		.getCurrentUserInDep(
-        //			comment.getMemory().getDepartment().getId());
-        //	return comment.getWriter().getId().equals(currentUserId);
+        // final var currentUserId = this.userPerDepartmentService
+        // .getCurrentUserInDep(
+        // comment.getMemory().getDepartment().getId());
+        // return comment.getWriter().getId().equals(currentUserId);
     }
 
     public Optional<CommentDTO> partialUpdate(CommentDTO commentDTO) {

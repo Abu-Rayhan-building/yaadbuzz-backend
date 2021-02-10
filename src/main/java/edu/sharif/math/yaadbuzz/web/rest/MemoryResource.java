@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -56,7 +55,9 @@ public class MemoryResource {
      * {@code POST  /memories} : Create a new memory.
      *
      * @param memoryDTO the memoryDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new memoryDTO, or with status {@code 400 (Bad Request)} if the memory has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
+     *         with body the new memoryDTO, or with status
+     *         {@code 400 (Bad Request)} if the memory has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/memories")
@@ -76,9 +77,11 @@ public class MemoryResource {
      * {@code PUT  /memories} : Updates an existing memory.
      *
      * @param memoryDTO the memoryDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated memoryDTO,
-     * or with status {@code 400 (Bad Request)} if the memoryDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the memoryDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated memoryDTO, or with status
+     *         {@code 400 (Bad Request)} if the memoryDTO is not valid, or with
+     *         status {@code 500 (Internal Server Error)} if the memoryDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/memories")
@@ -98,10 +101,12 @@ public class MemoryResource {
      * {@code PATCH  /memories} : Updates given fields of an existing memory.
      *
      * @param memoryDTO the memoryDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated memoryDTO,
-     * or with status {@code 400 (Bad Request)} if the memoryDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the memoryDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the memoryDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the updated memoryDTO, or with status
+     *         {@code 400 (Bad Request)} if the memoryDTO is not valid, or with
+     *         status {@code 404 (Not Found)} if the memoryDTO is not found, or
+     *         with status {@code 500 (Internal Server Error)} if the memoryDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/memories", consumes = "application/merge-patch+json")
@@ -124,7 +129,8 @@ public class MemoryResource {
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of memories in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         list of memories in body.
      */
     @GetMapping("/memories")
     public ResponseEntity<List<MemoryDTO>> getAllMemories(MemoryCriteria criteria, Pageable pageable) {
@@ -138,7 +144,8 @@ public class MemoryResource {
      * {@code GET  /memories/count} : count all the memories.
      *
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         count in body.
      */
     @GetMapping("/memories/count")
     public ResponseEntity<Long> countMemories(MemoryCriteria criteria) {
@@ -150,7 +157,8 @@ public class MemoryResource {
      * {@code GET  /memories/:id} : get the "id" memory.
      *
      * @param id the id of the memoryDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the memoryDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
+     *         body the memoryDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/memories/{id}")
     public ResponseEntity<MemoryDTO> getMemory(@PathVariable Long id) {

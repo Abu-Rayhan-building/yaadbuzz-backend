@@ -33,7 +33,7 @@ services:
     restart: always
     volumes:
       - ../../../build/resources/main/static:/data/admin
-      - ../../../../yaadbuzz-frontend/out:/data/panel
+      - ../../../../yaadbuzz-frontend/build:/data/panel
     ports:
       - 80:80
     depends_on:

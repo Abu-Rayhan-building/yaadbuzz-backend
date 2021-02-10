@@ -1,59 +1,65 @@
 {
-  "fluentMethods": true,
-  "clientRootFolder": "",
-  "relationships": [
-    {
-      "relationshipName": "anonymousComment",
-      "otherEntityName": "comment",
-      "relationshipType": "one-to-one",
-      "otherEntityField": "id",
-      "ownerSide": true,
-      "useJPADerivedIdentifier": false,
-      "otherEntityRelationshipName": "memorial"
-    },
-    {
-      "relationshipName": "notAnonymousComment",
-      "otherEntityName": "comment",
-      "relationshipType": "one-to-one",
-      "otherEntityField": "id",
-      "ownerSide": true,
-      "useJPADerivedIdentifier": false,
-      "otherEntityRelationshipName": "memorial"
-    },
-    {
-      "relationshipName": "writer",
-      "otherEntityName": "userPerDepartment",
-      "relationshipType": "many-to-one",
-      "relationshipValidateRules": ["required"],
-      "otherEntityField": "id",
-      "otherEntityRelationshipName": "memorial"
-    },
-    {
-      "relationshipName": "recipient",
-      "otherEntityName": "userPerDepartment",
-      "relationshipType": "many-to-one",
-      "relationshipValidateRules": ["required"],
-      "otherEntityField": "id",
-      "otherEntityRelationshipName": "memorial"
-    },
-    {
-      "relationshipName": "department",
-      "otherEntityName": "department",
-      "relationshipType": "many-to-one",
-      "relationshipValidateRules": ["required"],
-      "otherEntityField": "id",
-      "otherEntityRelationshipName": "memorial"
-    }
-  ],
-  "fields": [],
-  "changelogDate": "20201204210023",
-  "dto": "mapstruct",
-  "searchEngine": false,
-  "service": "serviceImpl",
-  "entityTableName": "memorial",
-  "databaseType": "sql",
-  "readOnly": false,
-  "jpaMetamodelFiltering": true,
-  "pagination": "infinite-scroll",
-  "name": "Memorial"
+	"fluentMethods": true,
+	"clientRootFolder": "",
+	"relationships": [
+		{
+			"relationshipName": "anonymousComment",
+			"otherEntityName": "comment",
+			"relationshipType": "one-to-one",
+			"otherEntityField": "id",
+			"ownerSide": true,
+			"useJPADerivedIdentifier": false,
+			"otherEntityRelationshipName": "memorial"
+		},
+		{
+			"relationshipName": "notAnonymousComment",
+			"otherEntityName": "comment",
+			"relationshipType": "one-to-one",
+			"otherEntityField": "id",
+			"ownerSide": true,
+			"useJPADerivedIdentifier": false,
+			"otherEntityRelationshipName": "memorial"
+		},
+		{
+			"relationshipName": "writer",
+			"otherEntityName": "userPerDepartment",
+			"relationshipType": "many-to-one",
+			"relationshipValidateRules": [
+				"required"
+			],
+			"otherEntityField": "id",
+			"otherEntityRelationshipName": "memorial"
+		},
+		{
+			"relationshipName": "recipient",
+			"otherEntityName": "userPerDepartment",
+			"relationshipType": "many-to-one",
+			"relationshipValidateRules": [
+				"required"
+			],
+			"otherEntityField": "id",
+			"otherEntityRelationshipName": "memorial"
+		},
+		{
+			"relationshipName": "department",
+			"otherEntityName": "department",
+			"relationshipType": "many-to-one",
+			"relationshipValidateRules": [
+				"required"
+			],
+			"otherEntityField": "id",
+			"otherEntityRelationshipName": "memorial"
+		}
+	],
+	"fields": [],
+	"changelogDate": "20201204210023",
+	"dto": "mapstruct",
+	"searchEngine": false,
+	"service": "serviceImpl",
+	"entityTableName": "memorial",
+	"databaseType": "sql",
+	"readOnly": false,
+	"jpaMetamodelFiltering": true,
+	"pagination": "infinite-scroll",
+	"name": "Memorial"
 }
