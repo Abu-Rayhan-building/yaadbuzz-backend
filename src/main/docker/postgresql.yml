@@ -3,8 +3,8 @@ version: '3.8'
 services:
   yaadbuzz-postgresql:
     image: postgres:13.1
-    # volumes:
-    #     - ~/volumes/jhipster/yaadbuzz/postgresql/:/var/lib/postgresql/data/
+    volumes:
+      - ~/volumes/jhipster/yaadbuzz/postgresql/:/var/lib/postgresql/data/yaadbuzz
     environment:
       - POSTGRES_USER=yaadbuzz
       - POSTGRES_PASSWORD=

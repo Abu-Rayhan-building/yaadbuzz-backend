@@ -12,13 +12,13 @@ services:
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     volumes:
-      - /data/yaadbuzz/files:/data/files
+      - /data/yaadbuzz/files:/data/yaadbuzz/files
     ports:
       - 127.0.0.1:8080:8080
   yaadbuzz-postgresql:
     image: postgres:13.1
-    # volumes:
-    #     - ~/volumes/jhipster/yaadbuzz/postgresql/:/var/lib/postgresql/data/
+    volumes:
+      - ~/volumes/jhipster/yaadbuzz/postgresql/:/var/lib/postgresql/data/yaadbuzz
     environment:
       - POSTGRES_USER=yaadbuzz
       - POSTGRES_PASSWORD=
@@ -33,7 +33,7 @@ services:
     restart: always
     volumes:
       - ../../../build/resources/main/static:/data/admin
-      - ../../../../yaadbuzz-frontend/build:/data/panel
+      - ../../../../yaadbuzz-frontend/out:/data/panel
     ports:
       - 80:80
     depends_on:
