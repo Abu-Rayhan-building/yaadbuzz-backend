@@ -9,13 +9,11 @@ import edu.sharif.math.yaadbuzz.service.UserService;
 import edu.sharif.math.yaadbuzz.service.dto.DepartmentDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserDTO;
 import edu.sharif.math.yaadbuzz.service.dto.UserPerDepartmentDTO;
-import edu.sharif.math.yaadbuzz.web.rest.dto.DepartmentCreateUDTO;
-import edu.sharif.math.yaadbuzz.web.rest.dto.DepartmentWiteUPDCreateUDTO;
+import edu.sharif.math.yaadbuzz.web.rest.dto.DepartmentWithUPDCreateUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.dto.DepartmentWithUserPerDepartmentDTO;
 import edu.sharif.math.yaadbuzz.web.rest.dto.MyUserPerDepartmentStatsDTO;
 import edu.sharif.math.yaadbuzz.web.rest.dto.UserPerDepartmentUDTO;
 import edu.sharif.math.yaadbuzz.web.rest.errors.BadRequestAlertException;
-import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -111,10 +109,10 @@ public class DepartmentNotCrudResource {
      *
      * @param departmentDTO the departmentDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with
-     * body the updated departmentDTO, or with status
-     * {@code 400 (Bad Request)} if the departmentDTO is not valid, or
-     * with status {@code 500 (Internal Server Error)} if the
-     * departmentDTO couldn't be updated.
+     *         body the updated departmentDTO, or with status
+     *         {@code 400 (Bad Request)} if the departmentDTO is not valid, or
+     *         with status {@code 500 (Internal Server Error)} if the
+     *         departmentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/department/{id}/edit")
@@ -177,33 +175,39 @@ public class DepartmentNotCrudResource {
      *
      * @param departmentDTO the departmentDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and
-     * with body the new departmentDTO, or with status
-     * {@code 400 (Bad Request)} if the department has already an ID.
+     *         with body the new departmentDTO, or with status
+     *         {@code 400 (Bad Request)} if the department has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/department/create")
     public ResponseEntity<DepartmentWithUserPerDepartmentDTO> createDepartment(
-        @Valid @RequestBody DepartmentWiteUPDCreateUDTO departmentWiteUPDCreateUDTO
+        @Valid @RequestBody DepartmentWithUPDCreateUDTO departmentWithUPDCreateUDTO
     ) throws URISyntaxException {
-        log.debug("REST request to save Department : {}", departmentWiteUPDCreateUDTO);
-        var input = departmentWiteUPDCreateUDTO.build();
+        log.debug("REST request to save Department : {}", departmentWithUPDCreateUDTO);
+        var input = departmentWithUPDCreateUDTO.build();
         var dep = input.getDepartmentDTO();
-        var udp = input.getUserPerDepartmentDTO();
 
-        {
-            var user = new UserDTO();
-            user.setId(userService.getCurrentUserId());
-            dep.setOwner(user);
-            udp.setRealUser(user);
-        }
+        var user = new UserDTO();
+        user.setId(userService.getCurrentUserId());
+        dep.setOwner(user);
+
         DepartmentDTO res = departmentService.save(dep);
-        udp.setDepartment(res);
-
-        var res2 = userPerDepartmentService.save(udp);
-
         var result = new DepartmentWithUserPerDepartmentDTO();
         result.setDepartmentDTO(res);
+
+        var udp = input.getUserPerDepartmentDTO();
+        if (udp != null) {
+            var t = userPerDepartmentService.getCurrentUserInDefaultDep();
+            udp = new UserPerDepartmentDTO();
+            udp.setAvatar(t.getAvatar());
+            udp.setBio(t.getBio());
+            udp.setNickname(t.getNickname());
+        }
+        udp.setRealUser(user);
+        udp.setDepartment(res);
+        var res2 = userPerDepartmentService.save(udp);
         result.setUserPerDepartmentDTO(res2);
+
         return ResponseEntity
             .created(new URI("/api/departments/" + result.getDepartmentDTO().getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getDepartmentDTO().getId().toString()))

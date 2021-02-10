@@ -114,6 +114,10 @@ public class UserPerDepartmentService implements ServiceWithCurrentUserCrudAcces
         return this.userPerDepartmentMapper.toDto(this.userPerDepartmentRepository.getCurrentUserInDep(depid));
     }
 
+    public UserPerDepartmentDTO getCurrentUserInDefaultDep() {
+        return getCurrentUserInDep(departmentService.findDefault().get().getId());
+    }
+
     // fuck
 
     public MyUserPerDepartmentStatsDTO getCurrentUserStatsInDep(final Long depid) {

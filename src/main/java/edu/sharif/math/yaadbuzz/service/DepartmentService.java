@@ -97,6 +97,14 @@ public class DepartmentService implements ServiceWithCurrentUserCrudAccess {
         return this.departmentRepository.findById(id).map(this.departmentMapper::toDto);
     }
 
+    private final Long defaultDepartmentId = 1l;
+
+    @Transactional(readOnly = true)
+    public Optional<DepartmentDTO> findDefault() {
+        this.log.debug("Request to get Department : {}", defaultDepartmentId);
+        return this.departmentRepository.findById(defaultDepartmentId).map(this.departmentMapper::toDto);
+    }
+
     public List<UserPerDepartmentDTO> getAllDepartmentUsers(final Long depid) {
         return this.userPerDepartmentRepository.findByDepatment(depid)
             .stream()
