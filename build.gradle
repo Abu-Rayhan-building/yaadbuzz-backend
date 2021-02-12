@@ -4,6 +4,9 @@ buildscript {
         mavenCentral()
         gradlePluginPortal()
         maven { url "https://repo.spring.io/plugins-release" }
+         maven {
+      url "https://plugins.gradle.org/m2/"
+    }
     }
     dependencies {
         //jhipster-needle-gradle-buildscript-dependency - JHipster will add additional gradle build script plugins here
