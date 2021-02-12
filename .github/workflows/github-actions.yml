@@ -27,12 +27,6 @@ jobs:
                   java-version: '11.x'
             - name: Install node.js packages
               run: npm install
-            - name: Run backend test
-              run: |
-                  chmod +x gradlew
-                  npm run ci:backend:test
-            - name: Run frontend test
-              run: npm run ci:frontend:test
             - name: Package application
               run: npm run java:jar:prod
             - name: Build and publish docker image
