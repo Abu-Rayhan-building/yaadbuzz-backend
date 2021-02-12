@@ -1,0 +1,98 @@
+image: jhipster/jhipster:v7.0.0-beta.0
+
+cache:
+  key: '$CI_COMMIT_REF_NAME'
+  paths:
+    - .gradle/
+stages:
+  - check
+  - build
+  - test
+  - analyze
+  - package
+  - release
+  - deploy
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - ./gradlew npm_install -PnodeInstall --no-daemon
+nohttp:
+  stage: check
+  script:
+    - ./gradlew checkstyleNohttp --no-daemon
+
+gradle-compile:
+  stage: build
+  script:
+    - ./gradlew compileJava -x check -PnodeInstall --no-daemon
+  artifacts:
+    paths:
+      - build/classes/
+      - build/generated/
+    expire_in: 1 day
+
+gradle-test:
+  stage: test
+  script:
+    - ./gradlew test -PnodeInstall --no-daemon
+  artifacts:
+    reports:
+      junit: build/test-results/test/TEST-*.xml
+    paths:
+      - build/test-results/
+      - build/jacoco/
+    expire_in: 1 day
+
+gradle-integration-test:
+  # DinD service is required for Testcontainers
+  services:
+    - docker:dind
+
+  variables:
+    # Instruct Testcontainers to use the daemon of DinD.
+    DOCKER_HOST: 'tcp://docker:2375'
+    # Improve performance with overlayfs.
+    DOCKER_DRIVER: overlay2
+
+  stage: test
+  script:
+    - ./gradlew integrationTest -PnodeInstall --no-daemon -Ptestcontainers
+  artifacts:
+    reports:
+      junit: build/test-results/integrationTest/TEST-*.xml
+    paths:
+      - build/test-results/
+      - build/jacoco/
+    expire_in: 1 day
+
+frontend-test:
+  stage: test
+  script:
+    - ./gradlew npm_run_test-ci -PnodeInstall --no-daemon
+  artifacts:
+    reports:
+      junit: build/test-results/TESTS-results-jest.xml
+    paths:
+      - build/test-results/
+      - build/jacoco/
+    expire_in: 1 day
+
+gradle-package:
+  stage: package
+  script:
+    - ./gradlew bootJar -Pprod -PnodeInstall -x check --no-daemon
+  artifacts:
+    paths:
+      - build/libs/*.jar
+      - build/classes
+    expire_in: 1 day
+# Uncomment the following line to use gitlabs container registry. You need to adapt the REGISTRY_URL in case you are not using gitlab.com
+#docker-push:
+#    stage: release
+#    variables:
+#        REGISTRY_URL: registry.gitlab.com
+#        IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA
+#    dependencies:
+#        - gradle-package
+#    script:
+#        - ./gradlew jib -Pprod -PnodeInstall -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username="gitlab-ci-token"  -Djib.to.auth.password=$CI_BUILD_TOKEN
+
