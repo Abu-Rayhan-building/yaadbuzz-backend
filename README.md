@@ -190,3 +190,41 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [protractor]: https://angular.github.io/protractor/
 [leaflet]: https://leafletjs.com/
 [definitelytyped]: https://definitelytyped.org/
+
+
+## who to start a server from scratch
+http://raghukumarc.blogspot.com/2011/11/vpnc.html
+chmod u+x /etc/vpnc/vpnc-script
+https://www.infradead.org/openconnect/vpnc-script.html
+
+install java 15
+wget https://download.java.net/java/GA/jdk15.0.2/0d1cfde4252546c6931946de8db48ee2/7/GPL/openjdk-15.0.2_linux-x64_bin.tar.gz
+tar xvf openjdk-14_linux-x64_bin.tar.gz
+sudo mv jdk-15.0.2 /usr/lib/jvm
+
+echo export JAVA_HOME=/usr/lib/jvm/jdk-15.0.2/
+
+
+export PATH=\$PATH:\$JAVA_HOME/bin
+install npm
+curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
+mkdir ~/.npm-global
+npm config set prefix '~/.npm-global'
+nano ~/.profile -> add export PATH=~/.npm-global/bin:$PATH
+source ~/.profile
+npm install --global yarn
+
+https://docs.docker.com/engine/install/ubuntu/
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+https://docs.docker.com/compose/install/
+https://docs.docker.com/engine/install/linux-postinstall/
+
+git clone frontend
+yarn
+yarn build
+
+git clone backend
+npm run webpack:build:prod
