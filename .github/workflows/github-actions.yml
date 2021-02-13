@@ -25,12 +25,8 @@ jobs:
             - uses: actions/setup-java@v1
               with:
                   java-version: '15.x'
-            - name: Install node.js packages
-              run: npm install
-            - name: Package application
-              run: npm run java:jar:prod
-            - name: Build and publish docker image
-              if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
+
+              if: github.event_name == 'push'
               run: |
                   GIT_TAG=:${GITHUB_REF#refs/tags/}
                   DOCKER_TAG=${GIT_TAG#:refs/heads/main}
