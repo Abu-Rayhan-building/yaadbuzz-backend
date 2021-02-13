@@ -26,6 +26,7 @@ jobs:
               with:
                   java-version: '15.x'
 
+            - name: Build and publish docker image
               if: github.event_name == 'push'
               run: |
                   GIT_TAG=:${GITHUB_REF#refs/tags/}
