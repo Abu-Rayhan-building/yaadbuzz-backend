@@ -31,5 +31,5 @@ jobs:
               run: |
                   GIT_TAG=:${GITHUB_REF#refs/tags/}
                   DOCKER_TAG=${GIT_TAG#:refs/heads/main}
-                  ./gradlew jib -Djib.to.image=yaadbuzz${DOCKER_TAG} -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }} -x webpack"
+                  ./gradlew jib -Djib.to.image=hosseinmp762/yaadbuzz:${GITHUB_REF} -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }} -x webpack"
 
