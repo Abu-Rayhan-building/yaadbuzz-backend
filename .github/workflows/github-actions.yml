@@ -19,9 +19,6 @@ jobs:
             JHI_DISABLE_WEBPACK_LOGS: true
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
-              with:
-                  node-version: 14.15.0
             - uses: actions/setup-java@v1
               with:
                   java-version: '15.x'
@@ -31,5 +28,5 @@ jobs:
               run: |
                   GIT_TAG=:${GITHUB_REF#refs/tags/}
                   DOCKER_TAG=${GIT_TAG#:refs/heads/main}
-                  ./gradlew jib -Djib.to.image=hosseinmp762/yaadbuzz:${GITHUB_REF} -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }} -x webpack"
+                  ./gradlew jib -Djib.to.image=hosseinmp762/yaadbuzz:shit -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }} -x webpack"
 
